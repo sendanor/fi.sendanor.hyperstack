@@ -54,20 +54,20 @@ export function isHyperDTO (value: unknown) : value is HyperDTO {
         isRegularObject(value)
         && hasNoOtherKeysInDevelopment(value, [
             'name',
+            'components',
+            'views',
+            'routes',
             'extend',
             'publicUrl',
             'language',
-            'routes',
-            'components',
-            'views',
         ])
         && isString(value?.name)
+        && isArrayOf<HyperComponentDTO>(value?.components, isHyperComponentDTO)
+        && isArrayOf<HyperViewDTO>(value?.views, isHyperViewDTO)
+        && isArrayOf<HyperRouteDTO>(value?.routes, isHyperRouteDTO)
         && isStringOrUndefined(value?.extend)
         && isStringOrUndefined(value?.publicUrl)
         && isStringOrUndefined(value?.language)
-        && isArrayOf<HyperRouteDTO>(value?.routes, isHyperRouteDTO)
-        && isArrayOf<HyperComponentDTO>(value?.components, isHyperComponentDTO)
-        && isArrayOf<HyperViewDTO>(value?.views, isHyperViewDTO)
     );
 }
 
@@ -77,20 +77,20 @@ export function explainHyperDTO (value: any) : string {
             explainRegularObject(value),
             explainNoOtherKeysInDevelopment(value, [
                 'name',
+                'components',
+                'views',
+                'routes',
                 'extend',
                 'publicUrl',
                 'language',
-                'routes',
-                'components',
-                'views',
             ])
             , explainProperty("name", explainString(value?.name))
-            , explainProperty("isStringOrUndefined", explainStringOrUndefined(value?.isStringOrUndefined))
-            , explainProperty("publicUrl", explainStringOrUndefined(value?.publicUrl))
-            , explainProperty("language", explainStringOrUndefined(value?.language))
-            , explainProperty("routes", explainArrayOf<HyperRouteDTO>("HyperRouteDTO", explainHyperRouteDTO, value?.routes, isHyperRouteDTO))
             , explainProperty("components", explainArrayOf<HyperComponentDTO>("HyperComponentDTO", explainHyperComponentDTO, value?.components, isHyperComponentDTO))
             , explainProperty("views", explainArrayOf<HyperViewDTO>("HyperViewDTO", explainHyperViewDTO, value?.views, isHyperViewDTO))
+            , explainProperty("routes", explainArrayOf<HyperRouteDTO>("HyperRouteDTO", explainHyperRouteDTO, value?.routes, isHyperRouteDTO))
+            , explainProperty("extend", explainStringOrUndefined(value?.extend))
+            , explainProperty("publicUrl", explainStringOrUndefined(value?.publicUrl))
+            , explainProperty("language", explainStringOrUndefined(value?.language))
         ]
     );
 }
