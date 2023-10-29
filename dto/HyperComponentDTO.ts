@@ -1,5 +1,6 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
+import { explainReadonlyJsonObjectOrUndefined, isReadonlyJsonObjectOrUndefined, ReadonlyJsonObject } from "../../../hg/core/Json";
 import { isArrayOf } from "../../../hg/core/types/Array";
 import { explain, explainNot, explainOk, explainOr, explainProperty } from "../../../hg/core/types/explain";
 import { explainNoOtherKeysInDevelopment, hasNoOtherKeysInDevelopment } from "../../../hg/core/types/OtherKeys";
@@ -37,17 +38,20 @@ export interface HyperComponentDTO
     readonly name     : string;
     readonly content  : HyperComponentContent;
     readonly extend  ?: string;
+    readonly meta    ?: ReadonlyJsonObject;
 }
 
 export function createHyperComponentDTO (
     name      : string,
     extend    : string | undefined,
     content   : HyperComponentContent,
+    meta      : ReadonlyJsonObject | undefined,
 ) : HyperComponentDTO {
     return {
         name,
         extend,
         content,
+        meta,
     };
 }
 
@@ -58,9 +62,12 @@ export function isHyperComponentDTO (value: unknown) : value is HyperComponentDT
             'name',
             'extend',
             'content',
+            'meta',
         ])
         && isString(value?.name)
         && isStringOrUndefined(value?.extend)
+        && isHyperComponentContentOrUndefined(value?.content)
+        && isReadonlyJsonObjectOrUndefined(value?.meta)
     );
 }
 
@@ -72,9 +79,12 @@ export function explainHyperComponentDTO (value: any) : string {
                 'name',
                 'extend',
                 'content',
+                'meta',
             ])
             , explainProperty("name", explainString(value?.name))
             , explainProperty("extend", explainStringOrUndefined(value?.extend))
+            , explainProperty("content", explainHyperComponentContentOrUndefined(value?.content))
+            , explainProperty("meta", explainReadonlyJsonObjectOrUndefined(value?.meta))
         ]
     );
 }
