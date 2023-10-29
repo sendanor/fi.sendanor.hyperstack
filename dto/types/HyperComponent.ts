@@ -6,6 +6,7 @@ import { isUndefined } from "../../../../hg/core/types/undefined";
 
 export enum HyperComponent {
     Button = "fi.nor.button",
+    LinkButton = "fi.nor.linkButton",
     Link = "fi.nor.link",
     Article = "fi.nor.article",
     Div = "fi.nor.div",
