@@ -12,6 +12,7 @@ export function createTextComponent (
     return createHyperComponentDTO(
         TEXT_COMPONENT_NAME,
         HyperComponent.Article,
-        []
+        [],
+        undefined,
     );
 }

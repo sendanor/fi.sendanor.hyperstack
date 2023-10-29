@@ -14,6 +14,7 @@ export function createText (
         TEXT_COMPONENT_NAME,
         [
             text
-        ]
+        ],
+        undefined,
     );
 }
