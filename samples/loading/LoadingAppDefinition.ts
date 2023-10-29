@@ -2,26 +2,26 @@
 
 import { createHyperDTO, HyperDTO } from "../../dto/HyperDTO";
 import { createAnyRoute } from "./routes/AnyRoute";
-import { createLoginRoute } from "./routes/LoginRoute";
+import { createLoadingRoute } from "./routes/LoadingRoute";
 import { createTextComponent } from "./components/TextComponent";
 import { createDefaultView } from "./views/DefaultView";
-import { createLoginView } from "./views/LoginView";
+import { createLoadingView } from "./views/LoadingView";
 
-export const LOGIN_ROUTE_NAME : string = 'LoginRoute';
+export const LOADING_ROUTE_NAME : string = 'LoadingRoute';
 
-export type OrderAppDefinition = HyperDTO;
+export type LoadingAppDefinition = HyperDTO;
 
-export function createOrderAppDefinitions (
+export function createLoadingAppDefinition (
     myAppName: string,
     publicUrl: string,
     language: string
-) : OrderAppDefinition {
+) : LoadingAppDefinition {
     return createHyperDTO(
         myAppName,
         undefined,
         [
-            createLoginRoute(LOGIN_ROUTE_NAME),
-            createAnyRoute(LOGIN_ROUTE_NAME),
+            createLoadingRoute(LOADING_ROUTE_NAME),
+            createAnyRoute(LOADING_ROUTE_NAME),
         ],
         publicUrl,
         language,
@@ -30,7 +30,7 @@ export function createOrderAppDefinitions (
         ],
         [
             createDefaultView(),
-            createLoginView()
+            createLoadingView()
         ]
     );
 }
