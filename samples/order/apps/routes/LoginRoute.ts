@@ -3,13 +3,13 @@
 import { createHyperRouteDTO, HyperRouteDTO } from "../../../../dto/HyperRouteDTO";
 import { LOGIN_VIEW_NAME } from "../../views/LoginView";
 
-export const LOGIN_ROUTE_NAME : string = 'LoginRoute';
-
 export type LoginRoute = HyperRouteDTO;
 
-export function createLoginRoute () : LoginRoute {
+export function createLoginRoute (
+    name: string,
+) : LoginRoute {
     return createHyperRouteDTO(
-        LOGIN_ROUTE_NAME,
+        name,
         '/',
         undefined,
         undefined,
