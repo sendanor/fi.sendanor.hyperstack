@@ -29,7 +29,7 @@ export function populateHyperComponentDTO (
                 extend,
                 undefined,
                 componentContent,
-                undefined,
+                component.meta,
             );
         }
         throw new TypeError( `Could not find component by name ${extend} to extend for ${component.name}` );
@@ -42,7 +42,10 @@ export function populateHyperComponentDTO (
             extendComponent.name,
             extendComponent.extend,
             mergeHyperComponentContent(extendContent, componentContent),
-            undefined
+            {
+                ...extendComponent.meta,
+                ...component.meta
+            }
         ),
         components
     );
