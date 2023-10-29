@@ -5,7 +5,7 @@ import { explainNoOtherKeysInDevelopment, hasNoOtherKeysInDevelopment } from "..
 import { explainRegularObject, isRegularObject } from "../../../hg/core/types/RegularObject";
 import { explainString, explainStringOrUndefined, isString, isStringOrUndefined } from "../../../hg/core/types/String";
 import { isUndefined } from "../../../hg/core/types/undefined";
-import { HyperComponentContent } from "./HyperComponentDTO";
+import { explainHyperComponentContentOrUndefined, HyperComponentContent, isHyperComponentContentOrUndefined } from "./HyperComponentDTO";
 import { explainHyperSeoDTOOrUndefined, HyperSeoDTO, isHyperSeoDTOOrUndefined } from "./HyperSeoDTO";
 import { explainHyperStyleDTOOrUndefined, HyperStyleDTO, isHyperStyleDTOOrUndefined } from "./HyperStyleDTO";
 import { DTOWithOptionalExtend } from "./types/DTOWithOptionalExtend";
@@ -55,6 +55,7 @@ export function isHyperViewDTO (value: unknown) : value is HyperViewDTO {
             'language',
             'seo',
             'style',
+            'content',
         ])
         && isString(value?.name)
         && isStringOrUndefined(value?.extend)
@@ -62,6 +63,7 @@ export function isHyperViewDTO (value: unknown) : value is HyperViewDTO {
         && isStringOrUndefined(value?.language)
         && isHyperSeoDTOOrUndefined(value?.seo)
         && isHyperStyleDTOOrUndefined(value?.style)
+        && isHyperComponentContentOrUndefined(value?.content)
     );
 }
 
@@ -76,6 +78,7 @@ export function explainHyperViewDTO (value: any) : string {
                 'language',
                 'seo',
                 'style',
+                'content',
             ])
             , explainProperty("name", explainString(value?.name))
             , explainProperty("extend", explainStringOrUndefined(value?.extend))
@@ -83,6 +86,7 @@ export function explainHyperViewDTO (value: any) : string {
             , explainProperty("language", explainStringOrUndefined(value?.language))
             , explainProperty("seo", explainHyperSeoDTOOrUndefined(value?.seo))
             , explainProperty("style", explainHyperStyleDTOOrUndefined(value?.style))
+            , explainProperty("content", explainHyperComponentContentOrUndefined(value?.content))
         ]
     );
 }

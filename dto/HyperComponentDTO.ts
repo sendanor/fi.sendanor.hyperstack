@@ -1,5 +1,6 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
+import { isArrayOf } from "../../../hg/core/types/Array";
 import { explain, explainNot, explainOk, explainOr, explainProperty } from "../../../hg/core/types/explain";
 import { explainNoOtherKeysInDevelopment, hasNoOtherKeysInDevelopment } from "../../../hg/core/types/OtherKeys";
 import { explainRegularObject, isRegularObject } from "../../../hg/core/types/RegularObject";
@@ -10,6 +11,22 @@ import { DTOWithOptionalExtend } from "./types/DTOWithOptionalExtend";
 import { DTOWithName } from "./types/DTOWithName";
 
 export type HyperComponentContent = string | HyperComponentDTO | readonly (string|HyperComponentDTO)[];
+
+export function isStringOrHyperComponentDTO (value: unknown) : value is string | HyperComponentContent {
+    return isString(value) || isHyperComponentDTO(value);
+}
+
+export function isHyperComponentContent (value: unknown) : value is HyperComponentContent {
+    return isStringOrHyperComponentDTO(value) || isArrayOf<string|HyperComponentDTO>(value, isStringOrHyperComponentDTO);
+}
+
+export function isHyperComponentContentOrUndefined (value: unknown) : value is HyperComponentContent | undefined {
+    return isUndefined(value) || isHyperComponentContent(value);
+}
+
+export function explainHyperComponentContentOrUndefined (value: unknown): string {
+    return isHyperComponentContentOrUndefined(value) ? explainOk() : explainNot(explainOr(['HyperComponentContent', 'undefined']));
+}
 
 export interface HyperComponentDTO
     extends
