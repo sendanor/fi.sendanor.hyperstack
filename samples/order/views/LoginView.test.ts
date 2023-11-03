@@ -1,4 +1,4 @@
-import { createLoginView} from './LoginView';
+import {createLoginView} from './LoginView';
 
 describe('createLoginView', () => {
     it('should create a LoginView with the correct properties', () => {
