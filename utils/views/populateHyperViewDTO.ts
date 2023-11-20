@@ -1,13 +1,16 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import { find } from "../../../../hg/core/functions/find";
+import { LogService } from "../../../../hg/core/LogService";
 import { HyperComponentContent } from "../../dto/HyperComponentDTO";
 import { createHyperViewDTO, HyperViewDTO } from "../../dto/HyperViewDTO";
 import { mergeHyperComponentContent } from "../components/mergeHyperComponentContent";
 
+const LOG = LogService.createLogger( 'populateHyperViewDTO' );
+
 export function populateHyperViewDTO (
     view: HyperViewDTO,
-    components: readonly HyperViewDTO[]
+    views: readonly HyperViewDTO[]
 ): HyperViewDTO {
 
     const extend: string | undefined = view.extend;
@@ -16,11 +19,12 @@ export function populateHyperViewDTO (
     }
 
     const extendView: HyperViewDTO | undefined = find(
-        components,
+        views,
         (c: HyperViewDTO): boolean => c.name === extend
     );
 
     if ( !extendView ) {
+        LOG.debug(`views = `, views);
         throw new TypeError( `Could not find view by name ${extend} to extend for ${view.name}` );
     }
 
@@ -43,7 +47,7 @@ export function populateHyperViewDTO (
                 ...(view.style ? view.style : {}),
             },
         ),
-        components
+        views
     );
 
 }
