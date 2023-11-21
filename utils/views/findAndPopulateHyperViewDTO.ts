@@ -8,8 +8,12 @@ export function findAndPopulateHyperViewDTO (
     viewName : string,
     allViews : readonly HyperViewDTO[],
 ) : HyperViewDTO {
-    return populateHyperViewDTO(
+    const view : HyperViewDTO = populateHyperViewDTO(
         findHyperViewDTO(viewName, allViews),
         allViews
     );
+    return {
+        ...view,
+        name: viewName
+    };
 }

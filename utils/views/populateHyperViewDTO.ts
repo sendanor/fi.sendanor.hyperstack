@@ -8,6 +8,11 @@ import { mergeHyperComponentContent } from "../components/mergeHyperComponentCon
 
 const LOG = LogService.createLogger( 'populateHyperViewDTO' );
 
+/**
+ *
+ * @param view
+ * @param views
+ */
 export function populateHyperViewDTO (
     view: HyperViewDTO,
     views: readonly HyperViewDTO[]
