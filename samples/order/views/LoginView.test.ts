@@ -1,25 +1,20 @@
-import {createLoginView} from './LoginView';
+import { createLoginView} from './LoginView';
+import { createText } from '../components/Text';
+import { DEFAULT_VIEW_NAME } from './DefaultView';
 
 describe('createLoginView', () => {
-    it('should create a LoginView with the correct properties', () => {
-        const loginView = createLoginView()
+    test('creates a valid LoginView HyperViewDTO', () => {
+        const loginView = createLoginView();
 
-        expect(loginView.name).toBe("LoginView");
-        expect(loginView.extend).toBe("DefaultView");
-        expect(loginView.publicUrl).toBeUndefined();
-        expect(loginView.language).toBeUndefined();
-        expect(loginView.seo).toBeUndefined();
+        expect(loginView).toBeDefined();
+        expect(loginView.name).toBe('LoginView');
 
-        expect(Array.isArray(loginView.content)).toBe(true);
-        expect(loginView.content).toHaveLength(2);
+        const expectedContent = [
+            createText('project', 'Example'),
+            createText('appName', 'OrderApp'),
+        ];
+        expect(loginView.content).toEqual(expectedContent);
 
-        expect((loginView.content as any)[0].name).toBe('project');
-        expect((loginView.content as any)[0].content[0]).toBe('Example');
-        expect((loginView.content as any)[1].name).toBe('appName');
-        expect((loginView.content as any)[1].content[0]).toBe('OrderApp');
-
-        expect(loginView.style).toBeUndefined();
-
-
+        expect(loginView.extend).toBe(DEFAULT_VIEW_NAME);
     });
 });
