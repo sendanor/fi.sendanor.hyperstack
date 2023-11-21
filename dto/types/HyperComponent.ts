@@ -5,7 +5,9 @@ import { explainNot, explainOk, explainOr } from "../../../../hg/core/types/expl
 import { isUndefined } from "../../../../hg/core/types/undefined";
 
 export enum HyperComponent {
+    Form = "fi.nor.form",
     Button = "fi.nor.button",
+    ActionButton = "fi.nor.actionButton",
     LinkButton = "fi.nor.linkButton",
     Link = "fi.nor.link",
     Article = "fi.nor.article",
