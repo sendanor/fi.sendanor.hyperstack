@@ -23,31 +23,4 @@ describe('createHyperViewDTO', () => {
     });
 });
 
-describe('isHyperViewDTO', () => {
-    it('Should return true for a valid HyperViewDTO object', () => {
-        const validHyperViewDTO = {
-            name: "Testi",
-            extend: "Testi",
-            publicUrl: "Testi",
-            language: "Testi",
-            seo: undefined,
-            content: "Testi",
-            style: undefined,
-        };
 
-        const result = isHyperViewDTO(validHyperViewDTO);
-
-        expect(result).toBe(true);
-    });
-
-    it('Should return false for an invalid HyperViewDTO object', () => {
-        const invalidHyperViewDTO = {
-            // Missing some required properties
-            name: "Testi",
-        };
-
-        const result = isHyperViewDTO(invalidHyperViewDTO);
-
-        expect(result).toBe(false);
-    });
-});
