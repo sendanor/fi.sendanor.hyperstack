@@ -12,7 +12,7 @@ export function createHyperRedirectViewDTO (
 ) : HyperRedirectViewDTO {
     return createHyperViewDTO(
         REDIRECT_VIEW_NAME,
-        undefined,
+        dto.location,
         undefined,
         undefined,
         undefined,
@@ -20,7 +20,6 @@ export function createHyperRedirectViewDTO (
         ],
         undefined,
         {
-            location: dto.location,
         },
     );
 }
