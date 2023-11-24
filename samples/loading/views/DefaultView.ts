@@ -19,6 +19,7 @@ export function createDefaultView () : DefaultView {
         createHyperStyleDTO(
             DARK_TEXT_COLOR,
             DARK_BACKGROUND_COLOR,
-        )
+        ),
+        undefined,
     );
 }

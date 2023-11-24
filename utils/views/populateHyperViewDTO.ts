@@ -51,6 +51,7 @@ export function populateHyperViewDTO (
                 ...(extendView.style ? extendView.style : {}),
                 ...(view.style ? view.style : {}),
             },
+            undefined,
         ),
         views
     );

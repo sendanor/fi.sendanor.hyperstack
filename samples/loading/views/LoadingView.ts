@@ -18,6 +18,7 @@ export function createLoadingView () : LoadingView {
         [
             createText('loadingText', '...loading...'),
         ],
-        undefined
+        undefined,
+        undefined,
     );
 }
