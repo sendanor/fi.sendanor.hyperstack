@@ -12,15 +12,22 @@ const LOG = LogService.createLogger( 'populateHyperViewDTO' );
  *
  * @param view
  * @param views
+ * @param publicUrl
  */
 export function populateHyperViewDTO (
     view: HyperViewDTO,
-    views: readonly HyperViewDTO[]
+    views: readonly HyperViewDTO[],
+    publicUrl : string,
 ): HyperViewDTO {
 
-    const extend: string | undefined = view.extend;
+    publicUrl = view.publicUrl ?? publicUrl;
+
+    let extend: string | undefined = view.extend;
     if ( extend === undefined ) {
         return view;
+    }
+    if (extend.startsWith('/')) {
+        extend = `${publicUrl}${extend}`;
     }
 
     const extendView: HyperViewDTO | undefined = find(
@@ -53,7 +60,8 @@ export function populateHyperViewDTO (
             },
             undefined,
         ),
-        views
+        views,
+        publicUrl,
     );
 
 }

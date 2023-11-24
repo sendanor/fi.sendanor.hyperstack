@@ -7,13 +7,15 @@ import { populateHyperViewDTO } from "./populateHyperViewDTO";
 export function findAndPopulateHyperViewDTO (
     viewName : string,
     allViews : readonly HyperViewDTO[],
+    publicUrl : string,
 ) : HyperViewDTO {
     const view : HyperViewDTO = populateHyperViewDTO(
         findHyperViewDTO(viewName, allViews),
-        allViews
+        allViews,
+        publicUrl,
     );
     return {
         ...view,
-        name: viewName
+        name: viewName,
     };
 }
