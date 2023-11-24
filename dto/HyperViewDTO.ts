@@ -1,5 +1,6 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
+import { explainReadonlyJsonObjectOrUndefined, isReadonlyJsonObjectOrUndefined, ReadonlyJsonObject } from "../../../hg/core/Json";
 import { explain, explainNot, explainOk, explainOr, explainProperty } from "../../../hg/core/types/explain";
 import { explainNoOtherKeysInDevelopment, hasNoOtherKeysInDevelopment } from "../../../hg/core/types/OtherKeys";
 import { explainRegularObject, isRegularObject } from "../../../hg/core/types/RegularObject";
@@ -23,6 +24,7 @@ export interface HyperViewDTO
     readonly seo            ?: HyperSeoDTO;
     readonly style          ?: HyperStyleDTO;
     readonly content        ?: HyperComponentContent;
+    readonly meta           ?: ReadonlyJsonObject;
 }
 
 export function createHyperViewDTO (
@@ -33,6 +35,7 @@ export function createHyperViewDTO (
     seo       : HyperSeoDTO | undefined,
     content   : HyperComponentContent | undefined,
     style     : HyperStyleDTO | undefined,
+    meta      : ReadonlyJsonObject | undefined,
 ) : HyperViewDTO {
     return {
         name,
@@ -42,6 +45,7 @@ export function createHyperViewDTO (
         language,
         content,
         style,
+        meta,
     };
 }
 
@@ -56,6 +60,7 @@ export function isHyperViewDTO (value: unknown) : value is HyperViewDTO {
             'seo',
             'style',
             'content',
+            'meta',
         ])
         && isString(value?.name)
         && isStringOrUndefined(value?.extend)
@@ -64,6 +69,7 @@ export function isHyperViewDTO (value: unknown) : value is HyperViewDTO {
         && isHyperSeoDTOOrUndefined(value?.seo)
         && isHyperStyleDTOOrUndefined(value?.style)
         && isHyperComponentContentOrUndefined(value?.content)
+        && isReadonlyJsonObjectOrUndefined(value?.meta)
     );
 }
 
@@ -79,6 +85,7 @@ export function explainHyperViewDTO (value: any) : string {
                 'seo',
                 'style',
                 'content',
+                'meta',
             ])
             , explainProperty("name", explainString(value?.name))
             , explainProperty("extend", explainStringOrUndefined(value?.extend))
@@ -87,6 +94,7 @@ export function explainHyperViewDTO (value: any) : string {
             , explainProperty("seo", explainHyperSeoDTOOrUndefined(value?.seo))
             , explainProperty("style", explainHyperStyleDTOOrUndefined(value?.style))
             , explainProperty("content", explainHyperComponentContentOrUndefined(value?.content))
+            , explainProperty("meta", explainReadonlyJsonObjectOrUndefined(value?.meta))
         ]
     );
 }
