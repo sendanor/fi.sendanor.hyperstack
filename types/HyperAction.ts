@@ -134,10 +134,18 @@ export function explainHyperActionOrUndefined (value: unknown): string {
     return isHyperActionOrUndefined(value) ? explainOk() : explainNot(explainOr(['HyperAction', 'undefined']));
 }
 
-export function isHyperActionOrStringOrUndefined (value: unknown): value is HyperAction | undefined {
+export function isHyperActionOrStringOrUndefined (value: unknown): value is string | HyperAction | undefined {
     return isUndefined(value) || isString(value) || isHyperAction(value);
 }
 
 export function explainHyperActionOrStringOrUndefined (value: unknown): string {
-    return isHyperActionOrUndefined(value) ? explainOk() : explainNot(explainOr(['HyperAction', 'undefined', 'string']));
+    return isHyperActionOrStringOrUndefined(value) ? explainOk() : explainNot(explainOr(['HyperAction', 'undefined', 'string']));
+}
+
+export function isHyperActionOrString (value: unknown): value is HyperAction | string {
+    return isString(value) || isHyperAction(value);
+}
+
+export function explainHyperActionOrString (value: unknown): string {
+    return isHyperActionOrString(value) ? explainOk() : explainNot(explainOr(['HyperAction', 'string']));
 }
