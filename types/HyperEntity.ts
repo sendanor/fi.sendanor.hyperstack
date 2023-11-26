@@ -22,11 +22,11 @@ export class HyperEntity {
         return createHyperDTO(
             this._name,
             this._extend,
+            [],
             undefined,
             undefined,
-            undefined,
-            undefined,
-            undefined,
+            [],
+            [],
         );
     }
 
