@@ -116,7 +116,7 @@ export class HyperEntity {
         return this;
     }
 
-    public getLanguage () : string {
+    public getLanguage () : string | undefined {
         return this._language;
     }
 
@@ -125,7 +125,7 @@ export class HyperEntity {
         return this;
     }
 
-    public getPublicUrl () : string {
+    public getPublicUrl () : string | undefined {
         return this._publicUrl;
     }
 
