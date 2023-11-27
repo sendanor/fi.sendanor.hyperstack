@@ -36,6 +36,14 @@ export class ComponentEntity {
         );
     }
 
+    public valueOf() : ReadonlyJsonObject {
+        return this.toJSON();
+    }
+
+    public toJSON () : ReadonlyJsonObject {
+        return this.getDTO() as unknown as ReadonlyJsonObject;
+    }
+
     public setMeta (value: ReadonlyJsonObject) : this {
         if (this._meta) {
             this._meta = {
@@ -77,6 +85,10 @@ export class ComponentEntity {
         }
 
         return this;
+    }
+
+    public addText (value : string) : this {
+        return this.add(value);
     }
 
     public static create (name : string) : ComponentEntity {

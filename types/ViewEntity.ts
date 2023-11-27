@@ -1,8 +1,11 @@
 // Copyright (c) 2023. Heusala Group Oy <info@heusalagroup.fi>. All rights reserved.
 
 import { map } from "../../../hg/core/functions/map";
+import { ReadonlyJsonObject } from "../../../hg/core/Json";
 import { isArray } from "../../../hg/core/types/Array";
 import { HyperComponentContent, HyperComponentDTO } from "../dto/HyperComponentDTO";
+import { HyperSeoDTO } from "../dto/HyperSeoDTO";
+import { HyperStyleDTO } from "../dto/HyperStyleDTO";
 import { createHyperViewDTO, HyperViewDTO } from "../dto/HyperViewDTO";
 import { ComponentEntity, isComponentEntity } from "./ComponentEntity";
 
@@ -10,7 +13,12 @@ export class ViewEntity {
 
     protected _name : string;
     protected _extend : string | undefined;
+    protected _publicUrl : string | undefined;
+    protected _language : string | undefined;
+    protected _seo : HyperSeoDTO | undefined;
+    protected _style : HyperStyleDTO | undefined;
     protected _content : HyperComponentContent | undefined;
+    protected _meta : ReadonlyJsonObject | undefined;
 
     protected constructor (
         name : string,
@@ -28,13 +36,21 @@ export class ViewEntity {
         return createHyperViewDTO(
             this._name,
             this._extend,
-            undefined,
-            undefined,
-            undefined,
+            this._publicUrl,
+            this._language,
+            this._seo,
             this._content ?? [],
-            undefined,
-            undefined,
+            this._style,
+            this._meta,
         );
+    }
+
+    public valueOf() : ReadonlyJsonObject {
+        return this.toJSON();
+    }
+
+    public toJSON () : ReadonlyJsonObject {
+        return this.getDTO() as unknown as ReadonlyJsonObject;
     }
 
     public extend (name : string) : this {
@@ -70,6 +86,24 @@ export class ViewEntity {
         return new ViewEntity(
             name,
         );
+    }
+
+    public getLanguage () : string {
+        return this._language;
+    }
+
+    public setLanguage (value : string) : this {
+        this._language = value;
+        return this;
+    }
+
+    public getPublicUrl () : string {
+        return this._publicUrl;
+    }
+
+    public setPublicUrl (value : string) : this {
+        this._publicUrl = value;
+        return this;
     }
 
 }

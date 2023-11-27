@@ -21,10 +21,10 @@ export interface HyperDTO
         DTOWithOptionalLanguage,
         DTOWithOptionalPublicUrl {
     readonly name       : string;
+    readonly extend    ?: string;
     readonly components : readonly HyperComponentDTO[];
     readonly views      : readonly HyperViewDTO[];
     readonly routes     : readonly HyperRouteDTO[];
-    readonly extend    ?: string;
     readonly publicUrl ?: string;
     readonly language  ?: string;
 }
