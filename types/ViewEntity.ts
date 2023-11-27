@@ -1,4 +1,4 @@
-// Copyright (c) 2023. Heusala Group Oy <info@heusalagroup.fi>. All rights reserved.
+// Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import { map } from "../../../hg/core/functions/map";
 import { ReadonlyJsonObject } from "../../../hg/core/Json";
