@@ -82,6 +82,10 @@ export class ViewEntity {
         return this;
     }
 
+    public addText (value : string) : this {
+        return this.add(value);
+    }
+
     public static create (name : string) : ViewEntity {
         return new ViewEntity(
             name,
