@@ -110,6 +110,31 @@ export class ViewEntity {
         return this;
     }
 
+    public setMeta (value: ReadonlyJsonObject) : this {
+        if (this._meta) {
+            this._meta = {
+                ...this._meta,
+                ...value,
+            };
+        } else {
+            this._meta = {
+                ...value,
+            };
+        }
+        return this;
+    }
+
+    /**
+     * Set automatic refresh of the view after a timeout.
+     *
+     * @param value
+     */
+    public setRefresh (value: number) : this {
+        return this.setMeta({
+            refresh: value,
+        });
+    }
+
 }
 
 export function isViewEntity (value: unknown): value is ViewEntity {
