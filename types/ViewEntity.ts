@@ -127,11 +127,37 @@ export class ViewEntity {
     /**
      * Set automatic refresh of the view after a timeout.
      *
+     * See also `.setTimestamp()`.
+     *
      * @param value
      */
     public setRefresh (value: number) : this {
         return this.setMeta({
             refresh: value,
+        });
+    }
+
+    /**
+     * Set automatic refresh of the view after a timeout.
+     *
+     * @param value
+     */
+    public setIntervalRefresh (value: number) : this {
+        return this.setRefresh(value).setTimestamp(new Date().toISOString());
+    }
+
+    /**
+     * Set timestamp of the view.
+     *
+     * This should be in ISO format like `'2023-11-29T21:38:38.483Z'`.
+     *
+     * Together with `.setRefresh()` this enables the view to update by intervals.
+     *
+     * @param value
+     */
+    public setTimestamp (value: string) : this {
+        return this.setMeta({
+            timestamp: value,
         });
     }
 
