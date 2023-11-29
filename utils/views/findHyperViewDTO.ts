@@ -7,7 +7,7 @@ export function findHyperViewDTO (
     viewName : string,
     allViews : readonly HyperViewDTO[],
 ) : HyperViewDTO {
-    let view : HyperViewDTO | undefined = find(
+    const view : HyperViewDTO | undefined = find(
         allViews,
         (a: HyperViewDTO) : boolean => a.name === viewName
     );
