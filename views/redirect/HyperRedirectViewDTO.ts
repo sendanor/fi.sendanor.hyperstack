@@ -17,6 +17,7 @@ export function createHyperRedirectViewDTO (
         undefined,
         undefined,
         [
+            'Redirecting...'
         ],
         undefined,
         {
