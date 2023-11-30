@@ -9,18 +9,14 @@ import { ReadonlyJsonAny } from "../../../hg/core/Json";
 import { explainHyperComponentDTO, HyperComponentDTO, isHyperComponentDTO } from "../dto/HyperComponentDTO";
 import { explainHyperRouteDTO, HyperRouteDTO, isHyperRouteDTO } from "../dto/HyperRouteDTO";
 
-const LOG = LogService.createLogger('HttpService');
+const LOG = LogService.createLogger('populateHyperDTO');
 
-export async function populateHyperDTO (
-    hyper: HyperDTO,
-    baseUrl: string | undefined = undefined
-): Promise<HyperDTO> {
-
-    baseUrl = baseUrl ?? hyper.publicUrl ?? '';
-
-    // Views
+export async function fetchMissingViews (
+    views: readonly HyperViewDTO[],
+    baseUrl: string,
+) : Promise<HyperViewDTO[]> {
     let newViews : HyperViewDTO[] = [];
-    for (const view of hyper.views) {
+    for (const view of views) {
 
         let extend: string | undefined = view.extend;
         if (extend === undefined) {
@@ -40,7 +36,7 @@ export async function populateHyperDTO (
 
             // Skip if we already have the resource
             if (some(
-                [...newViews, ...hyper.views],
+                [...newViews, ...views],
                 (item: HyperViewDTO) : boolean => item.name === extend
             )) {
                 continue;
@@ -62,10 +58,15 @@ export async function populateHyperDTO (
             newViews.push(view);
         }
     }
+    return newViews;
+}
 
-    // Components
+export async function fetchMissingComponents (
+    components : readonly HyperComponentDTO[],
+    baseUrl : string,
+) : Promise<HyperComponentDTO[]> {
     let newComponents : HyperComponentDTO[] = [];
-    for (const component of hyper.components) {
+    for (const component of components) {
         newComponents.push(component);
         let extend: string | undefined = component.extend;
 
@@ -79,7 +80,7 @@ export async function populateHyperDTO (
 
             // Skip if we already have the resource
             if (some(
-                [...newComponents, ...hyper.components],
+                [...newComponents, ...components],
                 (item: HyperComponentDTO) : boolean => item.name === extend
             )) {
                 continue;
@@ -99,10 +100,15 @@ export async function populateHyperDTO (
 
         }
     }
+    return newComponents;
+}
 
-    // Routes
+export async function fetchMissingRoutes (
+    routes : readonly HyperRouteDTO[],
+    baseUrl: string,
+): Promise<HyperRouteDTO[]> {
     let newRoutes : HyperRouteDTO[] = [];
-    for (const route of hyper.routes) {
+    for (const route of routes) {
         newRoutes.push(route);
         let extend: string | undefined = route.extend;
 
@@ -116,7 +122,7 @@ export async function populateHyperDTO (
 
             // Skip if we already have the resource
             if (some(
-                [...newRoutes, ...hyper.routes],
+                [...newRoutes, ...routes],
                 (item: HyperRouteDTO) : boolean => item.name === extend
             )) {
                 continue;
@@ -137,6 +143,23 @@ export async function populateHyperDTO (
 
         }
     }
+    return newRoutes;
+}
+
+export async function populateHyperDTO (
+    hyper: HyperDTO,
+    baseUrl: string | undefined = undefined,
+): Promise<HyperDTO> {
+
+    baseUrl = baseUrl ?? hyper.publicUrl ?? '';
+
+    const newViewsPromise = fetchMissingViews(hyper.views, baseUrl);
+    const newComponentsPromise = fetchMissingComponents(hyper.components, baseUrl);
+    const newRoutesPromise = fetchMissingRoutes(hyper.routes, baseUrl);
+
+    const newViews = await newViewsPromise;
+    const newComponents = await newComponentsPromise;
+    const newRoutes = await newRoutesPromise;
 
     return {
         ...hyper,
