@@ -55,8 +55,8 @@ export class ComponentEntity implements Component {
         return has(this._meta, name);
     }
 
-    public getMeta (name : string) : any | undefined {
-        return has(this._meta, name) ? this._meta[name] : undefined;
+    public getMeta (name : string) : ReadonlyJsonAny | undefined {
+        return has(this._meta, name) ? this._meta[name] as ReadonlyJsonAny : undefined;
     }
 
     public setMeta (value: ReadonlyJsonObject) : this {
