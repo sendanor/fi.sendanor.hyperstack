@@ -52,11 +52,11 @@ export class ComponentEntity implements Component {
     }
 
     public hasMeta (name : string) : boolean {
-        return has(this._meta, name);
+        return this._meta ? has(this._meta, name) : false;
     }
 
     public getMeta (name : string) : ReadonlyJsonAny | undefined {
-        return has(this._meta, name) ? this._meta[name] as ReadonlyJsonAny : undefined;
+        return this._meta && has(this._meta, name) ? this._meta[name] as ReadonlyJsonAny : undefined;
     }
 
     public setMeta (value: ReadonlyJsonObject) : this {
@@ -74,7 +74,7 @@ export class ComponentEntity implements Component {
     }
 
     public getMetaString (name : string) : string | undefined {
-        if (!has(this._meta, name)) return undefined;
+        if (!(this._meta && has(this._meta, name))) return undefined;
         const value : unknown = this._meta[name];
         return isString(value) ? value : undefined;
     }
@@ -86,7 +86,7 @@ export class ComponentEntity implements Component {
     }
 
     public getMetaBoolean (name : string) : boolean | undefined {
-        if (!has(this._meta, name)) return undefined;
+        if (!(this._meta && has(this._meta, name))) return undefined;
         const value : unknown = this._meta[name];
         return isBoolean(value) ? value : undefined;
     }
@@ -98,7 +98,7 @@ export class ComponentEntity implements Component {
     }
 
     public getMetaNumber (name : string) : number | undefined {
-        if (!has(this._meta, name)) return undefined;
+        if (!(this._meta && has(this._meta, name))) return undefined;
         const value : unknown = this._meta[name];
         return isNumber(value) ? value : undefined;
     }
@@ -110,7 +110,7 @@ export class ComponentEntity implements Component {
     }
 
     public getMetaObject (name : string) : ReadonlyJsonObject | null | undefined {
-        if (!has(this._meta, name)) return undefined;
+        if (!(this._meta && has(this._meta, name))) return undefined;
         const value : unknown = this._meta[name];
         return isReadonlyJsonObject(value) ? value : undefined;
     }
@@ -124,7 +124,7 @@ export class ComponentEntity implements Component {
     public getMetaArray (
         name : string,
     ) : ReadonlyJsonArray | undefined {
-        if (!has(this._meta, name)) return undefined;
+        if (!(this._meta && has(this._meta, name))) return undefined;
         const value : unknown = this._meta[name];
         return isReadonlyJsonArray(value) ? value : undefined;
     }
@@ -133,7 +133,7 @@ export class ComponentEntity implements Component {
         name : string,
         isItemOf : TestCallbackNonStandard,
     ) : ReadonlyJsonArrayOf<T> | undefined {
-        if (!has(this._meta, name)) return undefined;
+        if (!(this._meta && has(this._meta, name))) return undefined;
         const value : unknown = this._meta[name];
         return isReadonlyJsonArrayOf<T>(value, isItemOf) ? value : undefined;
     }
