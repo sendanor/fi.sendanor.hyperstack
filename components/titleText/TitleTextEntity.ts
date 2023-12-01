@@ -3,7 +3,7 @@
 import { ComponentEntity } from "../../types/ComponentEntity";
 import { TITLE_TEXT_COMPONENT_NAME } from "./TitleTextComponent";
 
-export class TitleText extends ComponentEntity {
+export class TitleTextEntity extends ComponentEntity {
 
     protected constructor (
         name : string,
@@ -14,14 +14,14 @@ export class TitleText extends ComponentEntity {
 
     public static create (
         name : string,
-    ) : TitleText {
+    ) : TitleTextEntity {
         return new this( name );
     }
 
     public static createText (
         name  : string,
         value : string,
-    ) : TitleText {
+    ) : TitleTextEntity {
         return this.create(name).addText(value);
     }
 

@@ -3,21 +3,21 @@
 import { ComponentEntity, ComponentEntityContent } from "../../../types/ComponentEntity";
 import { TABLE_COLUMN_COMPONENT_NAME } from "./TableColumnComponent";
 
-export class TableColumn extends ComponentEntity {
+export class TableColumnEntity extends ComponentEntity {
 
     protected constructor (name : string) {
         super(name);
         this.extend(TABLE_COLUMN_COMPONENT_NAME);
     }
 
-    public static create (name : string) : TableColumn {
+    public static create (name : string) : TableColumnEntity {
         return new this(name);
     }
 
     public static createColumn (
         name: string,
         data: ComponentEntityContent,
-    ) : TableColumn {
+    ) : TableColumnEntity {
         return this.create(name).add(data);
     }
 

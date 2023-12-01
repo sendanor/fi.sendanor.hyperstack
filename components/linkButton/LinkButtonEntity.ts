@@ -3,7 +3,7 @@
 import { ComponentEntity } from "../../types/ComponentEntity";
 import { LINK_BUTTON_COMPONENT_NAME } from "./LinkButtonComponent";
 
-export class LinkButton extends ComponentEntity {
+export class LinkButtonEntity extends ComponentEntity {
 
     protected constructor (name : string) {
         super(name);
@@ -18,7 +18,7 @@ export class LinkButton extends ComponentEntity {
         return this.setMeta({href});
     }
 
-    public static create (name : string) : LinkButton {
+    public static create (name : string) : LinkButtonEntity {
         return new this(name);
     }
 
@@ -26,7 +26,7 @@ export class LinkButton extends ComponentEntity {
         name: string,
         text: string,
         href: string,
-    ) : LinkButton {
+    ) : LinkButtonEntity {
         return this.create(name).setText(text).setHref(href);
     }
 

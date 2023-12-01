@@ -6,21 +6,21 @@ import { ComponentEntity } from "../../types/ComponentEntity";
 import { createHyperAction, HyperAction } from "../../types/HyperAction";
 import { ACTION_BUTTON_COMPONENT_NAME } from "./ActionButtonComponent";
 
-export class ActionButton extends ComponentEntity {
+export class ActionButtonEntity extends ComponentEntity {
 
     protected constructor (name : string) {
         super(name);
         this.extend(ACTION_BUTTON_COMPONENT_NAME);
     }
 
-    public static create (name : string) : ActionButton {
-        return new ActionButton(name);
+    public static create (name : string) : ActionButtonEntity {
+        return new ActionButtonEntity(name);
     }
 
     public static createButton (
         name: string,
         dto: HyperAction | string,
-    ) : ActionButton {
+    ) : ActionButtonEntity {
 
         if (isString(dto)) {
             return this.createButton(

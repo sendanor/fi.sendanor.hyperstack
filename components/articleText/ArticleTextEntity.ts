@@ -1,17 +1,17 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { Article } from "../article/Article";
+import { ArticleEntity } from "../article/ArticleEntity";
 
-export class ArticleText extends Article {
+export class ArticleTextEntity extends ArticleEntity {
 
-    public static create (name : string) : ArticleText {
+    public static create (name : string) : ArticleTextEntity {
         return new this(name);
     }
 
     public static createText (
         name : string,
         text : string,
-    ) : ArticleText {
+    ) : ArticleTextEntity {
         return this.create(name).addText(text);
     }
 

@@ -3,14 +3,14 @@
 import { ComponentEntity } from "../../types/ComponentEntity";
 import { BUTTON_COMPONENT_NAME } from "./ButtonComponent";
 
-export class Button extends ComponentEntity {
+export class ButtonEntity extends ComponentEntity {
 
     protected constructor (name : string) {
         super(name);
         this.extend( BUTTON_COMPONENT_NAME );
     }
 
-    public static create (name : string) : Button {
+    public static create (name : string) : ButtonEntity {
         return new this(name);
     }
 
@@ -18,7 +18,7 @@ export class Button extends ComponentEntity {
         name : string,
         text : string,
         eventName : string,
-    ) : Button {
+    ) : ButtonEntity {
         return this.create(name).addText(text).setEventName(eventName);
     }
 

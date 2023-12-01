@@ -3,7 +3,7 @@
 import { ComponentEntity } from "../../types/ComponentEntity";
 import { ARTICLE_COMPONENT_NAME } from "./ArticleComponent";
 
-export class Article extends ComponentEntity {
+export class ArticleEntity extends ComponentEntity {
 
     protected constructor (name : string) {
         super(name);
@@ -14,14 +14,14 @@ export class Article extends ComponentEntity {
         return this.add(value);
     }
 
-    public static create (name : string) : Article {
+    public static create (name : string) : ArticleEntity {
         return new this(name);
     }
 
     public static createText (
         name : string,
         text : string,
-    ) : Article {
+    ) : ArticleEntity {
         return this.create(name).addText(text);
     }
 

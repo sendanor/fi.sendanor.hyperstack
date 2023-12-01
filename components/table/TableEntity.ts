@@ -3,27 +3,27 @@
 import { HyperComponentContent } from "../../dto/HyperComponentDTO";
 import { ComponentEntity } from "../../types/ComponentEntity";
 import { TABLE_COMPONENT_NAME } from "./TableComponent";
-import { TableRow } from "./row/TableRow";
+import { TableRowEntity } from "./row/TableRowEntity";
 
-export class Table extends ComponentEntity {
+export class TableEntity extends ComponentEntity {
 
     protected constructor (name : string) {
         super(name);
         this.extend(TABLE_COMPONENT_NAME);
     }
 
-    public addRow (row : TableRow) : this {
+    public addRow (row : TableRowEntity) : this {
         return this.add(row);
     }
 
-    public static create (name: string) : Table {
+    public static create (name: string) : TableEntity {
         return new this(name);
     }
 
     public static createTable (
         name: string,
         data: HyperComponentContent,
-    ) : Table {
+    ) : TableEntity {
         return this.create(name).add(data);
     }
 
