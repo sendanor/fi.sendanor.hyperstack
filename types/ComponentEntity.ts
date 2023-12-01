@@ -4,10 +4,11 @@ import { map } from "../../../hg/core/functions/map";
 import { ReadonlyJsonObject } from "../../../hg/core/Json";
 import { isArray } from "../../../hg/core/types/Array";
 import { createHyperComponentDTO, HyperComponentContent, HyperComponentDTO } from "../dto/HyperComponentDTO";
+import { Component } from "./Component";
 
 export type ComponentEntityContent = string | ComponentEntity | HyperComponentDTO | readonly (string|ComponentEntity|HyperComponentDTO)[];
 
-export class ComponentEntity {
+export class ComponentEntity implements Component {
 
     protected _name : string;
     protected _extend : string | undefined;
@@ -22,6 +23,7 @@ export class ComponentEntity {
         this._content = undefined;
         this._meta = undefined;
     }
+
 
     public getName () : string {
         return this._name;
@@ -63,6 +65,10 @@ export class ComponentEntity {
         return this;
     }
 
+    public getExtend () : string | undefined {
+        return this._extend;
+    }
+
     public add (value : ComponentEntityContent) : this {
 
         if (isComponentEntity(value)) {
@@ -91,8 +97,9 @@ export class ComponentEntity {
         return this.add(value);
     }
 
+
     public static create (name : string) : ComponentEntity {
-        return new ComponentEntity(name);
+        return new this(name);
     }
 
 }
@@ -100,4 +107,3 @@ export class ComponentEntity {
 export function isComponentEntity (value: unknown): value is ComponentEntity {
     return value instanceof ComponentEntity;
 }
-

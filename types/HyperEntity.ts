@@ -21,6 +21,10 @@ export class HyperEntity {
     protected _publicUrl ?: string;
     protected _language ?: string;
 
+    public static create (name : string) : HyperEntity {
+        return new this(name);
+    }
+
     protected constructor (
         name : string,
     ) {
@@ -60,10 +64,6 @@ export class HyperEntity {
     public extend (name : string) : this {
         this._extend = name;
         return this;
-    }
-
-    public static create (name : string) : HyperEntity {
-        return new HyperEntity(name);
     }
 
     public addRoute (
