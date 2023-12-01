@@ -91,7 +91,7 @@ export class HyperComponentCollection {
                     return list;
                 }
 
-                const dto: HyperComponentDTO = factory.createComponentDTO( extend );
+                const dto: HyperComponentDTO | undefined = factory.createComponentDTO( extend );
                 if ( dto === undefined ) {
                     LOG.warn( `Warning! Could not create DTO even though the component was registered. This should not happen.` );
                     return list;

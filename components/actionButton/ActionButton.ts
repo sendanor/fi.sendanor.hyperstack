@@ -28,7 +28,7 @@ export class ActionButton extends ComponentEntity {
                 createHyperAction(
                     '',
                     dto,
-                    undefined,
+                    'link',
                     undefined,
                     undefined,
                     undefined,
