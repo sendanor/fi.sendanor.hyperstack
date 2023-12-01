@@ -15,7 +15,7 @@ export class ImageEntity extends ComponentEntity {
         this.extend(IMAGE_COMPONENT_NAME);
     }
 
-    public getSource () : string {
+    public getSource () : string | undefined {
         return this.getMetaString(IMAGE_SOURCE_META_KEY);
     }
 
