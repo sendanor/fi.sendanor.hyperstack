@@ -371,28 +371,28 @@ export class StyleEntity
         return this._margin;
     }
 
-    public getTopMargin () : SizeDTO {
+    public getTopMargin () : SizeDTO | undefined {
         if (isArray(this._margin)) {
             return this._margin[0];
         }
         return this._margin;
     }
 
-    public getBottomMargin () : SizeDTO {
+    public getBottomMargin () : SizeDTO | undefined {
         if (isArray(this._margin)) {
             return this._margin[2];
         }
         return this._margin;
     }
 
-    public getRightMargin () : SizeDTO {
+    public getRightMargin () : SizeDTO | undefined {
         if (isArray(this._margin)) {
             return this._margin[1];
         }
         return this._margin;
     }
 
-    public getLeftMargin () : SizeDTO {
+    public getLeftMargin () : SizeDTO | undefined {
         if (isArray(this._margin)) {
             return this._margin[3];
         }
@@ -512,28 +512,28 @@ export class StyleEntity
         return this._padding;
     }
 
-    public getTopPadding () : SizeDTO {
+    public getTopPadding () : SizeDTO | undefined {
         if (isArray(this._padding)) {
             return this._padding[0];
         }
         return this._padding;
     }
 
-    public getBottomPadding () : SizeDTO {
+    public getBottomPadding () : SizeDTO | undefined {
         if (isArray(this._padding)) {
             return this._padding[2];
         }
         return this._padding;
     }
 
-    public getRightPadding () : SizeDTO {
+    public getRightPadding () : SizeDTO | undefined {
         if (isArray(this._padding)) {
             return this._padding[1];
         }
         return this._padding;
     }
 
-    public getLeftPadding () : SizeDTO {
+    public getLeftPadding () : SizeDTO | undefined {
         if (isArray(this._padding)) {
             return this._padding[3];
         }
@@ -656,28 +656,28 @@ export class StyleEntity
         return this._border;
     }
 
-    public getTopBorder () : BorderDTO {
+    public getTopBorder () : BorderDTO | undefined {
         if (isArray(this._border)) {
             return this._border[0];
         }
         return this._border;
     }
 
-    public getBottomBorder () : BorderDTO {
+    public getBottomBorder () : BorderDTO | undefined {
         if (isArray(this._border)) {
             return this._border[2];
         }
         return this._border;
     }
 
-    public getRightBorder () : BorderDTO {
+    public getRightBorder () : BorderDTO | undefined {
         if (isArray(this._border)) {
             return this._border[1];
         }
         return this._border;
     }
 
-    public getLeftBorder () : BorderDTO {
+    public getLeftBorder () : BorderDTO | undefined {
         if (isArray(this._border)) {
             return this._border[3];
         }

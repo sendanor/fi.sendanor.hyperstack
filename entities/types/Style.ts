@@ -64,10 +64,10 @@ export interface Style
     getCssStyles () : ReadonlyJsonObject;
 
     getMargin () : SizeDTO | [SizeDTO, SizeDTO] | [SizeDTO, SizeDTO, SizeDTO, SizeDTO] | undefined;
-    getTopMargin () : SizeDTO;
-    getBottomMargin () : SizeDTO;
-    getRightMargin () : SizeDTO;
-    getLeftMargin () : SizeDTO;
+    getTopMargin () : SizeDTO | undefined;
+    getBottomMargin () : SizeDTO | undefined;
+    getRightMargin () : SizeDTO | undefined;
+    getLeftMargin () : SizeDTO | undefined;
 
     setMargin (value: SizeEntity | SizeDTO | number | undefined) : this;
     setTopMargin (value: SizeEntity | SizeDTO | number | undefined) : this;
@@ -79,10 +79,10 @@ export interface Style
     getPadding () : SizeDTO | [SizeDTO, SizeDTO] | [SizeDTO, SizeDTO, SizeDTO, SizeDTO] | undefined;
     setPadding (value: SizeEntity | SizeDTO | number | undefined) : this;
 
-    getTopPadding () : SizeDTO;
-    getBottomPadding () : SizeDTO;
-    getRightPadding () : SizeDTO;
-    getLeftPadding () : SizeDTO;
+    getTopPadding () : SizeDTO | undefined;
+    getBottomPadding () : SizeDTO | undefined;
+    getRightPadding () : SizeDTO | undefined;
+    getLeftPadding () : SizeDTO | undefined;
 
     setTopPadding (value: SizeEntity | SizeDTO | number | undefined) : this;
     setBottomPadding (value: SizeEntity | SizeDTO | number | undefined) : this;
@@ -93,10 +93,10 @@ export interface Style
     getBorder () : BorderDTO | [BorderDTO, BorderDTO] | [BorderDTO, BorderDTO, BorderDTO, BorderDTO] | undefined;
     setBorder (value : BorderEntity | BorderDTO | undefined) : this;
 
-    getTopBorder () : BorderDTO;
-    getBottomBorder () : BorderDTO;
-    getRightBorder () : BorderDTO;
-    getLeftBorder () : BorderDTO;
+    getTopBorder () : BorderDTO | undefined;
+    getBottomBorder () : BorderDTO | undefined;
+    getRightBorder () : BorderDTO | undefined;
+    getLeftBorder () : BorderDTO | undefined;
 
     setTopBorder (value: Border | BorderDTO | number | undefined) : this;
     setBottomBorder (value: Border | BorderDTO | number | undefined) : this;
