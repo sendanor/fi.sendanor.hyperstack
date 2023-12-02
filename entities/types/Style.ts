@@ -140,7 +140,7 @@ export interface Style
     getHeight () : SizeEntity | undefined;
     getHeightDTO () : SizeDTO | undefined;
     setHeight (value: Size | SizeEntity | number | undefined) : this;
-    
+
 }
 
 export function isStyle (value : unknown) : value is Style {

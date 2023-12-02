@@ -13,7 +13,7 @@ export class SizeEntity
 {
 
     /**
-     * Creates a color entity.
+     * Creates a size entity.
      *
      * @param value
      * @param unit Defaults to pixels.
@@ -28,12 +28,26 @@ export class SizeEntity
         );
     }
 
+    /**
+     * Creates a size entity.
+     *
+     * @param value Value in percents.
+     */
+    public static createPercent (
+        value  : number,
+    ) : SizeEntity {
+        return this.create(
+            value,
+            UnitType.PERCENT,
+        );
+    }
+
     public static createZero () : SizeEntity {
         return SizeEntity.create(0);
     }
 
     /**
-     * Creates a color entity from a DTO.
+     * Creates a size entity from a DTO.
      *
      * @param dto
      */
