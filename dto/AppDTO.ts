@@ -80,20 +80,20 @@ export function explainAppDTO ( value: any) : string {
             explainRegularObject(value),
             explainNoOtherKeysInDevelopment(value, [
                 'name',
-                'components',
-                'views',
-                'routes',
                 'extend',
+                'routes',
                 'publicUrl',
                 'language',
+                'components',
+                'views',
             ])
             , explainProperty("name", explainString(value?.name))
-            , explainProperty("components", explainArrayOf<ComponentDTO>("ComponentDTO", explainComponentDTO, value?.components, isComponentDTO))
-            , explainProperty("views", explainArrayOf<ViewDTO>("ViewDTO", explainViewDTO, value?.views, isViewDTO))
-            , explainProperty("routes", explainArrayOf<RouteDTO>("RouteDTO", explainRouteDTO, value?.routes, isRouteDTO))
             , explainProperty("extend", explainStringOrUndefined(value?.extend))
+            , explainProperty("routes", explainArrayOf<RouteDTO>("RouteDTO", explainRouteDTO, value?.routes, isRouteDTO))
             , explainProperty("publicUrl", explainStringOrUndefined(value?.publicUrl))
             , explainProperty("language", explainStringOrUndefined(value?.language))
+            , explainProperty("components", explainArrayOf<ComponentDTO>("ComponentDTO", explainComponentDTO, value?.components, isComponentDTO))
+            , explainProperty("views", explainArrayOf<ViewDTO>("ViewDTO", explainViewDTO, value?.views, isViewDTO))
         ]
     );
 }

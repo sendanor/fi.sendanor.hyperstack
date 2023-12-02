@@ -5,7 +5,11 @@ import { explainNoOtherKeysInDevelopment, hasNoOtherKeysInDevelopment } from "..
 import { explainRegularObject, isRegularObject } from "../../../hg/core/types/RegularObject";
 import { isUndefined } from "../../../hg/core/types/undefined";
 import { ColorDTO, explainColorDTOOrUndefined, isColorDTOOrUndefined } from "./ColorDTO";
-import { SizeDTO } from "./SizeDTO";
+import {
+    explainSizeDTOOrUndefined,
+    isSizeDTOOrUndefined,
+    SizeDTO,
+} from "./SizeDTO";
 
 export interface StyleDTO {
     readonly textColor       ?: ColorDTO;
@@ -32,9 +36,13 @@ export function isStyleDTO ( value: unknown) : value is StyleDTO {
     return (
         isRegularObject(value)
         && hasNoOtherKeysInDevelopment(value, [
+            'width',
+            'height',
             'textColor',
             'backgroundColor',
         ])
+        && isSizeDTOOrUndefined(value?.width)
+        && isSizeDTOOrUndefined(value?.height)
         && isColorDTOOrUndefined(value?.textColor)
         && isColorDTOOrUndefined(value?.backgroundColor)
     );
@@ -45,9 +53,13 @@ export function explainStyleDTO ( value: any) : string {
         [
             explainRegularObject(value),
             explainNoOtherKeysInDevelopment(value, [
+                'width',
+                'height',
                 'textColor',
                 'backgroundColor',
             ])
+            , explainProperty("width", explainSizeDTOOrUndefined(value?.width))
+            , explainProperty("height", explainSizeDTOOrUndefined(value?.height))
             , explainProperty("textColor", explainColorDTOOrUndefined(value?.textColor))
             , explainProperty("backgroundColor", explainColorDTOOrUndefined(value?.backgroundColor))
         ]
