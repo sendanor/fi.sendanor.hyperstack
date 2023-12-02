@@ -306,7 +306,7 @@ export class ComponentEntity
      * @inheritDoc
      */
     public getStyle () : Style {
-        return StyleEntity.create(this._style);
+        return StyleEntity.createFromDTO(this._style);
     }
 
     /**

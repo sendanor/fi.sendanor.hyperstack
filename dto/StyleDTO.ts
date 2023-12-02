@@ -4,33 +4,28 @@ import { ReadonlyJsonObject } from "../../../hg/core/Json";
 import { explain, explainNot, explainOk, explainOr, explainProperty } from "../../../hg/core/types/explain";
 import { explainNoOtherKeysInDevelopment, hasNoOtherKeysInDevelopment } from "../../../hg/core/types/OtherKeys";
 import { explainRegularObject, isRegularObject } from "../../../hg/core/types/RegularObject";
-import {
-    explainStringOrUndefined,
-    isStringOrUndefined,
-} from "../../../hg/core/types/String";
 import { isUndefined } from "../../../hg/core/types/undefined";
+import { ColorDTO, explainColorDTOOrUndefined, isColorDTOOrUndefined } from "./ColorDTO";
+import { SizeDTO } from "./SizeDTO";
 
 export interface StyleDTO {
-    readonly textColor       ?: string;
-    readonly backgroundColor ?: string;
-}
-
-export function getCssStyles (
-    style: StyleDTO,
-) : ReadonlyJsonObject {
-    return {
-        ...(style?.textColor ? { color: style?.textColor } : {}),
-        ...(style?.backgroundColor ? { backgroundColor: style?.backgroundColor } : {}),
-    }
+    readonly textColor       ?: ColorDTO;
+    readonly backgroundColor ?: ColorDTO;
+    readonly width           ?: SizeDTO;
+    readonly height          ?: SizeDTO;
 }
 
 export function createStyleDTO (
-    textColor       : string | undefined,
-    backgroundColor : string | undefined,
+    textColor       : ColorDTO | undefined,
+    backgroundColor : ColorDTO | undefined,
+    width           : SizeDTO | undefined,
+    height          : SizeDTO | undefined,
 ) : StyleDTO {
     return {
         textColor,
         backgroundColor,
+        width,
+        height,
     };
 }
 
@@ -41,8 +36,8 @@ export function isStyleDTO ( value: unknown) : value is StyleDTO {
             'textColor',
             'backgroundColor',
         ])
-        && isStringOrUndefined(value?.textColor)
-        && isStringOrUndefined(value?.backgroundColor)
+        && isColorDTOOrUndefined(value?.textColor)
+        && isColorDTOOrUndefined(value?.backgroundColor)
     );
 }
 
@@ -54,8 +49,8 @@ export function explainStyleDTO ( value: any) : string {
                 'textColor',
                 'backgroundColor',
             ])
-            , explainProperty("textColor", explainStringOrUndefined(value?.textColor))
-            , explainProperty("backgroundColor", explainStringOrUndefined(value?.backgroundColor))
+            , explainProperty("textColor", explainColorDTOOrUndefined(value?.textColor))
+            , explainProperty("backgroundColor", explainColorDTOOrUndefined(value?.backgroundColor))
         ]
     );
 }

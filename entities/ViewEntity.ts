@@ -206,4 +206,3 @@ export class ViewEntity
 export function isViewEntity (value: unknown): value is ViewEntity {
     return value instanceof ViewEntity;
 }
-

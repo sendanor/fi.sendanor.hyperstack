@@ -2,6 +2,7 @@
 
 import { ReadonlyJsonObject } from "../../../../hg/core/Json";
 import { StyleDTO } from "../../dto/StyleDTO";
+import { ColorEntity } from "../ColorEntity";
 import { Extendable } from "./Extendable";
 import { JsonSerializable } from "./JsonSerializable";
 
@@ -31,25 +32,30 @@ export interface Style
     /**
      * Get text color.
      */
-    getTextColor () : string | undefined;
+    getTextColor () : ColorEntity | undefined;
 
     /**
      * Set text color.
      *
      * @param value
      */
-    setTextColor (value: string | undefined) : this;
+    setTextColor (value: ColorEntity | undefined) : this;
 
     /**
      * Get background color
      */
-    getBackgroundColor () : string | undefined;
+    getBackgroundColor () : ColorEntity | undefined;
 
     /**
      * Set background color.
      *
      * @param value
      */
-    setBackgroundColor (value: string | undefined) : this;
+    setBackgroundColor (value: ColorEntity | undefined) : this;
+
+    /**
+     * Returns CSS styles.
+     */
+    getCssStyles () : ReadonlyJsonObject;
 
 }

@@ -1,5 +1,7 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
+import { createColorDTO } from "../../../dto/ColorDTO";
+import { createSizeDTO } from "../../../dto/SizeDTO";
 import { createStyleDTO } from "../../../dto/StyleDTO";
 import { createViewDTO, ViewDTO } from "../../../dto/ViewDTO";
 import { DARK_BACKGROUND_COLOR, DARK_TEXT_COLOR } from "../constants/colors";
@@ -17,8 +19,10 @@ export function createDefaultView () : DefaultView {
         undefined,
         undefined,
         createStyleDTO(
-            DARK_TEXT_COLOR,
-            DARK_BACKGROUND_COLOR,
+            createColorDTO(DARK_TEXT_COLOR),
+            createColorDTO(DARK_BACKGROUND_COLOR),
+            createSizeDTO(0),
+            createSizeDTO(0),
         ),
         undefined,
     );
