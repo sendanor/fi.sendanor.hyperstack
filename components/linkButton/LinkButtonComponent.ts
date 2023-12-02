@@ -2,6 +2,7 @@
 
 import { createComponentDTO, ComponentDTO } from "../../dto/ComponentDTO";
 import { HyperComponent } from "../../dto/types/HyperComponent";
+import { StyleEntity } from "../../entities/StyleEntity";
 import { ComponentFactory } from "../../services/ComponentFactory";
 
 export const LINK_BUTTON_COMPONENT_NAME: string = 'LinkButtonComponent';
@@ -15,7 +16,8 @@ export function createLinkButtonComponent (
         HyperComponent.LinkButton,
         [],
         {},
-        undefined,
+        StyleEntity.create()
+                   .getDTO(),
     );
 }
 

@@ -5,29 +5,23 @@ import { ReadonlyJsonObject } from "../../../hg/core/Json";
 import { isArray } from "../../../hg/core/types/Array";
 import { isNumber } from "../../../hg/core/types/Number";
 import { isString } from "../../../hg/core/types/String";
-import {
-    BorderDTO,
-    createBorderDTO,
-} from "../dto/BorderDTO";
-import {
-    ColorDTO,
-    createColorDTO,
-} from "../dto/ColorDTO";
-import {
-    createSizeDTO,
-    isSizeDTO,
-    SizeDTO,
-} from "../dto/SizeDTO";
-import { createStyleDTO } from "../dto/StyleDTO";
-import { StyleDTO } from "../dto/StyleDTO";
-import {
-    BorderEntity,
-    isBorderEntity,
-} from "./BorderEntity";
+import { BorderDTO, createBorderDTO } from "../dto/BorderDTO";
+import { ColorDTO, createColorDTO } from "../dto/ColorDTO";
+import { createSizeDTO, isSizeDTO, SizeDTO } from "../dto/SizeDTO";
+import { createStyleDTO, StyleDTO } from "../dto/StyleDTO";
+import { BorderEntity, isBorderEntity } from "./BorderEntity";
 import { ColorEntity, isColorEntity } from "./ColorEntity";
 import { isSizeEntity, SizeEntity } from "./SizeEntity";
+import { Border, isBorder } from "./types/Border";
 import { Style } from "./types/Style";
 import { UnitType } from "./types/UnitType";
+
+const TOP_AND_BOTTOM_MARGIN_INDEX = 0;
+const LEFT_AND_RIGHT_MARGIN_INDEX = 1;
+const TOP_MARGIN_INDEX = 0;
+const RIGHT_MARGIN_INDEX = 1;
+const BOTTOM_MARGIN_INDEX = 2;
+const LEFT_MARGIN_INDEX = 3;
 
 /**
  * Style entity.
@@ -126,6 +120,7 @@ export class StyleEntity
      * @param height
      * @param margin
      * @param padding
+     * @param border
      * @protected
      */
     protected constructor (
@@ -146,14 +141,18 @@ export class StyleEntity
         this._border = border;
     }
 
-    public static prepareColorDTO (value : ColorEntity | ColorDTO | string | undefined) : ColorDTO | undefined {
+    public static prepareColorDTO (
+        value : ColorEntity | ColorDTO | string | undefined
+    ) : ColorDTO | undefined {
         if (value === undefined) return undefined;
         if (isString(value)) return createColorDTO(value);
         if (isColorEntity(value)) return value.getDTO();
         return value;
     }
 
-    public static prepareSizeDTO (value : SizeEntity | SizeDTO | number | undefined) : SizeDTO | undefined {
+    public static prepareSizeDTO (
+        value : SizeEntity | SizeDTO | number | undefined
+    ) : SizeDTO | undefined {
         if (value === undefined) return undefined;
         if (isNumber(value)) return createSizeDTO(value, UnitType.PX);
         if (isSizeEntity(value)) return value.getDTO();
@@ -161,7 +160,7 @@ export class StyleEntity
     }
 
     public static prepareBorderDTO (
-        value : BorderEntity | BorderDTO | number | undefined
+        value : Border | BorderDTO | number | undefined
     ) : BorderDTO | undefined {
         if (value === undefined) return undefined;
         if (isNumber(value)) {
@@ -172,6 +171,7 @@ export class StyleEntity
             );
         }
         if (isBorderEntity(value)) return value.getDTO();
+        if (isBorder(value)) return value.getDTO();
         return value;
     }
 
@@ -199,9 +199,9 @@ export class StyleEntity
         if (isArray(value)) {
 
             if (value.length === 2) {
-                const top_and_bottom : SizeDTO | undefined = StyleEntity.prepareSizeDTO(value[0]);
+                const top_and_bottom : SizeDTO | undefined = StyleEntity.prepareSizeDTO(value[TOP_AND_BOTTOM_MARGIN_INDEX]);
                 if (!top_and_bottom) throw new TypeError(`prepareSizeListDTO: Invalid [undefined, *] array provided`);
-                const right_and_left: SizeDTO | undefined = StyleEntity.prepareSizeDTO(value[1]);
+                const right_and_left: SizeDTO | undefined = StyleEntity.prepareSizeDTO(value[LEFT_AND_RIGHT_MARGIN_INDEX]);
                 if (!right_and_left) throw new TypeError(`prepareSizeListDTO: Invalid [SizeDTO, undefined] array provided`);
                 return [
                     top_and_bottom, // top
@@ -212,13 +212,13 @@ export class StyleEntity
             }
 
             if (value.length === 4) {
-                const top : SizeDTO | undefined = StyleEntity.prepareSizeDTO( value[0] );
+                const top : SizeDTO | undefined = StyleEntity.prepareSizeDTO( value[TOP_MARGIN_INDEX] );
                 if (!top) throw new TypeError(`prepareSizeListDTO: Invalid [undefined, *, *, *] array provided`);
-                const right : SizeDTO | undefined = StyleEntity.prepareSizeDTO( value[1] );
+                const right : SizeDTO | undefined = StyleEntity.prepareSizeDTO( value[RIGHT_MARGIN_INDEX] );
                 if (!right) throw new TypeError(`prepareSizeListDTO: Invalid [SizeDTO, undefined, *, *] array provided`);
-                const bottom : SizeDTO | undefined = StyleEntity.prepareSizeDTO( value[2] );
+                const bottom : SizeDTO | undefined = StyleEntity.prepareSizeDTO( value[BOTTOM_MARGIN_INDEX] );
                 if (!bottom) throw new TypeError(`prepareSizeListDTO: Invalid [SizeDTO, SizeDTO, undefined, *] array provided`);
-                const left : SizeDTO | undefined = StyleEntity.prepareSizeDTO( value[3] );
+                const left : SizeDTO | undefined = StyleEntity.prepareSizeDTO( value[LEFT_MARGIN_INDEX] );
                 if (!left) throw new TypeError(`prepareSizeListDTO: Invalid [SizeDTO, SizeDTO, SizeDTO, undefined] array provided`);
                 return [
                     top,
@@ -238,16 +238,16 @@ export class StyleEntity
 
     public static prepareBorderListDTO (
         value : (
-            BorderEntity
+            Border
             | [
-                BorderEntity | BorderDTO | number | undefined,
-                BorderEntity | BorderDTO | number | undefined,
+                Border | BorderDTO | number | undefined,
+                Border | BorderDTO | number | undefined,
             ]
             | [
-                BorderEntity | BorderDTO | number | undefined,
-                BorderEntity | BorderDTO | number | undefined,
-                BorderEntity | BorderDTO | number | undefined,
-                BorderEntity | BorderDTO | number | undefined,
+                Border | BorderDTO | number | undefined,
+                Border | BorderDTO | number | undefined,
+                Border | BorderDTO | number | undefined,
+                Border | BorderDTO | number | undefined,
             ]
             | BorderDTO
             | number
@@ -263,12 +263,13 @@ export class StyleEntity
             );
         }
         if (isBorderEntity(value)) return value.getDTO();
+        if (isBorder(value)) return value.getDTO();
         if (isArray(value)) {
 
             if (value.length === 2) {
-                const top_and_bottom : BorderDTO | undefined = StyleEntity.prepareBorderDTO(value[0]);
+                const top_and_bottom : BorderDTO | undefined = StyleEntity.prepareBorderDTO(value[TOP_AND_BOTTOM_MARGIN_INDEX]);
                 if (!top_and_bottom) throw new TypeError(`prepareBorderListDTO: Invalid [undefined, *] array provided`);
-                const right_and_left: BorderDTO | undefined = StyleEntity.prepareBorderDTO(value[1]);
+                const right_and_left: BorderDTO | undefined = StyleEntity.prepareBorderDTO(value[LEFT_AND_RIGHT_MARGIN_INDEX]);
                 if (!right_and_left) throw new TypeError(`prepareBorderListDTO: Invalid [BorderDTO, undefined] array provided`);
                 return [
                     top_and_bottom, // top
@@ -361,6 +362,433 @@ export class StyleEntity
         this._backgroundColor = StyleEntity.prepareColorDTO(value);
         return this;
     }
+
+
+    /**
+     * @inheritDoc
+     */
+    public getMargin () : SizeDTO | [SizeDTO, SizeDTO] | [SizeDTO, SizeDTO, SizeDTO, SizeDTO] | undefined {
+        return this._margin;
+    }
+
+    public getTopMargin () : SizeDTO {
+        if (isArray(this._margin)) {
+            return this._margin[0];
+        }
+        return this._margin;
+    }
+
+    public getBottomMargin () : SizeDTO {
+        if (isArray(this._margin)) {
+            return this._margin[2];
+        }
+        return this._margin;
+    }
+
+    public getRightMargin () : SizeDTO {
+        if (isArray(this._margin)) {
+            return this._margin[1];
+        }
+        return this._margin;
+    }
+
+    public getLeftMargin () : SizeDTO {
+        if (isArray(this._margin)) {
+            return this._margin[3];
+        }
+        return this._margin;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setMargin (value: SizeEntity | SizeDTO | number | undefined) : this {
+        this._margin = StyleEntity.prepareSizeDTO(value);
+        return this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setTopMargin (value: SizeEntity | SizeDTO | number | undefined) : this {
+        if (this._margin === undefined) {
+            this._margin = [
+                StyleEntity.prepareSizeDTO(value), // top
+                SizeEntity.create(0).getDTO(), // right
+                SizeEntity.create(0).getDTO(), // bottom
+                SizeEntity.create(0).getDTO(), // left
+            ];
+        } else if (isArray(this._margin)) {
+            this._margin[TOP_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value);
+        } else {
+            this._margin = [
+                StyleEntity.prepareSizeDTO(value), // top
+                this._margin, // right
+                this._margin, // bottom
+                this._margin, // left
+            ];
+        }
+        return this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setBottomMargin (value: SizeEntity | SizeDTO | number | undefined) : this {
+        if (this._margin === undefined) {
+            this._margin = [
+                SizeEntity.create(0).getDTO(), // top
+                SizeEntity.create(0).getDTO(), // right
+                StyleEntity.prepareSizeDTO(value), // bottom
+                SizeEntity.create(0).getDTO(), // left
+            ];
+        } else if (isArray(this._margin)) {
+            this._margin[BOTTOM_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value);
+        } else {
+            this._margin = [
+                this._margin, // top
+                this._margin, // right
+                StyleEntity.prepareSizeDTO(value), // bottom
+                this._margin, // left
+            ];
+        }
+        return this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setRightMargin (value: SizeEntity | SizeDTO | number | undefined) : this {
+        if (this._margin === undefined) {
+            this._margin = [
+                SizeEntity.create(0).getDTO(), // top
+                StyleEntity.prepareSizeDTO(value), // right
+                SizeEntity.create(0).getDTO(), // bottom
+                SizeEntity.create(0).getDTO(), // left
+            ];
+        } else if (isArray(this._margin)) {
+            this._margin[RIGHT_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value);
+        } else {
+            this._margin = [
+                this._margin, // top
+                StyleEntity.prepareSizeDTO(value), // right
+                this._margin, // bottom
+                this._margin, // left
+            ];
+        }
+        return this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setLeftMargin (value: SizeEntity | SizeDTO | number | undefined) : this {
+        if (this._margin === undefined) {
+            this._margin = [
+                SizeEntity.create(0).getDTO(), // top
+                SizeEntity.create(0).getDTO(), // right
+                SizeEntity.create(0).getDTO(), // bottom
+                StyleEntity.prepareSizeDTO(value), // left
+            ];
+        } else if (isArray(this._margin)) {
+            this._margin[LEFT_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value);
+        } else {
+            this._margin = [
+                this._margin, // top
+                this._margin, // right
+                this._margin, // bottom
+                StyleEntity.prepareSizeDTO(value), // left
+            ];
+        }
+        return this;
+    }
+
+
+
+    /**
+     * @inheritDoc
+     */
+    public getPadding () : SizeDTO | [SizeDTO, SizeDTO] | [SizeDTO, SizeDTO, SizeDTO, SizeDTO] | undefined {
+        return this._padding;
+    }
+
+    public getTopPadding () : SizeDTO {
+        if (isArray(this._padding)) {
+            return this._padding[0];
+        }
+        return this._padding;
+    }
+
+    public getBottomPadding () : SizeDTO {
+        if (isArray(this._padding)) {
+            return this._padding[2];
+        }
+        return this._padding;
+    }
+
+    public getRightPadding () : SizeDTO {
+        if (isArray(this._padding)) {
+            return this._padding[1];
+        }
+        return this._padding;
+    }
+
+    public getLeftPadding () : SizeDTO {
+        if (isArray(this._padding)) {
+            return this._padding[3];
+        }
+        return this._padding;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setPadding (value: SizeEntity | SizeDTO | number | undefined) : this {
+        this._padding = StyleEntity.prepareSizeDTO(value);
+        return this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setTopPadding (value: SizeEntity | SizeDTO | number | undefined) : this {
+        if (this._padding === undefined) {
+            this._padding = [
+                StyleEntity.prepareSizeDTO(value), // top
+                SizeEntity.create(0).getDTO(), // right
+                SizeEntity.create(0).getDTO(), // bottom
+                SizeEntity.create(0).getDTO(), // left
+            ];
+        } else if (isArray(this._padding)) {
+            this._padding[TOP_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value);
+        } else {
+            this._padding = [
+                StyleEntity.prepareSizeDTO(value), // top
+                this._padding, // right
+                this._padding, // bottom
+                this._padding, // left
+            ];
+        }
+        return this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setBottomPadding (value: SizeEntity | SizeDTO | number | undefined) : this {
+        if (this._padding === undefined) {
+            this._padding = [
+                SizeEntity.create(0).getDTO(), // top
+                SizeEntity.create(0).getDTO(), // right
+                StyleEntity.prepareSizeDTO(value), // bottom
+                SizeEntity.create(0).getDTO(), // left
+            ];
+        } else if (isArray(this._padding)) {
+            this._padding[BOTTOM_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value);
+        } else {
+            this._padding = [
+                this._padding, // top
+                this._padding, // right
+                StyleEntity.prepareSizeDTO(value), // bottom
+                this._padding, // left
+            ];
+        }
+        return this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setRightPadding (value: SizeEntity | SizeDTO | number | undefined) : this {
+        if (this._padding === undefined) {
+            this._padding = [
+                SizeEntity.create(0).getDTO(), // top
+                StyleEntity.prepareSizeDTO(value), // right
+                SizeEntity.create(0).getDTO(), // bottom
+                SizeEntity.create(0).getDTO(), // left
+            ];
+        } else if (isArray(this._padding)) {
+            this._padding[RIGHT_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value);
+        } else {
+            this._padding = [
+                this._padding, // top
+                StyleEntity.prepareSizeDTO(value), // right
+                this._padding, // bottom
+                this._padding, // left
+            ];
+        }
+        return this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setLeftPadding (value: SizeEntity | SizeDTO | number | undefined) : this {
+        if (this._padding === undefined) {
+            this._padding = [
+                SizeEntity.create(0).getDTO(), // top
+                SizeEntity.create(0).getDTO(), // right
+                SizeEntity.create(0).getDTO(), // bottom
+                StyleEntity.prepareSizeDTO(value), // left
+            ];
+        } else if (isArray(this._padding)) {
+            this._padding[LEFT_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value);
+        } else {
+            this._padding = [
+                this._padding, // top
+                this._padding, // right
+                this._padding, // bottom
+                StyleEntity.prepareSizeDTO(value), // left
+            ];
+        }
+        return this;
+    }
+
+
+
+
+
+
+    /**
+     * @inheritDoc
+     */
+    public getBorder () : BorderDTO | [BorderDTO, BorderDTO] | [BorderDTO, BorderDTO, BorderDTO, BorderDTO] | undefined {
+        return this._border;
+    }
+
+    public getTopBorder () : BorderDTO {
+        if (isArray(this._border)) {
+            return this._border[0];
+        }
+        return this._border;
+    }
+
+    public getBottomBorder () : BorderDTO {
+        if (isArray(this._border)) {
+            return this._border[2];
+        }
+        return this._border;
+    }
+
+    public getRightBorder () : BorderDTO {
+        if (isArray(this._border)) {
+            return this._border[1];
+        }
+        return this._border;
+    }
+
+    public getLeftBorder () : BorderDTO {
+        if (isArray(this._border)) {
+            return this._border[3];
+        }
+        return this._border;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setBorder (value: Border | BorderDTO | number | undefined) : this {
+        this._border = StyleEntity.prepareBorderDTO(value);
+        return this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setTopBorder (value: Border | BorderDTO | number | undefined) : this {
+        if (this._border === undefined) {
+            this._border = [
+                StyleEntity.prepareBorderDTO(value), // top
+                BorderEntity.create(undefined, undefined, undefined).getDTO(), // right
+                BorderEntity.create(undefined, undefined, undefined).getDTO(), // bottom
+                BorderEntity.create(undefined, undefined, undefined).getDTO(), // left
+            ];
+        } else if (isArray(this._border)) {
+            this._border[TOP_MARGIN_INDEX] = StyleEntity.prepareBorderDTO(value);
+        } else {
+            this._border = [
+                StyleEntity.prepareBorderDTO(value), // top
+                this._border, // right
+                this._border, // bottom
+                this._border, // left
+            ];
+        }
+        return this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setBottomBorder (value: Border | BorderDTO | number | undefined) : this {
+        if (this._border === undefined) {
+            this._border = [
+                BorderEntity.create(undefined, undefined, undefined).getDTO(), // top
+                BorderEntity.create(undefined, undefined, undefined).getDTO(), // right
+                StyleEntity.prepareBorderDTO(value), // bottom
+                BorderEntity.create(undefined, undefined, undefined).getDTO(), // left
+            ];
+        } else if (isArray(this._border)) {
+            this._border[BOTTOM_MARGIN_INDEX] = StyleEntity.prepareBorderDTO(value);
+        } else {
+            this._border = [
+                this._border, // top
+                this._border, // right
+                StyleEntity.prepareBorderDTO(value), // bottom
+                this._border, // left
+            ];
+        }
+        return this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setRightBorder (value: Border | BorderDTO | number | undefined) : this {
+        if (this._border === undefined) {
+            this._border = [
+                BorderEntity.create(undefined, undefined, undefined).getDTO(), // top
+                StyleEntity.prepareBorderDTO(value), // right
+                BorderEntity.create(undefined, undefined, undefined).getDTO(), // bottom
+                BorderEntity.create(undefined, undefined, undefined).getDTO(), // left
+            ];
+        } else if (isArray(this._border)) {
+            this._border[RIGHT_MARGIN_INDEX] = StyleEntity.prepareBorderDTO(value);
+        } else {
+            this._border = [
+                this._border, // top
+                StyleEntity.prepareBorderDTO(value), // right
+                this._border, // bottom
+                this._border, // left
+            ];
+        }
+        return this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setLeftBorder (value: Border | BorderDTO | number | undefined) : this {
+        if (this._border === undefined) {
+            this._border = [
+                BorderEntity.create(undefined, undefined, undefined).getDTO(), // top
+                BorderEntity.create(undefined, undefined, undefined).getDTO(), // right
+                BorderEntity.create(undefined, undefined, undefined).getDTO(), // bottom
+                StyleEntity.prepareBorderDTO(value), // left
+            ];
+        } else if (isArray(this._border)) {
+            this._border[LEFT_MARGIN_INDEX] = StyleEntity.prepareBorderDTO(value);
+        } else {
+            this._border = [
+                this._border, // top
+                this._border, // right
+                this._border, // bottom
+                StyleEntity.prepareBorderDTO(value), // left
+            ];
+        }
+        return this;
+    }
+
+
 
     public getCssStyles () : ReadonlyJsonObject {
         return {
