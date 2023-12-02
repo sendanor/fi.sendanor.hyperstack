@@ -35,6 +35,14 @@ export class BorderEntity
         );
     }
 
+    public static createEmptyBorder () : BorderEntity {
+        return this.create(
+            undefined,
+            undefined,
+            undefined,
+        );
+    }
+
     /**
      * Creates a border entity from a DTO.
      *

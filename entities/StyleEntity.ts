@@ -697,17 +697,18 @@ export class StyleEntity
      */
     public setTopBorder (value: Border | BorderDTO | number | undefined) : this {
         if (this._border === undefined) {
+            const empty = BorderEntity.createEmptyBorder().getDTO();
             this._border = [
-                StyleEntity.prepareBorderDTO(value), // top
-                BorderEntity.create(undefined, undefined, undefined).getDTO(), // right
-                BorderEntity.create(undefined, undefined, undefined).getDTO(), // bottom
-                BorderEntity.create(undefined, undefined, undefined).getDTO(), // left
+                StyleEntity.prepareBorderDTO(value) ?? empty, // top
+                empty, // right
+                empty, // bottom
+                empty, // left
             ];
         } else if (isArray(this._border)) {
-            this._border[TOP_MARGIN_INDEX] = StyleEntity.prepareBorderDTO(value);
+            this._border[TOP_MARGIN_INDEX] = StyleEntity.prepareBorderDTO(value) ?? BorderEntity.createEmptyBorder().getDTO();
         } else {
             this._border = [
-                StyleEntity.prepareBorderDTO(value), // top
+                StyleEntity.prepareBorderDTO(value) ?? BorderEntity.createEmptyBorder().getDTO(), // top
                 this._border, // right
                 this._border, // bottom
                 this._border, // left
@@ -721,19 +722,20 @@ export class StyleEntity
      */
     public setBottomBorder (value: Border | BorderDTO | number | undefined) : this {
         if (this._border === undefined) {
+            const empty = BorderEntity.createEmptyBorder().getDTO();
             this._border = [
-                BorderEntity.create(undefined, undefined, undefined).getDTO(), // top
-                BorderEntity.create(undefined, undefined, undefined).getDTO(), // right
-                StyleEntity.prepareBorderDTO(value), // bottom
-                BorderEntity.create(undefined, undefined, undefined).getDTO(), // left
+                empty, // top
+                empty, // right
+                StyleEntity.prepareBorderDTO(value) ?? empty, // bottom
+                empty, // left
             ];
         } else if (isArray(this._border)) {
-            this._border[BOTTOM_MARGIN_INDEX] = StyleEntity.prepareBorderDTO(value);
+            this._border[BOTTOM_MARGIN_INDEX] = StyleEntity.prepareBorderDTO(value) ?? BorderEntity.createEmptyBorder().getDTO();
         } else {
             this._border = [
                 this._border, // top
                 this._border, // right
-                StyleEntity.prepareBorderDTO(value), // bottom
+                StyleEntity.prepareBorderDTO(value) ?? BorderEntity.createEmptyBorder().getDTO(), // bottom
                 this._border, // left
             ];
         }
@@ -745,18 +747,19 @@ export class StyleEntity
      */
     public setRightBorder (value: Border | BorderDTO | number | undefined) : this {
         if (this._border === undefined) {
+            const empty = BorderEntity.createEmptyBorder().getDTO();
             this._border = [
-                BorderEntity.create(undefined, undefined, undefined).getDTO(), // top
-                StyleEntity.prepareBorderDTO(value), // right
-                BorderEntity.create(undefined, undefined, undefined).getDTO(), // bottom
-                BorderEntity.create(undefined, undefined, undefined).getDTO(), // left
+                empty, // top
+                StyleEntity.prepareBorderDTO(value) ?? empty, // right
+                empty, // bottom
+                empty, // left
             ];
         } else if (isArray(this._border)) {
-            this._border[RIGHT_MARGIN_INDEX] = StyleEntity.prepareBorderDTO(value);
+            this._border[RIGHT_MARGIN_INDEX] = StyleEntity.prepareBorderDTO(value) ?? BorderEntity.createEmptyBorder().getDTO();
         } else {
             this._border = [
                 this._border, // top
-                StyleEntity.prepareBorderDTO(value), // right
+                StyleEntity.prepareBorderDTO(value) ?? BorderEntity.createEmptyBorder().getDTO(), // right
                 this._border, // bottom
                 this._border, // left
             ];
@@ -768,21 +771,24 @@ export class StyleEntity
      * @inheritDoc
      */
     public setLeftBorder (value: Border | BorderDTO | number | undefined) : this {
+        const v = StyleEntity.prepareBorderDTO(value);
         if (this._border === undefined) {
+            if (v === undefined) return undefined;
+            const empty = BorderEntity.createEmptyBorder().getDTO();
             this._border = [
-                BorderEntity.create(undefined, undefined, undefined).getDTO(), // top
-                BorderEntity.create(undefined, undefined, undefined).getDTO(), // right
-                BorderEntity.create(undefined, undefined, undefined).getDTO(), // bottom
-                StyleEntity.prepareBorderDTO(value), // left
+                empty, // top
+                empty, // right
+                empty, // bottom
+                v ?? empty, // left
             ];
         } else if (isArray(this._border)) {
-            this._border[LEFT_MARGIN_INDEX] = StyleEntity.prepareBorderDTO(value);
+            this._border[LEFT_MARGIN_INDEX] = v ?? BorderEntity.createEmptyBorder().getDTO();
         } else {
             this._border = [
                 this._border, // top
                 this._border, // right
                 this._border, // bottom
-                StyleEntity.prepareBorderDTO(value), // left
+                v ?? BorderEntity.createEmptyBorder().getDTO(), // left
             ];
         }
         return this;
