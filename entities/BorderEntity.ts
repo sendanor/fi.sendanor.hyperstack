@@ -1,13 +1,16 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import { ReadonlyJsonObject } from "../../../hg/core/Json";
+import { isNumber } from "../../../hg/core/types/Number";
+import { isString } from "../../../hg/core/types/String";
 import { BorderDTO, createBorderDTO } from "../dto/BorderDTO";
-import { ColorDTO } from "../dto/ColorDTO";
-import { SizeDTO } from "../dto/SizeDTO";
+import { ColorDTO, createColorDTO } from "../dto/ColorDTO";
+import { createSizeDTO, SizeDTO } from "../dto/SizeDTO";
 import { BorderStyle } from "../dto/types/BorderStyle";
-import { ColorEntity } from "./ColorEntity";
+import { ColorEntity, isColorEntity } from "./ColorEntity";
 import { SizeEntity } from "./SizeEntity";
 import { Border } from "./types/Border";
+import { Color, isColor } from "./types/Color";
 
 /**
  * Border entity.
@@ -24,9 +27,9 @@ export class BorderEntity
      * @param color
      */
     public static create (
-        style : BorderStyle | undefined,
-        width : SizeDTO | undefined,
-        color : ColorDTO | undefined
+        style ?: BorderStyle | undefined,
+        width ?: SizeDTO | undefined,
+        color ?: ColorDTO | undefined
     ) : BorderEntity {
         return new BorderEntity(
             style ?? BorderStyle.NONE,
@@ -112,8 +115,12 @@ export class BorderEntity
         return this._style;
     }
 
-    public setWidth (value : SizeDTO) : this {
-        this._width = value;
+    public setWidth (value : SizeDTO | number | undefined) : this {
+        if (isNumber(value)) {
+            this._width = createSizeDTO(value);
+        } else {
+            this._width = value;
+        }
         return this;
     }
 
@@ -121,8 +128,16 @@ export class BorderEntity
         return this._width;
     }
 
-    public setColor (value : ColorDTO) : this {
-        this._color = value;
+    public setColor (value : Color | ColorDTO | string) : this {
+        if (isString(value)) {
+            this._color = createColorDTO( value );
+        } else if (isColorEntity(value)) {
+            this._color = value.getDTO();
+        } else if (isColor(value)) {
+            this._color = value.getDTO();
+        } else {
+            this._color = value;
+        }
         return this;
     }
 

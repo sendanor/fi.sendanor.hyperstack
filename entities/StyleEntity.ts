@@ -7,12 +7,15 @@ import { isNumber } from "../../../hg/core/types/Number";
 import { isString } from "../../../hg/core/types/String";
 import { BorderDTO, createBorderDTO } from "../dto/BorderDTO";
 import { ColorDTO, createColorDTO } from "../dto/ColorDTO";
+import { createFontDTO, FontDTO } from "../dto/FontDTO";
 import { createSizeDTO, isSizeDTO, SizeDTO } from "../dto/SizeDTO";
 import { createStyleDTO, StyleDTO } from "../dto/StyleDTO";
 import { BorderEntity, isBorderEntity } from "./BorderEntity";
 import { ColorEntity, isColorEntity } from "./ColorEntity";
+import { FontEntity, isFontEntity } from "./FontEntity";
 import { isSizeEntity, SizeEntity } from "./SizeEntity";
 import { Border, isBorder } from "./types/Border";
+import { Font, isFont } from "./types/Font";
 import { Style } from "./types/Style";
 import { UnitType } from "./types/UnitType";
 
@@ -80,8 +83,17 @@ export class StyleEntity
      */
     protected _backgroundColor : ColorDTO | undefined;
 
-    public static create () : StyleEntity {
+    /**
+     * Font settings.
+     *
+     * @protected
+     */
+    protected _font : FontDTO | undefined;
+
+    public static create (
+    ) : StyleEntity {
         return new this(
+            undefined,
             undefined,
             undefined,
             undefined,
@@ -108,6 +120,7 @@ export class StyleEntity
             StyleEntity.prepareSizeListDTO(style?.margin),
             StyleEntity.prepareSizeListDTO(style?.padding),
             StyleEntity.prepareBorderListDTO(style?.border),
+            StyleEntity.prepareFontDTO(style?.font),
         );
     }
 
@@ -121,6 +134,7 @@ export class StyleEntity
      * @param margin
      * @param padding
      * @param border
+     * @param font
      * @protected
      */
     protected constructor (
@@ -131,6 +145,7 @@ export class StyleEntity
         margin : SizeDTO | [SizeDTO, SizeDTO, SizeDTO, SizeDTO] | undefined,
         padding : SizeDTO | [SizeDTO, SizeDTO, SizeDTO, SizeDTO] | undefined,
         border : BorderDTO | [BorderDTO, BorderDTO, BorderDTO, BorderDTO] | undefined,
+        font : FontDTO | undefined,
     ) {
         this._textColor = textColor;
         this._backgroundColor = backgroundColor;
@@ -139,6 +154,7 @@ export class StyleEntity
         this._margin = margin;
         this._padding = padding;
         this._border = border;
+        this._font = font;
     }
 
     public static prepareColorDTO (
@@ -156,6 +172,35 @@ export class StyleEntity
         if (value === undefined) return undefined;
         if (isNumber(value)) return createSizeDTO(value, UnitType.PX);
         if (isSizeEntity(value)) return value.getDTO();
+        return value;
+    }
+
+    public static prepareFontDTO (
+        value : Font | FontEntity | FontDTO | number | string | undefined
+    ) : FontDTO | undefined {
+        if (value === undefined) return undefined;
+        if (isNumber(value)) {
+            return createFontDTO(
+                undefined,
+                undefined,
+                undefined,
+                SizeEntity.create(value).getDTO(),
+                undefined,
+                undefined,
+            );
+        }
+        if (isString(value)) {
+            return createFontDTO(
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                value,
+            );
+        }
+        if (isFontEntity(value)) return value.getDTO();
+        if (isFont(value)) return value.getDTO();
         return value;
     }
 
@@ -316,6 +361,7 @@ export class StyleEntity
             this._margin,
             this._padding,
             this._border,
+            this._font,
         );
     }
 
@@ -360,6 +406,28 @@ export class StyleEntity
      */
     public setBackgroundColor (value: ColorEntity | string | undefined) : this {
         this._backgroundColor = StyleEntity.prepareColorDTO(value);
+        return this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public getFontDTO () : FontDTO | undefined {
+        return this._font ? this._font : undefined;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public getFont () : Font | undefined {
+        return this._font ? FontEntity.createFromDTO(this._font) : undefined;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setFont (value: FontEntity | Font | string | number | undefined) : this {
+        this._font = StyleEntity.prepareFontDTO(value);
         return this;
     }
 

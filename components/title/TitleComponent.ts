@@ -4,14 +4,14 @@ import { createComponentDTO, ComponentDTO } from "../../dto/ComponentDTO";
 import { HyperComponent } from "../../dto/types/HyperComponent";
 import { ComponentFactory } from "../../services/ComponentFactory";
 
-export const TITLE_TEXT_COMPONENT_NAME: string = 'TitleTextComponent';
+export const TITLE_COMPONENT_NAME: string = 'TitleComponent';
 
-export type TitleTextComponent = ComponentDTO;
+export type TitleComponent = ComponentDTO;
 
-export function createTitleTextComponent (
-) : TitleTextComponent {
+export function createTitleComponent (
+) : TitleComponent {
     return createComponentDTO(
-        TITLE_TEXT_COMPONENT_NAME,
+        TITLE_COMPONENT_NAME,
         HyperComponent.H1,
         [],
         undefined,
@@ -19,6 +19,6 @@ export function createTitleTextComponent (
     );
 }
 
-export function registerTitleTextComponent (factory: ComponentFactory) : void {
-    factory.registerComponentConstructor(TITLE_TEXT_COMPONENT_NAME, createTitleTextComponent);
+export function registerTitleComponent (factory: ComponentFactory) : void {
+    factory.registerComponentConstructor(TITLE_COMPONENT_NAME, createTitleComponent);
 }

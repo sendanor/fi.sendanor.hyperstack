@@ -27,7 +27,11 @@ export class LinkButtonEntity extends ComponentEntity {
         text: string,
         href: string,
     ) : LinkButtonEntity {
-        return this.create(name).setText(text).setHref(href);
+        return (
+            this.create(name)
+                .setText(text)
+                .setHref(href)
+        );
     }
 
 }

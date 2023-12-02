@@ -58,7 +58,7 @@ export class SizeEntity
     }
 
     /**
-     * Returns the DTO object.
+     * @inheritDoc
      */
     public getDTO () : SizeDTO {
         return createSizeDTO(

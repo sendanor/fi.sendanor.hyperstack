@@ -11,8 +11,8 @@ import { TestCallbackNonStandard } from "../../../hg/core/types/TestCallback";
 import { createComponentDTO, ComponentContent, ComponentDTO } from "../dto/ComponentDTO";
 import { StyleDTO } from "../dto/StyleDTO";
 import { Component } from "./types/Component";
-import { Style } from "./types/Style";
-import { StyleEntity } from "./StyleEntity";
+import { isStyle, Style } from "./types/Style";
+import { isStyleEntity, StyleEntity } from "./StyleEntity";
 
 /**
  * Type for internal component content.
@@ -297,8 +297,14 @@ export class ComponentEntity
     /**
      * @inheritDoc
      */
-    public setStyle (style : Style) : this {
-        this._style = style.getDTO();
+    public setStyle (style : Style | StyleEntity | StyleDTO | undefined) : this {
+        if (isStyleEntity(style)) {
+            this._style = style.getDTO();
+        } else if (isStyle(style)) {
+            this._style = style.getDTO();
+        } else {
+            this._style = style;
+        }
         return this;
     }
 

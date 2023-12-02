@@ -1,6 +1,9 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import { ReadonlyJsonObject } from "../../../../hg/core/Json";
+import { isFunction } from "../../../../hg/core/types/Function";
+import { isObject } from "../../../../hg/core/types/Object";
+import { ColorDTO } from "../../dto/ColorDTO";
 import { JsonSerializable } from "./JsonSerializable";
 
 /**
@@ -11,7 +14,12 @@ export interface Color extends JsonSerializable {
     /**
      * @inheritDoc
      */
-    valueOf() : ReadonlyJsonObject;
+    valueOf () : ReadonlyJsonObject;
+
+    /**
+     *
+     */
+    getDTO () : ColorDTO;
 
     /**
      * @inheritDoc
@@ -35,4 +43,16 @@ export interface Color extends JsonSerializable {
      */
     getCssStyles () : string;
 
+}
+
+export function isColor (value : unknown) : value is Color {
+    return (
+        isObject(value)
+        && isFunction(value?.valueOf)
+        && isFunction(value?.getDTO)
+        && isFunction(value?.toJSON)
+        && isFunction(value?.getValue)
+        && isFunction(value?.setValue)
+        && isFunction(value?.getCssStyles)
+    );
 }

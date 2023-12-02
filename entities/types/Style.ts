@@ -1,14 +1,20 @@
 // Copyright (c) 2023. Heusala Group Oy <info@heusalagroup.fi>. All rights reserved.
 
 import { ReadonlyJsonObject } from "../../../../hg/core/Json";
+import { isFunction } from "../../../../hg/core/types/Function";
+import { isObject } from "../../../../hg/core/types/Object";
 import { BorderDTO } from "../../dto/BorderDTO";
+import { FontDTO } from "../../dto/FontDTO";
 import { SizeDTO } from "../../dto/SizeDTO";
 import { StyleDTO } from "../../dto/StyleDTO";
 import { BorderEntity } from "../BorderEntity";
 import { ColorEntity } from "../ColorEntity";
+import { FontEntity } from "../FontEntity";
 import { SizeEntity } from "../SizeEntity";
 import { Border } from "./Border";
+import { Color } from "./Color";
 import { Extendable } from "./Extendable";
+import { Font } from "./Font";
 import { JsonSerializable } from "./JsonSerializable";
 
 /**
@@ -103,4 +109,55 @@ export interface Style
     setRightBorder (value: Border | BorderDTO | number | undefined) : this;
     setLeftBorder (value: Border | BorderDTO | number | undefined) : this;
 
+    getFontDTO () : FontDTO | undefined;
+    getFont () : Font | undefined;
+    setFont (value: FontEntity | Font | string | number | undefined) : this;
+
+}
+
+export function isStyle (value : unknown) : value is Style {
+    return (
+        isObject(value)
+        && isFunction(value?.getDTO)
+        && isFunction(value?.valueOf)
+        && isFunction(value?.toJSON)
+        && isFunction(value?.getTextColor)
+        && isFunction(value?.setTextColor)
+        && isFunction(value?.getBackgroundColor)
+        && isFunction(value?.setBackgroundColor)
+        && isFunction(value?.getCssStyles)
+        && isFunction(value?.getMargin)
+        && isFunction(value?.getTopMargin)
+        && isFunction(value?.getBottomMargin)
+        && isFunction(value?.getRightMargin)
+        && isFunction(value?.getLeftMargin)
+        && isFunction(value?.setMargin)
+        && isFunction(value?.setTopMargin)
+        && isFunction(value?.setBottomMargin)
+        && isFunction(value?.setRightMargin)
+        && isFunction(value?.setLeftMargin)
+        && isFunction(value?.getPadding)
+        && isFunction(value?.setPadding)
+        && isFunction(value?.getTopPadding)
+        && isFunction(value?.getBottomPadding)
+        && isFunction(value?.getRightPadding)
+        && isFunction(value?.getLeftPadding)
+        && isFunction(value?.setTopPadding)
+        && isFunction(value?.setBottomPadding)
+        && isFunction(value?.setRightPadding)
+        && isFunction(value?.setLeftPadding)
+        && isFunction(value?.getBorder)
+        && isFunction(value?.setBorder)
+        && isFunction(value?.getTopBorder)
+        && isFunction(value?.getBottomBorder)
+        && isFunction(value?.getRightBorder)
+        && isFunction(value?.getLeftBorder)
+        && isFunction(value?.setTopBorder)
+        && isFunction(value?.setBottomBorder)
+        && isFunction(value?.setRightBorder)
+        && isFunction(value?.setLeftBorder)
+        && isFunction(value?.getFont)
+        && isFunction(value?.getFontDTO)
+        && isFunction(value?.setFont)
+    );
 }

@@ -1,5 +1,5 @@
-import {TitleTextEntity} from "./TitleTextEntity";
-import {TITLE_TEXT_COMPONENT_NAME} from "./TitleTextComponent";
+import {TitleEntity} from "./TitleEntity";
+import {TITLE_COMPONENT_NAME} from "./TitleComponent";
 
 describe('TitleTextEntity', () => {
     describe('#createText', () => {
@@ -9,12 +9,12 @@ describe('TitleTextEntity', () => {
 
             const expectedTitleText: any = {
                 name: name,
-                extend: TITLE_TEXT_COMPONENT_NAME,
+                extend: TITLE_COMPONENT_NAME,
                 content: [text],
                 meta: undefined,
             };
 
-            const titleText: TitleTextEntity = TitleTextEntity.createText(name, text);
+            const titleText: TitleEntity = TitleEntity.createText(name, text);
 
             expect(titleText).toEqual(expectedTitleText);
         });

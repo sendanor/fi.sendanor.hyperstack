@@ -12,12 +12,14 @@ import { registerActionButtonComponent } from "./actionButton/ActionButtonCompon
 import { registerArticleComponent } from "./article/ArticleComponent";
 import { registerButtonComponent } from "./button/ButtonComponent";
 import { registerFormComponent } from "./form/FormComponent";
+import { registerHeadingComponent } from "./heading/HeadingComponent";
 import { registerImageComponent } from "./image/ImageComponent";
 import { registerLinkButtonComponent } from "./linkButton/LinkButtonComponent";
+import { registerSubTitleComponent } from "./subTitle/SubTItleComponent";
 import { registerTableColumnComponent } from "./table/column/TableColumnComponent";
 import { registerTableRowComponent } from "./table/row/TableRowComponent";
 import { registerTableComponent } from "./table/TableComponent";
-import { registerTitleTextComponent } from "./titleText/TitleTextComponent";
+import { registerTitleComponent } from "./title/TitleComponent";
 
 const LOG = LogService.createLogger( 'HyperComponentCollection' );
 
@@ -43,7 +45,9 @@ export class HyperComponentCollection {
         registerTableColumnComponent(factory);
         registerTableRowComponent(factory);
         registerTableComponent(factory);
-        registerTitleTextComponent(factory);
+        registerTitleComponent(factory);
+        registerSubTitleComponent(factory);
+        registerHeadingComponent(factory);
     }
 
     /**

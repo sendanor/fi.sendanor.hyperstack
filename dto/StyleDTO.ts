@@ -6,6 +6,7 @@ import { explainRegularObject, isRegularObject } from "../../../hg/core/types/Re
 import { isUndefined } from "../../../hg/core/types/undefined";
 import { BorderDTO, explainMultiBorderDTOOrUndefined, isMultiBorderDTOOrUndefined } from "./BorderDTO";
 import { ColorDTO, explainColorDTOOrUndefined, isColorDTOOrUndefined } from "./ColorDTO";
+import { explainFontDTOOrUndefined, FontDTO, isFontDTOOrUndefined } from "./FontDTO";
 import {
     explainMultiSizeDTOOrUndefined,
     explainSizeDTOOrUndefined, isMultiSizeDTOOrUndefined,
@@ -21,6 +22,7 @@ export interface StyleDTO {
     readonly margin          ?: SizeDTO | [SizeDTO, SizeDTO] | [SizeDTO, SizeDTO, SizeDTO, SizeDTO];
     readonly padding         ?: SizeDTO | [SizeDTO, SizeDTO] | [SizeDTO, SizeDTO, SizeDTO, SizeDTO];
     readonly border          ?: BorderDTO | [BorderDTO, BorderDTO] | [BorderDTO, BorderDTO, BorderDTO, BorderDTO];
+    readonly font            ?: FontDTO;
 }
 
 export function createStyleDTO (
@@ -31,6 +33,7 @@ export function createStyleDTO (
     margin          : SizeDTO | [SizeDTO, SizeDTO] | [SizeDTO, SizeDTO, SizeDTO, SizeDTO] | undefined,
     padding         : SizeDTO | [SizeDTO, SizeDTO] | [SizeDTO, SizeDTO, SizeDTO, SizeDTO] | undefined,
     border          : BorderDTO | [BorderDTO, BorderDTO] | [BorderDTO, BorderDTO, BorderDTO, BorderDTO] | undefined,
+    font            : FontDTO | undefined,
 ) : StyleDTO {
     return {
         textColor,
@@ -40,6 +43,7 @@ export function createStyleDTO (
         margin,
         padding,
         border,
+        font,
     };
 }
 
@@ -54,6 +58,7 @@ export function isStyleDTO ( value: unknown) : value is StyleDTO {
             'margin',
             'padding',
             'border',
+            'font',
         ])
         && isColorDTOOrUndefined(value?.textColor)
         && isColorDTOOrUndefined(value?.backgroundColor)
@@ -62,6 +67,7 @@ export function isStyleDTO ( value: unknown) : value is StyleDTO {
         && isMultiSizeDTOOrUndefined(value?.margin)
         && isMultiSizeDTOOrUndefined(value?.padding)
         && isMultiBorderDTOOrUndefined(value?.border)
+        && isFontDTOOrUndefined(value?.font)
     );
 }
 
@@ -77,6 +83,7 @@ export function explainStyleDTO ( value: any) : string {
                 'margin',
                 'padding',
                 'border',
+                'font',
             ])
             , explainProperty("width", explainSizeDTOOrUndefined(value?.width))
             , explainProperty("height", explainSizeDTOOrUndefined(value?.height))
@@ -85,6 +92,7 @@ export function explainStyleDTO ( value: any) : string {
             , explainProperty("margin", explainMultiSizeDTOOrUndefined(value?.margin))
             , explainProperty("padding", explainMultiSizeDTOOrUndefined(value?.padding))
             , explainProperty("border", explainMultiBorderDTOOrUndefined(value?.border))
+            , explainProperty("font", explainFontDTOOrUndefined(value?.font))
         ]
     );
 }

@@ -1,27 +1,27 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import { ComponentEntity } from "../../entities/ComponentEntity";
-import { TITLE_TEXT_COMPONENT_NAME } from "./TitleTextComponent";
+import { SUB_TITLE_COMPONENT_NAME } from "./SubTitleComponent";
 
-export class TitleTextEntity extends ComponentEntity {
+export class SubTitleEntity extends ComponentEntity {
 
     protected constructor (
         name : string,
     ) {
         super(name);
-        this.extend(TITLE_TEXT_COMPONENT_NAME);
+        this.extend(SUB_TITLE_COMPONENT_NAME);
     }
 
     public static create (
         name : string,
-    ) : TitleTextEntity {
+    ) : SubTitleEntity {
         return new this( name );
     }
 
     public static createText (
         name  : string,
         value : string,
-    ) : TitleTextEntity {
+    ) : SubTitleEntity {
         return this.create(name).addText(value);
     }
 

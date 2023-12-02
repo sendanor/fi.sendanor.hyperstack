@@ -34,10 +34,10 @@ export interface Border extends JsonSerializable {
     setStyle (value : BorderStyle) : this;
     getStyle () : BorderStyle | undefined;
 
-    setWidth (value : SizeDTO) : this;
+    setWidth (value : SizeDTO | number | undefined) : this;
     getWidth () : SizeDTO | undefined;
 
-    setColor (value : ColorDTO) : this;
+    setColor (value : ColorDTO | string) : this;
     getColor () : ColorDTO | undefined;
 
 }

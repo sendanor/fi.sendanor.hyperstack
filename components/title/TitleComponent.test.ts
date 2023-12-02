@@ -1,16 +1,16 @@
 import { HyperComponent } from "../../dto/types/HyperComponent";
-import {createTitleTextComponent, TITLE_TEXT_COMPONENT_NAME, TitleTextComponent} from "./TitleTextComponent";
+import {createTitleComponent, TITLE_COMPONENT_NAME, TitleComponent} from "./TitleComponent";
 
 describe('createTitleTextComponent', () => {
     it('should create TitleTextComponent with default values', () => {
-        const expectedTitleTextComponent: TitleTextComponent = {
-            name: TITLE_TEXT_COMPONENT_NAME,
+        const expectedTitleTextComponent: TitleComponent = {
+            name: TITLE_COMPONENT_NAME,
             extend: HyperComponent.H1,
             content: [],
             meta: undefined,
         };
 
-        const titleTextComponent: TitleTextComponent = createTitleTextComponent();
+        const titleTextComponent: TitleComponent = createTitleComponent();
 
         expect(titleTextComponent).toEqual(expectedTitleTextComponent);
     });
