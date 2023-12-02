@@ -59,6 +59,7 @@ import {
     Font,
     isFont,
 } from "./types/Font";
+import { isSize, Size } from "./types/Size";
 import { Style } from "./types/Style";
 import {
     isTextDecoration,
@@ -225,11 +226,12 @@ export class StyleEntity
     }
 
     public static prepareSizeDTO (
-        value : SizeEntity | SizeDTO | number | undefined
+        value : SizeEntity | Size | SizeDTO | number | undefined
     ) : SizeDTO | undefined {
         if (value === undefined) return undefined;
         if (isNumber(value)) return createSizeDTO(value, UnitType.PX);
         if (isSizeEntity(value)) return value.getDTO();
+        if (isSize(value)) return value.getDTO();
         return value;
     }
 
@@ -438,6 +440,51 @@ export class StyleEntity
      */
     public toJSON () : ReadonlyJsonObject {
         return this.getDTO() as unknown as ReadonlyJsonObject;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public getWidth () : SizeEntity | undefined {
+        return this._width ? SizeEntity.create(this._width.value) : undefined;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public getWidthDTO () : SizeDTO | undefined {
+        return this._width;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setWidth (value: Size | SizeEntity | number | undefined) : this {
+        this._width = StyleEntity.prepareSizeDTO(value);
+        return this;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public getHeight () : SizeEntity | undefined {
+        return this._height ? SizeEntity.create(this._height.value) : undefined;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public getHeightDTO () : SizeDTO | undefined {
+        return this._height;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setHeight (value: Size | SizeEntity | number | undefined) : this {
+        this._height = StyleEntity.prepareSizeDTO(value);
+        return this;
     }
 
     /**
@@ -852,7 +899,9 @@ export class StyleEntity
     /**
      * @inheritDoc
      */
-    public setBorder (value: Border | BorderDTO | number | undefined) : this {
+    public setBorder (
+        value: Border | BorderDTO | number | undefined
+    ) : this {
         this._border = StyleEntity.prepareBorderDTO(value);
         return this;
     }

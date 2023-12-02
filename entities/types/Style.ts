@@ -18,6 +18,7 @@ import { Color } from "./Color";
 import { Extendable } from "./Extendable";
 import { Font } from "./Font";
 import { JsonSerializable } from "./JsonSerializable";
+import { Size } from "./Size";
 import { TextDecoration } from "./TextDecoration";
 
 /**
@@ -133,6 +134,13 @@ export interface Style
      */
     setTextDecoration (value: TextDecoration | TextDecorationEntity | TextDecorationDTO | undefined) : this;
 
+    getWidth () : SizeEntity | undefined;
+    getWidthDTO () : SizeDTO | undefined;
+    setWidth (value: Size | SizeEntity | number | undefined) : this;
+    getHeight () : SizeEntity | undefined;
+    getHeightDTO () : SizeDTO | undefined;
+    setHeight (value: Size | SizeEntity | number | undefined) : this;
+    
 }
 
 export function isStyle (value : unknown) : value is Style {
