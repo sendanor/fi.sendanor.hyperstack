@@ -28,6 +28,10 @@ export class SizeEntity
         );
     }
 
+    public static createZero () : SizeEntity {
+        return SizeEntity.create(0);
+    }
+
     /**
      * Creates a color entity from a DTO.
      *

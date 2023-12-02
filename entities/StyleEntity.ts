@@ -412,17 +412,18 @@ export class StyleEntity
      */
     public setTopMargin (value: SizeEntity | SizeDTO | number | undefined) : this {
         if (this._margin === undefined) {
+            const empty = SizeEntity.createZero().getDTO();
             this._margin = [
                 StyleEntity.prepareSizeDTO(value), // top
-                SizeEntity.create(0).getDTO(), // right
-                SizeEntity.create(0).getDTO(), // bottom
-                SizeEntity.create(0).getDTO(), // left
+                empty, // right
+                empty, // bottom
+                empty, // left
             ];
         } else if (isArray(this._margin)) {
-            this._margin[TOP_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value);
+            this._margin[TOP_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value) ?? SizeEntity.createZero().getDTO();
         } else {
             this._margin = [
-                StyleEntity.prepareSizeDTO(value), // top
+                StyleEntity.prepareSizeDTO(value) ?? SizeEntity.createZero().getDTO(), // top
                 this._margin, // right
                 this._margin, // bottom
                 this._margin, // left
@@ -436,19 +437,20 @@ export class StyleEntity
      */
     public setBottomMargin (value: SizeEntity | SizeDTO | number | undefined) : this {
         if (this._margin === undefined) {
+            const empty = SizeEntity.createZero().getDTO();
             this._margin = [
-                SizeEntity.create(0).getDTO(), // top
-                SizeEntity.create(0).getDTO(), // right
+                empty, // top
+                empty, // right
                 StyleEntity.prepareSizeDTO(value), // bottom
-                SizeEntity.create(0).getDTO(), // left
+                empty, // left
             ];
         } else if (isArray(this._margin)) {
-            this._margin[BOTTOM_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value);
+            this._margin[BOTTOM_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value) ?? SizeEntity.createZero().getDTO();
         } else {
             this._margin = [
                 this._margin, // top
                 this._margin, // right
-                StyleEntity.prepareSizeDTO(value), // bottom
+                StyleEntity.prepareSizeDTO(value) ?? SizeEntity.createZero().getDTO(), // bottom
                 this._margin, // left
             ];
         }
@@ -460,18 +462,19 @@ export class StyleEntity
      */
     public setRightMargin (value: SizeEntity | SizeDTO | number | undefined) : this {
         if (this._margin === undefined) {
+            const empty = SizeEntity.createZero().getDTO();
             this._margin = [
-                SizeEntity.create(0).getDTO(), // top
-                StyleEntity.prepareSizeDTO(value), // right
-                SizeEntity.create(0).getDTO(), // bottom
-                SizeEntity.create(0).getDTO(), // left
+                empty, // top
+                StyleEntity.prepareSizeDTO(value) ?? SizeEntity.createZero().getDTO(), // right
+                empty, // bottom
+                empty, // left
             ];
         } else if (isArray(this._margin)) {
-            this._margin[RIGHT_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value);
+            this._margin[RIGHT_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value) ?? SizeEntity.createZero().getDTO();
         } else {
             this._margin = [
                 this._margin, // top
-                StyleEntity.prepareSizeDTO(value), // right
+                StyleEntity.prepareSizeDTO(value) ?? SizeEntity.createZero().getDTO(), // right
                 this._margin, // bottom
                 this._margin, // left
             ];
@@ -484,20 +487,21 @@ export class StyleEntity
      */
     public setLeftMargin (value: SizeEntity | SizeDTO | number | undefined) : this {
         if (this._margin === undefined) {
+            const empty = SizeEntity.createZero().getDTO();
             this._margin = [
-                SizeEntity.create(0).getDTO(), // top
-                SizeEntity.create(0).getDTO(), // right
-                SizeEntity.create(0).getDTO(), // bottom
+                empty, // top
+                empty, // right
+                empty, // bottom
                 StyleEntity.prepareSizeDTO(value), // left
             ];
         } else if (isArray(this._margin)) {
-            this._margin[LEFT_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value);
+            this._margin[LEFT_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value) ?? SizeEntity.createZero().getDTO();
         } else {
             this._margin = [
                 this._margin, // top
                 this._margin, // right
                 this._margin, // bottom
-                StyleEntity.prepareSizeDTO(value), // left
+                StyleEntity.prepareSizeDTO(value) ?? SizeEntity.createZero().getDTO(), // left
             ];
         }
         return this;
@@ -553,11 +557,12 @@ export class StyleEntity
      */
     public setTopPadding (value: SizeEntity | SizeDTO | number | undefined) : this {
         if (this._padding === undefined) {
+            const empty = SizeEntity.createZero().getDTO();
             this._padding = [
                 StyleEntity.prepareSizeDTO(value), // top
-                SizeEntity.create(0).getDTO(), // right
-                SizeEntity.create(0).getDTO(), // bottom
-                SizeEntity.create(0).getDTO(), // left
+                empty, // right
+                empty, // bottom
+                empty, // left
             ];
         } else if (isArray(this._padding)) {
             this._padding[TOP_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value);
@@ -577,19 +582,20 @@ export class StyleEntity
      */
     public setBottomPadding (value: SizeEntity | SizeDTO | number | undefined) : this {
         if (this._padding === undefined) {
+            const empty = SizeEntity.createZero().getDTO();
             this._padding = [
-                SizeEntity.create(0).getDTO(), // top
-                SizeEntity.create(0).getDTO(), // right
+                empty, // top
+                empty, // right
                 StyleEntity.prepareSizeDTO(value), // bottom
-                SizeEntity.create(0).getDTO(), // left
+                empty, // left
             ];
         } else if (isArray(this._padding)) {
-            this._padding[BOTTOM_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value);
+            this._padding[BOTTOM_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value) ?? SizeEntity.createZero().getDTO();
         } else {
             this._padding = [
                 this._padding, // top
                 this._padding, // right
-                StyleEntity.prepareSizeDTO(value), // bottom
+                StyleEntity.prepareSizeDTO(value) ?? SizeEntity.createZero().getDTO(), // bottom
                 this._padding, // left
             ];
         }
@@ -601,18 +607,19 @@ export class StyleEntity
      */
     public setRightPadding (value: SizeEntity | SizeDTO | number | undefined) : this {
         if (this._padding === undefined) {
+            const empty = SizeEntity.createZero().getDTO();
             this._padding = [
-                SizeEntity.create(0).getDTO(), // top
+                empty, // top
                 StyleEntity.prepareSizeDTO(value), // right
-                SizeEntity.create(0).getDTO(), // bottom
-                SizeEntity.create(0).getDTO(), // left
+                empty, // bottom
+                empty, // left
             ];
         } else if (isArray(this._padding)) {
-            this._padding[RIGHT_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value);
+            this._padding[RIGHT_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value) ?? SizeEntity.createZero().getDTO();
         } else {
             this._padding = [
                 this._padding, // top
-                StyleEntity.prepareSizeDTO(value), // right
+                StyleEntity.prepareSizeDTO(value) ?? SizeEntity.createZero().getDTO(), // right
                 this._padding, // bottom
                 this._padding, // left
             ];
@@ -625,20 +632,21 @@ export class StyleEntity
      */
     public setLeftPadding (value: SizeEntity | SizeDTO | number | undefined) : this {
         if (this._padding === undefined) {
+            const empty = SizeEntity.createZero().getDTO();
             this._padding = [
-                SizeEntity.create(0).getDTO(), // top
-                SizeEntity.create(0).getDTO(), // right
-                SizeEntity.create(0).getDTO(), // bottom
-                StyleEntity.prepareSizeDTO(value), // left
+                empty, // top
+                empty, // right
+                empty, // bottom
+                StyleEntity.prepareSizeDTO(value) ?? empty, // left
             ];
         } else if (isArray(this._padding)) {
-            this._padding[LEFT_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value);
+            this._padding[LEFT_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value) ?? SizeEntity.createZero().getDTO();
         } else {
             this._padding = [
                 this._padding, // top
                 this._padding, // right
                 this._padding, // bottom
-                StyleEntity.prepareSizeDTO(value), // left
+                StyleEntity.prepareSizeDTO(value) ?? SizeEntity.createZero().getDTO(), // left
             ];
         }
         return this;
