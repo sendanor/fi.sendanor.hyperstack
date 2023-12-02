@@ -108,7 +108,6 @@ export class StyleEntity
      */
     protected _margin : SizeDTO | [SizeDTO, SizeDTO, SizeDTO, SizeDTO] | undefined;
 
-
     /**
      * Border element(s).
      *
@@ -971,6 +970,7 @@ export class StyleEntity
             ...(this._padding ? StyleEntity.prepareSizeListCssStyles("padding", this._padding) : {}),
             ...(this._border ? StyleEntity.prepareBorderListCssStyles( this._border ) : {}),
             ...(this._font ? FontEntity.createFromDTO(this._font).getCssStyles() : {}),
+            ...(this._textDecoration ? TextDecorationEntity.createFromDTO(this._textDecoration).getCssStyles() : {}),
         };
     }
 

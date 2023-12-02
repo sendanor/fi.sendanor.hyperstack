@@ -106,7 +106,7 @@ export class TextDecorationEntity
     public getCssStyles (): ReadonlyJsonObject {
         return {
             ...(this._lineType ? { textDecorationLine: this._lineType } : {}),
-            ...(this._color ? { Color: ColorEntity.createFromDTO(this._color).getCssStyles() } : {}),
+            ...(this._color ? { textDecorationColor: ColorEntity.createFromDTO(this._color).getCssStyles() } : {}),
             ...(this._style ? { textDecorationStyle: this._style } : {}),
             ...(this._thickness ? { textDecorationThickness: SizeEntity.createFromDTO( this._thickness ).getCssStyles() } : {}),
         };
