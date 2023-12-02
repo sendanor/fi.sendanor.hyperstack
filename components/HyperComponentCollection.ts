@@ -15,6 +15,7 @@ import { registerFormComponent } from "./form/FormComponent";
 import { registerHeadingComponent } from "./heading/HeadingComponent";
 import { registerImageComponent } from "./image/ImageComponent";
 import { registerLinkButtonComponent } from "./linkButton/LinkButtonComponent";
+import { registerParagraphComponent } from "./paragraph/ParagraphComponent";
 import { registerSubTitleComponent } from "./subTitle/SubTitleComponent";
 import { registerTableColumnComponent } from "./table/column/TableColumnComponent";
 import { registerTableRowComponent } from "./table/row/TableRowComponent";
@@ -48,6 +49,7 @@ export class HyperComponentCollection {
         registerTitleComponent(factory);
         registerSubTitleComponent(factory);
         registerHeadingComponent(factory);
+        registerParagraphComponent(factory);
     }
 
     /**
