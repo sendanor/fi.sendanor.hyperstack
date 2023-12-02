@@ -13,6 +13,11 @@ import {
     isSizeDTOOrUndefined,
     SizeDTO
 } from "./SizeDTO";
+import {
+    explainTextDecorationDTOOrUndefined,
+    isTextDecorationDTOOrUndefined,
+    TextDecorationDTO,
+} from "./TextDecorationDTO";
 
 export interface StyleDTO {
     readonly textColor       ?: ColorDTO;
@@ -23,6 +28,7 @@ export interface StyleDTO {
     readonly padding         ?: SizeDTO | [SizeDTO, SizeDTO] | [SizeDTO, SizeDTO, SizeDTO, SizeDTO];
     readonly border          ?: BorderDTO | [BorderDTO, BorderDTO] | [BorderDTO, BorderDTO, BorderDTO, BorderDTO];
     readonly font            ?: FontDTO;
+    readonly textDecoration  ?: TextDecorationDTO;
 }
 
 export function createStyleDTO (
@@ -34,6 +40,7 @@ export function createStyleDTO (
     padding         : SizeDTO | [SizeDTO, SizeDTO] | [SizeDTO, SizeDTO, SizeDTO, SizeDTO] | undefined,
     border          : BorderDTO | [BorderDTO, BorderDTO] | [BorderDTO, BorderDTO, BorderDTO, BorderDTO] | undefined,
     font            : FontDTO | undefined,
+    textDecoration  : TextDecorationDTO | undefined,
 ) : StyleDTO {
     return {
         textColor,
@@ -44,6 +51,7 @@ export function createStyleDTO (
         padding,
         border,
         font,
+        textDecoration,
     };
 }
 
@@ -59,6 +67,7 @@ export function isStyleDTO ( value: unknown) : value is StyleDTO {
             'padding',
             'border',
             'font',
+            'textDecoration',
         ])
         && isColorDTOOrUndefined(value?.textColor)
         && isColorDTOOrUndefined(value?.backgroundColor)
@@ -68,6 +77,7 @@ export function isStyleDTO ( value: unknown) : value is StyleDTO {
         && isMultiSizeDTOOrUndefined(value?.padding)
         && isMultiBorderDTOOrUndefined(value?.border)
         && isFontDTOOrUndefined(value?.font)
+        && isTextDecorationDTOOrUndefined(value?.textDecoration)
     );
 }
 
@@ -84,6 +94,7 @@ export function explainStyleDTO ( value: any) : string {
                 'padding',
                 'border',
                 'font',
+                'textDecoration',
             ])
             , explainProperty("width", explainSizeDTOOrUndefined(value?.width))
             , explainProperty("height", explainSizeDTOOrUndefined(value?.height))
@@ -93,6 +104,7 @@ export function explainStyleDTO ( value: any) : string {
             , explainProperty("padding", explainMultiSizeDTOOrUndefined(value?.padding))
             , explainProperty("border", explainMultiBorderDTOOrUndefined(value?.border))
             , explainProperty("font", explainFontDTOOrUndefined(value?.font))
+            , explainProperty("textDecoration", explainTextDecorationDTOOrUndefined(value?.textDecoration))
         ]
     );
 }

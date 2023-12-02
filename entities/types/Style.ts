@@ -7,15 +7,18 @@ import { BorderDTO } from "../../dto/BorderDTO";
 import { FontDTO } from "../../dto/FontDTO";
 import { SizeDTO } from "../../dto/SizeDTO";
 import { StyleDTO } from "../../dto/StyleDTO";
+import { TextDecorationDTO } from "../../dto/TextDecorationDTO";
 import { BorderEntity } from "../BorderEntity";
 import { ColorEntity } from "../ColorEntity";
 import { FontEntity } from "../FontEntity";
 import { SizeEntity } from "../SizeEntity";
+import { TextDecorationEntity } from "../TextDecorationEntity";
 import { Border } from "./Border";
 import { Color } from "./Color";
 import { Extendable } from "./Extendable";
 import { Font } from "./Font";
 import { JsonSerializable } from "./JsonSerializable";
+import { TextDecoration } from "./TextDecoration";
 
 /**
  * Interface for Style entities.
@@ -112,6 +115,23 @@ export interface Style
     getFontDTO () : FontDTO | undefined;
     getFont () : Font | undefined;
     setFont (value: FontEntity | Font | string | number | undefined) : this;
+
+    /**
+     * Get text decorations.
+     */
+    getTextDecoration () : TextDecorationEntity | undefined;
+
+    /**
+     * Get text decorations as a DTO.
+     */
+    getTextDecorationDTO () : TextDecorationDTO | undefined;
+
+    /**
+     * Set text decorations.
+     *
+     * @param value
+     */
+    setTextDecoration (value: TextDecoration | TextDecorationEntity | TextDecorationDTO | undefined) : this;
 
 }
 

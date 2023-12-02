@@ -27,6 +27,9 @@ import {
     createStyleDTO,
     StyleDTO,
 } from "../dto/StyleDTO";
+import {
+    TextDecorationDTO,
+} from "../dto/TextDecorationDTO";
 import { BorderStyle } from "../dto/types/BorderStyle";
 import {
     BorderEntity,
@@ -45,6 +48,10 @@ import {
     SizeEntity,
 } from "./SizeEntity";
 import {
+    isTextDecorationEntity,
+    TextDecorationEntity,
+} from "./TextDecorationEntity";
+import {
     Border,
     isBorder,
 } from "./types/Border";
@@ -53,6 +60,10 @@ import {
     isFont,
 } from "./types/Font";
 import { Style } from "./types/Style";
+import {
+    isTextDecoration,
+    TextDecoration,
+} from "./types/TextDecoration";
 import { UnitType } from "./types/UnitType";
 
 const TOP_AND_BOTTOM_MARGIN_INDEX = 0;
@@ -126,9 +137,17 @@ export class StyleEntity
      */
     protected _font : FontDTO | undefined;
 
+    /**
+     * Text decorations.
+     *
+     * @protected
+     */
+    protected _textDecoration : TextDecorationDTO | undefined;
+
     public static create (
     ) : StyleEntity {
         return new this(
+            undefined,
             undefined,
             undefined,
             undefined,
@@ -157,6 +176,7 @@ export class StyleEntity
             StyleEntity.prepareSizeListDTO(style?.padding),
             StyleEntity.prepareBorderListDTO(style?.border),
             StyleEntity.prepareFontDTO(style?.font),
+            style?.textDecoration,
         );
     }
 
@@ -171,6 +191,7 @@ export class StyleEntity
      * @param padding
      * @param border
      * @param font
+     * @param textDecoration
      * @protected
      */
     protected constructor (
@@ -182,6 +203,7 @@ export class StyleEntity
         padding : SizeDTO | [SizeDTO, SizeDTO, SizeDTO, SizeDTO] | undefined,
         border : BorderDTO | [BorderDTO, BorderDTO, BorderDTO, BorderDTO] | undefined,
         font : FontDTO | undefined,
+        textDecoration : TextDecorationDTO | undefined,
     ) {
         this._textColor = textColor;
         this._backgroundColor = backgroundColor;
@@ -191,6 +213,7 @@ export class StyleEntity
         this._padding = padding;
         this._border = border;
         this._font = font;
+        this._textDecoration = textDecoration;
     }
 
     public static prepareColorDTO (
@@ -400,6 +423,7 @@ export class StyleEntity
             this._padding,
             this._border,
             this._font,
+            this._textDecoration,
         );
     }
 
@@ -429,6 +453,34 @@ export class StyleEntity
      */
     public setTextColor (value: ColorEntity | string | undefined) : this {
         this._textColor = StyleEntity.prepareColorDTO(value);
+        return this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public getTextDecoration () : TextDecorationEntity | undefined {
+        return this._textDecoration ? TextDecorationEntity.createFromDTO(this._textDecoration) : undefined;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public getTextDecorationDTO () : TextDecorationDTO | undefined {
+        return this._textDecoration;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setTextDecoration (value: TextDecoration | TextDecorationEntity | TextDecorationDTO | undefined) : this {
+        if (isTextDecorationEntity(value)) {
+            this._textDecoration = value.getDTO();
+        } else if (isTextDecoration(value)) {
+            this._textDecoration = value.getDTO();
+        } else {
+            this._textDecoration = value;
+        }
         return this;
     }
 
