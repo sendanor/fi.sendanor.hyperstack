@@ -6,9 +6,10 @@ import { explainRegularObject, isRegularObject } from "../../../hg/core/types/Re
 import { isUndefined } from "../../../hg/core/types/undefined";
 import { ColorDTO, explainColorDTOOrUndefined, isColorDTOOrUndefined } from "./ColorDTO";
 import {
-    explainSizeDTOOrUndefined,
+    explainMultiSizeDTOOrUndefined,
+    explainSizeDTOOrUndefined, isMultiSizeDTOOrUndefined,
     isSizeDTOOrUndefined,
-    SizeDTO,
+    SizeDTO
 } from "./SizeDTO";
 
 export interface StyleDTO {
@@ -16,6 +17,8 @@ export interface StyleDTO {
     readonly backgroundColor ?: ColorDTO;
     readonly width           ?: SizeDTO;
     readonly height          ?: SizeDTO;
+    readonly margin          ?: SizeDTO | [SizeDTO, SizeDTO] | [SizeDTO, SizeDTO, SizeDTO, SizeDTO];
+    readonly padding         ?: SizeDTO | [SizeDTO, SizeDTO] | [SizeDTO, SizeDTO, SizeDTO, SizeDTO];
 }
 
 export function createStyleDTO (
@@ -23,12 +26,16 @@ export function createStyleDTO (
     backgroundColor : ColorDTO | undefined,
     width           : SizeDTO | undefined,
     height          : SizeDTO | undefined,
+    margin          : SizeDTO | [SizeDTO, SizeDTO] | [SizeDTO, SizeDTO, SizeDTO, SizeDTO] | undefined,
+    padding         : SizeDTO | [SizeDTO, SizeDTO] | [SizeDTO, SizeDTO, SizeDTO, SizeDTO] | undefined,
 ) : StyleDTO {
     return {
         textColor,
         backgroundColor,
         width,
         height,
+        margin,
+        padding,
     };
 }
 
@@ -40,11 +47,15 @@ export function isStyleDTO ( value: unknown) : value is StyleDTO {
             'height',
             'textColor',
             'backgroundColor',
+            'margin',
+            'padding',
         ])
-        && isSizeDTOOrUndefined(value?.width)
-        && isSizeDTOOrUndefined(value?.height)
         && isColorDTOOrUndefined(value?.textColor)
         && isColorDTOOrUndefined(value?.backgroundColor)
+        && isSizeDTOOrUndefined(value?.width)
+        && isSizeDTOOrUndefined(value?.height)
+        && isMultiSizeDTOOrUndefined(value?.margin)
+        && isMultiSizeDTOOrUndefined(value?.padding)
     );
 }
 
@@ -57,11 +68,15 @@ export function explainStyleDTO ( value: any) : string {
                 'height',
                 'textColor',
                 'backgroundColor',
+                'margin',
+                'padding',
             ])
             , explainProperty("width", explainSizeDTOOrUndefined(value?.width))
             , explainProperty("height", explainSizeDTOOrUndefined(value?.height))
             , explainProperty("textColor", explainColorDTOOrUndefined(value?.textColor))
             , explainProperty("backgroundColor", explainColorDTOOrUndefined(value?.backgroundColor))
+            , explainProperty("margin", explainMultiSizeDTOOrUndefined(value?.margin))
+            , explainProperty("padding", explainMultiSizeDTOOrUndefined(value?.padding))
         ]
     );
 }

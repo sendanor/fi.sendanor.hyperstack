@@ -1,5 +1,6 @@
 // Copyright (c) 2023. Heusala Group Oy <info@heusalagroup.fi>. All rights reserved.
 
+import { isArray } from "../../../hg/core/types/Array";
 import { explain, explainNot, explainOk, explainOr, explainProperty } from "../../../hg/core/types/explain";
 import { explainNumber, isNumber } from "../../../hg/core/types/Number";
 import { explainNoOtherKeysInDevelopment, hasNoOtherKeysInDevelopment } from "../../../hg/core/types/OtherKeys";
@@ -69,4 +70,60 @@ export function isSizeDTOOrUndefined (value: unknown): value is SizeDTO | undefi
 
 export function explainSizeDTOOrUndefined (value: unknown): string {
     return isSizeDTOOrUndefined(value) ? explainOk() : explainNot(explainOr(['SizeDTO', 'undefined']));
+}
+
+export type DoubleSizeDTO = [SizeDTO, SizeDTO];
+
+export function isDoubleSizeDTO (value: unknown): value is [SizeDTO, SizeDTO] {
+    return isArray(value) && value.length === 2 && isSizeDTO(value[0]) && isSizeDTO(value[1]);
+}
+
+export function isDoubleSizeDTOOrUndefined (value: unknown): value is [SizeDTO, SizeDTO] | undefined {
+    return isUndefined(value) || isDoubleSizeDTO(value);
+}
+
+export function explainDoubleSizeDTOOrUndefined (value: unknown): string {
+    return isDoubleSizeDTOOrUndefined(value) ? explainOk() : explainNot(explainOr([
+        '[SizeDTO, SizeDTO]',
+        'undefined'
+    ]));
+}
+
+export type SquareSizeDTO = [SizeDTO, SizeDTO, SizeDTO, SizeDTO];
+
+export function isSquareSizeDTO (value: unknown): value is [SizeDTO, SizeDTO, SizeDTO, SizeDTO] {
+    return (
+        isArray(value)
+        && value.length === 4
+        && isSizeDTO(value[0])
+        && isSizeDTO(value[1])
+        && isSizeDTO(value[2])
+        && isSizeDTO(value[3])
+    );
+}
+
+export type MultiSizeDTO = SizeDTO | DoubleSizeDTO | SquareSizeDTO;
+
+export function isMultiSizeDTO (value: unknown)
+    : value is SizeDTO | DoubleSizeDTO | SquareSizeDTO
+{
+    return (
+        isSizeDTO(value)
+        || isDoubleSizeDTO(value)
+        || isSquareSizeDTO(value)
+    );
+}
+
+
+export function isMultiSizeDTOOrUndefined (value: unknown): value is MultiSizeDTO | undefined {
+    return isUndefined(value) || isMultiSizeDTO(value);
+}
+
+export function explainMultiSizeDTOOrUndefined (value: unknown): string {
+    return isMultiSizeDTOOrUndefined(value) ? explainOk() : explainNot(explainOr([
+        'SizeDTO',
+        '[SizeDTO, SizeDTO]',
+        '[SizeDTO, SizeDTO, SizeDTO, SizeDTO]',
+        'undefined'
+    ]));
 }
