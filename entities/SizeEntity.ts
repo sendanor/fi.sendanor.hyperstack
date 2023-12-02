@@ -16,15 +16,15 @@ export class SizeEntity
      * Creates a color entity.
      *
      * @param value
-     * @param unit
+     * @param unit Defaults to pixels.
      */
     public static create (
-        value : number,
-        unit : UnitType,
+        value  : number,
+        unit  ?: UnitType,
     ) : SizeEntity {
         return new SizeEntity(
             value,
-            unit,
+            unit ?? UnitType.PX,
         );
     }
 
@@ -36,7 +36,7 @@ export class SizeEntity
     public static createFromDTO (
         dto : SizeDTO,
     ) : SizeEntity {
-        return new SizeEntity(
+        return SizeEntity.create(
             dto.value,
             dto.unit ?? UnitType.PX,
         );

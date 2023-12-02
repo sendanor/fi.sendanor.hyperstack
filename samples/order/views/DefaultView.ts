@@ -1,8 +1,5 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { createColorDTO } from "../../../dto/ColorDTO";
-import { createSizeDTO } from "../../../dto/SizeDTO";
-import { createStyleDTO } from "../../../dto/StyleDTO";
 import { createViewDTO, ViewDTO } from "../../../dto/ViewDTO";
 import { StyleEntity } from "../../../entities/StyleEntity";
 import { DARK_BACKGROUND_COLOR, DARK_TEXT_COLOR } from "../constants/colors";
@@ -21,9 +18,9 @@ export function createDefaultView () : DefaultView {
         undefined,
         (
             StyleEntity.create()
-            .setTextColor(DARK_TEXT_COLOR)
-            .setBackgroundColor(DARK_BACKGROUND_COLOR)
-            .getDTO()
+                .setTextColor(DARK_TEXT_COLOR)
+                .setBackgroundColor(DARK_BACKGROUND_COLOR)
+                .getDTO()
         ),
         undefined,
     );
