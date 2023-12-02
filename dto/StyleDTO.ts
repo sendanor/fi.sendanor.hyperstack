@@ -1,6 +1,5 @@
 // Copyright (c) 2023. Heusala Group Oy <info@heusalagroup.fi>. All rights reserved.
 
-import { ReadonlyJsonObject } from "../../../hg/core/Json";
 import { explain, explainNot, explainOk, explainOr, explainProperty } from "../../../hg/core/types/explain";
 import { explainNoOtherKeysInDevelopment, hasNoOtherKeysInDevelopment } from "../../../hg/core/types/OtherKeys";
 import { explainRegularObject, isRegularObject } from "../../../hg/core/types/RegularObject";

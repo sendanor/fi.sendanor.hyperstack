@@ -8,8 +8,14 @@ import { isUndefined } from "../../../hg/core/types/undefined";
 import { explainUnitTypeOrUndefined, isUnitTypeOrUndefined, UnitType } from "../entities/types/UnitType";
 
 export interface SizeDTO {
+
     readonly value: number;
+
+    /**
+     * Defaults to pixels.
+     */
     readonly unit ?: UnitType;
+
 }
 
 export function createSizeDTO (

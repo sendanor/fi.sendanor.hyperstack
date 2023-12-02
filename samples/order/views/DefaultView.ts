@@ -4,6 +4,7 @@ import { createColorDTO } from "../../../dto/ColorDTO";
 import { createSizeDTO } from "../../../dto/SizeDTO";
 import { createStyleDTO } from "../../../dto/StyleDTO";
 import { createViewDTO, ViewDTO } from "../../../dto/ViewDTO";
+import { StyleEntity } from "../../../entities/StyleEntity";
 import { DARK_BACKGROUND_COLOR, DARK_TEXT_COLOR } from "../constants/colors";
 
 export const DEFAULT_VIEW_NAME: string = 'DefaultView';
@@ -18,11 +19,11 @@ export function createDefaultView () : DefaultView {
         undefined,
         undefined,
         undefined,
-        createStyleDTO(
-            createColorDTO(DARK_TEXT_COLOR),
-            createColorDTO(DARK_BACKGROUND_COLOR),
-            createSizeDTO(0),
-            createSizeDTO(0),
+        (
+            StyleEntity.create()
+            .setTextColor(DARK_TEXT_COLOR)
+            .setBackgroundColor(DARK_BACKGROUND_COLOR)
+            .getDTO()
         ),
         undefined,
     );

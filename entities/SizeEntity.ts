@@ -38,7 +38,7 @@ export class SizeEntity
     ) : SizeEntity {
         return new SizeEntity(
             dto.value,
-            dto.unit,
+            dto.unit ?? UnitType.PX,
         );
     }
 

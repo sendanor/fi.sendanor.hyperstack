@@ -1,13 +1,22 @@
 // Copyright (c) 2023. Heusala Group Oy <info@heusalagroup.fi>. All rights reserved.
 
 import { ReadonlyJsonObject } from "../../../hg/core/Json";
-import { ColorDTO } from "../dto/ColorDTO";
-import { SizeDTO } from "../dto/SizeDTO";
+import { isNumber } from "../../../hg/core/types/Number";
+import { isString } from "../../../hg/core/types/String";
+import {
+    ColorDTO,
+    createColorDTO,
+} from "../dto/ColorDTO";
+import {
+    createSizeDTO,
+    SizeDTO,
+} from "../dto/SizeDTO";
 import { createStyleDTO } from "../dto/StyleDTO";
 import { StyleDTO } from "../dto/StyleDTO";
 import { ColorEntity, isColorEntity } from "./ColorEntity";
 import { isSizeEntity, SizeEntity } from "./SizeEntity";
 import { Style } from "./types/Style";
+import { UnitType } from "./types/UnitType";
 
 /**
  * Style entity.
@@ -43,6 +52,15 @@ export class StyleEntity
      * @protected
      */
     protected _backgroundColor : ColorDTO | undefined;
+
+    public static create () : StyleEntity {
+        return new this(
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+        );
+    }
 
     /**
      * Construct a style entity.
@@ -81,14 +99,16 @@ export class StyleEntity
         this._backgroundColor = backgroundColor;
     }
 
-    public static prepareColorDTO (value : ColorEntity | ColorDTO | undefined) : ColorDTO | undefined {
+    public static prepareColorDTO (value : ColorEntity | ColorDTO | string | undefined) : ColorDTO | undefined {
         if (value === undefined) return undefined;
+        if (isString(value)) return createColorDTO(value);
         if (isColorEntity(value)) return value.getDTO();
         return value;
     }
 
-    public static prepareSizeDTO (value : SizeEntity | SizeDTO | undefined) : SizeDTO | undefined {
+    public static prepareSizeDTO (value : SizeEntity | SizeDTO | number | undefined) : SizeDTO | undefined {
         if (value === undefined) return undefined;
+        if (isNumber(value)) return createSizeDTO(value, UnitType.PX);
         if (isSizeEntity(value)) return value.getDTO();
         return value;
     }
@@ -129,8 +149,8 @@ export class StyleEntity
     /**
      * @inheritDoc
      */
-    public setTextColor (value: ColorEntity | undefined) : this {
-        this._textColor = value ? value.getDTO() : undefined;
+    public setTextColor (value: ColorEntity | string | undefined) : this {
+        this._textColor = StyleEntity.prepareColorDTO(value);
         return this;
     }
 
@@ -144,8 +164,8 @@ export class StyleEntity
     /**
      * @inheritDoc
      */
-    public setBackgroundColor (value: ColorEntity | undefined) : this {
-        this._backgroundColor = value ? value.getDTO() : undefined;
+    public setBackgroundColor (value: ColorEntity | string | undefined) : this {
+        this._backgroundColor = StyleEntity.prepareColorDTO(value);
         return this;
     }
 

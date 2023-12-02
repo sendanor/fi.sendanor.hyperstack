@@ -5,7 +5,6 @@ import { explainNoOtherKeysInDevelopment, hasNoOtherKeysInDevelopment } from "..
 import { explainRegularObject, isRegularObject } from "../../../hg/core/types/RegularObject";
 import { explainStringOrUndefined, isStringOrUndefined } from "../../../hg/core/types/String";
 import { isUndefined } from "../../../hg/core/types/undefined";
-import { ExtendableDTO } from "./types/ExtendableDTO";
 
 export interface SeoDTO {
     readonly title       ?: string;
