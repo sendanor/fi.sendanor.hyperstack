@@ -1,9 +1,9 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { ReadonlyJsonObject } from "../../../hg/core/Json";
-import { ComponentDTO } from "../dto/ComponentDTO";
-import { ViewDTO } from "../dto/ViewDTO";
-import { ComponentEntity } from "./ComponentEntity";
+import { ReadonlyJsonObject } from "../../../../hg/core/Json";
+import { ComponentDTO } from "../../dto/ComponentDTO";
+import { ViewDTO } from "../../dto/ViewDTO";
+import { ComponentEntity } from "../ComponentEntity";
 import { Extendable } from "./Extendable";
 import { JsonSerializable } from "./JsonSerializable";
 

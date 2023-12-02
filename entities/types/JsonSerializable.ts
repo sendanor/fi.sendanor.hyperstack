@@ -1,6 +1,6 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { ReadonlyJsonObject } from "../../../hg/core/Json";
+import { ReadonlyJsonObject } from "../../../../hg/core/Json";
 
 export interface JsonSerializable {
 

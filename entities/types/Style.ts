@@ -1,7 +1,7 @@
 // Copyright (c) 2023. Heusala Group Oy <info@heusalagroup.fi>. All rights reserved.
 
-import { ReadonlyJsonObject } from "../../../hg/core/Json";
-import { StyleDTO } from "../dto/StyleDTO";
+import { ReadonlyJsonObject } from "../../../../hg/core/Json";
+import { StyleDTO } from "../../dto/StyleDTO";
 import { Extendable } from "./Extendable";
 import { JsonSerializable } from "./JsonSerializable";
 

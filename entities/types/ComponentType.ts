@@ -1,8 +1,8 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { isFunction } from "../../../hg/core/types/Function";
-import { isObject } from "../../../hg/core/types/Object";
-import { ComponentEntity } from "./ComponentEntity";
+import { isFunction } from "../../../../hg/core/types/Function";
+import { isObject } from "../../../../hg/core/types/Object";
+import { ComponentEntity } from "../ComponentEntity";
 
 /**
  * Public interface of static `ComponentEntity`.

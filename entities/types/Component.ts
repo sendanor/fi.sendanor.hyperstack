@@ -1,11 +1,11 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { ReadonlyJsonAny, ReadonlyJsonArray, ReadonlyJsonArrayOf, ReadonlyJsonObject } from "../../../hg/core/Json";
-import { isFunction } from "../../../hg/core/types/Function";
-import { isObject } from "../../../hg/core/types/Object";
-import { TestCallbackNonStandard } from "../../../hg/core/types/TestCallback";
-import { ComponentDTO } from "../dto/ComponentDTO";
-import { ComponentEntityContent } from "./ComponentEntity";
+import { ReadonlyJsonAny, ReadonlyJsonArray, ReadonlyJsonArrayOf, ReadonlyJsonObject } from "../../../../hg/core/Json";
+import { isFunction } from "../../../../hg/core/types/Function";
+import { isObject } from "../../../../hg/core/types/Object";
+import { TestCallbackNonStandard } from "../../../../hg/core/types/TestCallback";
+import { ComponentDTO } from "../../dto/ComponentDTO";
+import { ComponentEntityContent } from "../ComponentEntity";
 import { Extendable } from "./Extendable";
 import { JsonSerializable } from "./JsonSerializable";
 import { Style } from "./Style";

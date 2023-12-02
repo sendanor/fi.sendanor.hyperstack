@@ -7,10 +7,10 @@ import { ComponentDTO } from "../dto/ComponentDTO";
 import { createAppDTO, AppDTO } from "../dto/AppDTO";
 import { RouteDTO } from "../dto/RouteDTO";
 import { ViewDTO } from "../dto/ViewDTO";
-import { App } from "./App";
+import { App } from "./types/App";
 import { ComponentEntity, isComponentEntity } from "./ComponentEntity";
-import { Extendable } from "./Extendable";
-import { JsonSerializable } from "./JsonSerializable";
+import { Extendable } from "./types/Extendable";
+import { JsonSerializable } from "./types/JsonSerializable";
 import { isRouteEntity, RouteEntity } from "./RouteEntity";
 import { isViewEntity, ViewEntity } from "./ViewEntity";
 

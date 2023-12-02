@@ -1,6 +1,6 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { ComponentEntity } from "../../types/ComponentEntity";
+import { ComponentEntity } from "../../entities/ComponentEntity";
 import { LINK_BUTTON_COMPONENT_NAME } from "./LinkButtonComponent";
 
 export class LinkButtonEntity extends ComponentEntity {

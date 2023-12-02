@@ -1,6 +1,6 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { ComponentEntity } from "../../types/ComponentEntity";
+import { ComponentEntity } from "../../entities/ComponentEntity";
 import { TITLE_TEXT_COMPONENT_NAME } from "./TitleTextComponent";
 
 export class TitleTextEntity extends ComponentEntity {

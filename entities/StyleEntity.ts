@@ -3,7 +3,7 @@
 import { ReadonlyJsonObject } from "../../../hg/core/Json";
 import { createStyleDTO } from "../dto/StyleDTO";
 import { StyleDTO } from "../dto/StyleDTO";
-import { Style } from "./Style";
+import { Style } from "./types/Style";
 
 /**
  * Style entity.

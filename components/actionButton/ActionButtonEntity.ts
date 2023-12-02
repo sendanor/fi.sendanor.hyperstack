@@ -2,7 +2,7 @@
 
 import { ReadonlyJsonAny } from "../../../../hg/core/Json";
 import { isString } from "../../../../hg/core/types/String";
-import { ComponentEntity } from "../../types/ComponentEntity";
+import { ComponentEntity } from "../../entities/ComponentEntity";
 import { createActionDTO, ActionDTO } from "../../dto/ActionDTO";
 import { ACTION_BUTTON_COMPONENT_NAME } from "./ActionButtonComponent";
 

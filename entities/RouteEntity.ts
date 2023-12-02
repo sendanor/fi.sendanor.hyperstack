@@ -2,8 +2,8 @@
 
 import { ReadonlyJsonObject } from "../../../hg/core/Json";
 import { createRouteDTO, RouteDTO } from "../dto/RouteDTO";
-import { Extendable } from "./Extendable";
-import { JsonSerializable } from "./JsonSerializable";
+import { Extendable } from "./types/Extendable";
+import { JsonSerializable } from "./types/JsonSerializable";
 
 export class RouteEntity
     implements

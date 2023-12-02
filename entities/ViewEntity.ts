@@ -8,9 +8,9 @@ import { SeoDTO } from "../dto/SeoDTO";
 import { StyleDTO } from "../dto/StyleDTO";
 import { createViewDTO, ViewDTO } from "../dto/ViewDTO";
 import { ComponentEntity, isComponentEntity } from "./ComponentEntity";
-import { Extendable } from "./Extendable";
-import { JsonSerializable } from "./JsonSerializable";
-import { View } from "./View";
+import { Extendable } from "./types/Extendable";
+import { JsonSerializable } from "./types/JsonSerializable";
+import { View } from "./types/View";
 
 /**
  * Entity for Hyper views.

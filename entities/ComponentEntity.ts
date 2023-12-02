@@ -10,8 +10,8 @@ import { isString } from "../../../hg/core/types/String";
 import { TestCallbackNonStandard } from "../../../hg/core/types/TestCallback";
 import { createComponentDTO, ComponentContent, ComponentDTO } from "../dto/ComponentDTO";
 import { StyleDTO } from "../dto/StyleDTO";
-import { Component } from "./Component";
-import { Style } from "./Style";
+import { Component } from "./types/Component";
+import { Style } from "./types/Style";
 import { StyleEntity } from "./StyleEntity";
 
 /**
