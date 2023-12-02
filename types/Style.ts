@@ -1,7 +1,7 @@
 // Copyright (c) 2023. Heusala Group Oy <info@heusalagroup.fi>. All rights reserved.
 
 import { ReadonlyJsonObject } from "../../../hg/core/Json";
-import { HyperStyleDTO } from "../dto/HyperStyleDTO";
+import { StyleDTO } from "../dto/StyleDTO";
 import { Extendable } from "./Extendable";
 import { JsonSerializable } from "./JsonSerializable";
 
@@ -10,14 +10,13 @@ import { JsonSerializable } from "./JsonSerializable";
  */
 export interface Style
     extends
-        Extendable,
         JsonSerializable
 {
 
     /**
      * Returns the DTO object.
      */
-    getDTO () : HyperStyleDTO;
+    getDTO () : StyleDTO;
 
     /**
      * @inheritDoc
@@ -28,16 +27,6 @@ export interface Style
      * @inheritDoc
      */
     toJSON () : ReadonlyJsonObject;
-
-    /**
-     * @inheritDoc
-     */
-    extend (name : string) : this;
-
-    /**
-     * @inheritDoc
-     */
-    getExtend () : string | undefined;
 
     /**
      * Get text color.

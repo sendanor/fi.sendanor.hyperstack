@@ -3,7 +3,7 @@
 import { reduce } from "../../../hg/core/functions/reduce";
 import { uniq } from "../../../hg/core/functions/uniq";
 import { LogService } from "../../../hg/core/LogService";
-import { HyperComponentDTO } from "../dto/HyperComponentDTO";
+import { ComponentDTO } from "../dto/ComponentDTO";
 import { ComponentFactory } from "../services/ComponentFactory";
 import { ComponentFactoryService } from "../services/ComponentFactoryService";
 import { ComponentEntity } from "../types/ComponentEntity";
@@ -63,7 +63,7 @@ export class HyperComponentCollection {
      */
     public static createBaseCollection (
         types: readonly ComponentType[],
-    ) : readonly HyperComponentDTO[] {
+    ) : readonly ComponentDTO[] {
 
         const factory : ComponentFactory = this.createFactory();
 
@@ -85,13 +85,13 @@ export class HyperComponentCollection {
 
         return reduce(
             extendList,
-            (list : readonly HyperComponentDTO[], extend: string) : readonly HyperComponentDTO[] => {
+            ( list : readonly ComponentDTO[], extend: string) : readonly ComponentDTO[] => {
 
                 if ( !factory.hasComponent( extend ) ) {
                     return list;
                 }
 
-                const dto: HyperComponentDTO | undefined = factory.createComponentDTO( extend );
+                const dto: ComponentDTO | undefined = factory.createComponentDTO( extend );
                 if ( dto === undefined ) {
                     LOG.warn( `Warning! Could not create DTO even though the component was registered. This should not happen.` );
                     return list;

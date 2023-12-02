@@ -6,38 +6,41 @@ import { explainNoOtherKeysInDevelopment, hasNoOtherKeysInDevelopment } from "..
 import { explainRegularObject, isRegularObject } from "../../../hg/core/types/RegularObject";
 import { explainString, explainStringOrUndefined, isString, isStringOrUndefined } from "../../../hg/core/types/String";
 import { isUndefined } from "../../../hg/core/types/undefined";
-import { explainHyperComponentDTO, HyperComponentDTO, isHyperComponentDTO } from "./HyperComponentDTO";
-import { explainHyperRouteDTO, HyperRouteDTO, isHyperRouteDTO } from "./HyperRouteDTO";
-import { explainHyperViewDTO, HyperViewDTO, isHyperViewDTO } from "./HyperViewDTO";
+import { ExtendableDTO } from "./types/ExtendableDTO";
+import { explainComponentDTO, ComponentDTO, isComponentDTO } from "./ComponentDTO";
+import { explainRouteDTO, RouteDTO, isRouteDTO } from "./RouteDTO";
+import { explainViewDTO, ViewDTO, isViewDTO } from "./ViewDTO";
 import { DTOWithName } from "./types/DTOWithName";
 import { DTOWithOptionalExtend } from "./types/DTOWithOptionalExtend";
 import { DTOWithOptionalLanguage } from "./types/DTOWithOptionalLanguage";
 import { DTOWithOptionalPublicUrl } from "./types/DTOWithOptionalPublicUrl";
 
-export interface HyperDTO
+export interface AppDTO
     extends
         DTOWithName,
         DTOWithOptionalExtend,
         DTOWithOptionalLanguage,
-        DTOWithOptionalPublicUrl {
+        DTOWithOptionalPublicUrl,
+        ExtendableDTO
+{
     readonly name       : string;
-    readonly components : readonly HyperComponentDTO[];
-    readonly views      : readonly HyperViewDTO[];
-    readonly routes     : readonly HyperRouteDTO[];
+    readonly components : readonly ComponentDTO[];
+    readonly views      : readonly ViewDTO[];
+    readonly routes     : readonly RouteDTO[];
     readonly extend    ?: string;
     readonly publicUrl ?: string;
     readonly language  ?: string;
 }
 
-export function createHyperDTO (
+export function createAppDTO (
     name       : string,
     extend     : string | undefined,
-    routes     : readonly HyperRouteDTO[],
+    routes     : readonly RouteDTO[],
     publicUrl  : string | undefined,
     language   : string | undefined,
-    components : readonly HyperComponentDTO[],
-    views      : readonly HyperViewDTO[],
-) : HyperDTO {
+    components : readonly ComponentDTO[],
+    views      : readonly ViewDTO[],
+) : AppDTO {
     return {
         name,
         extend,
@@ -49,7 +52,7 @@ export function createHyperDTO (
     };
 }
 
-export function isHyperDTO (value: unknown) : value is HyperDTO {
+export function isAppDTO ( value: unknown) : value is AppDTO {
     return (
         isRegularObject(value)
         && hasNoOtherKeysInDevelopment(value, [
@@ -62,16 +65,16 @@ export function isHyperDTO (value: unknown) : value is HyperDTO {
             'language',
         ])
         && isString(value?.name)
-        && isArrayOf<HyperComponentDTO>(value?.components, isHyperComponentDTO)
-        && isArrayOf<HyperViewDTO>(value?.views, isHyperViewDTO)
-        && isArrayOf<HyperRouteDTO>(value?.routes, isHyperRouteDTO)
+        && isArrayOf<ComponentDTO>(value?.components, isComponentDTO)
+        && isArrayOf<ViewDTO>(value?.views, isViewDTO)
+        && isArrayOf<RouteDTO>(value?.routes, isRouteDTO)
         && isStringOrUndefined(value?.extend)
         && isStringOrUndefined(value?.publicUrl)
         && isStringOrUndefined(value?.language)
     );
 }
 
-export function explainHyperDTO (value: any) : string {
+export function explainAppDTO ( value: any) : string {
     return explain(
         [
             explainRegularObject(value),
@@ -85,9 +88,9 @@ export function explainHyperDTO (value: any) : string {
                 'language',
             ])
             , explainProperty("name", explainString(value?.name))
-            , explainProperty("components", explainArrayOf<HyperComponentDTO>("HyperComponentDTO", explainHyperComponentDTO, value?.components, isHyperComponentDTO))
-            , explainProperty("views", explainArrayOf<HyperViewDTO>("HyperViewDTO", explainHyperViewDTO, value?.views, isHyperViewDTO))
-            , explainProperty("routes", explainArrayOf<HyperRouteDTO>("HyperRouteDTO", explainHyperRouteDTO, value?.routes, isHyperRouteDTO))
+            , explainProperty("components", explainArrayOf<ComponentDTO>("ComponentDTO", explainComponentDTO, value?.components, isComponentDTO))
+            , explainProperty("views", explainArrayOf<ViewDTO>("ViewDTO", explainViewDTO, value?.views, isViewDTO))
+            , explainProperty("routes", explainArrayOf<RouteDTO>("RouteDTO", explainRouteDTO, value?.routes, isRouteDTO))
             , explainProperty("extend", explainStringOrUndefined(value?.extend))
             , explainProperty("publicUrl", explainStringOrUndefined(value?.publicUrl))
             , explainProperty("language", explainStringOrUndefined(value?.language))
@@ -95,19 +98,19 @@ export function explainHyperDTO (value: any) : string {
     );
 }
 
-export function stringifyHyperDTO (value : HyperDTO) : string {
-    return `HyperDTO(${value})`;
+export function stringifyAppDTO ( value : AppDTO) : string {
+    return `AppDTO(${value})`;
 }
 
-export function parseHyperDTO (value: unknown) : HyperDTO | undefined {
-    if (isHyperDTO(value)) return value;
+export function parseAppDTO ( value: unknown) : AppDTO | undefined {
+    if (isAppDTO(value)) return value;
     return undefined;
 }
 
-export function isHyperDTOOrUndefined (value: unknown): value is HyperDTO | undefined {
-    return isUndefined(value) || isHyperDTO(value);
+export function isAppDTOOrUndefined ( value: unknown): value is AppDTO | undefined {
+    return isUndefined(value) || isAppDTO(value);
 }
 
-export function explainHyperDTOOrUndefined (value: unknown): string {
-    return isHyperDTOOrUndefined(value) ? explainOk() : explainNot(explainOr(['HyperDTO', 'undefined']));
+export function explainAppDTOOrUndefined ( value: unknown): string {
+    return isAppDTOOrUndefined(value) ? explainOk() : explainNot(explainOr(['AppDTO', 'undefined']));
 }

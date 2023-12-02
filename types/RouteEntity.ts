@@ -1,7 +1,7 @@
 // Copyright (c) 2023. Heusala Group Oy <info@heusalagroup.fi>. All rights reserved.
 
 import { ReadonlyJsonObject } from "../../../hg/core/Json";
-import { createHyperRouteDTO, HyperRouteDTO } from "../dto/HyperRouteDTO";
+import { createRouteDTO, RouteDTO } from "../dto/RouteDTO";
 import { Extendable } from "./Extendable";
 import { JsonSerializable } from "./JsonSerializable";
 
@@ -88,8 +88,8 @@ export class RouteEntity
         return this;
     }
 
-    public getDTO () : HyperRouteDTO {
-        return createHyperRouteDTO(
+    public getDTO () : RouteDTO {
+        return createRouteDTO(
             this._name,
             this._path,
             this._extend,

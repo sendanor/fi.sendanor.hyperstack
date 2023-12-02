@@ -1,10 +1,10 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import { ReadonlyJsonObject } from "../../../hg/core/Json";
-import { HyperComponentDTO } from "../dto/HyperComponentDTO";
-import { HyperDTO } from "../dto/HyperDTO";
-import { HyperRouteDTO } from "../dto/HyperRouteDTO";
-import { HyperViewDTO } from "../dto/HyperViewDTO";
+import { ComponentDTO } from "../dto/ComponentDTO";
+import { AppDTO } from "../dto/AppDTO";
+import { RouteDTO } from "../dto/RouteDTO";
+import { ViewDTO } from "../dto/ViewDTO";
 import { ComponentEntity } from "./ComponentEntity";
 import { Extendable } from "./Extendable";
 import { JsonSerializable } from "./JsonSerializable";
@@ -28,7 +28,7 @@ export interface App
     /**
      * Get DTO presentation.
      */
-    getDTO () : HyperDTO;
+    getDTO () : AppDTO;
 
     /**
      * @inheritDoc
@@ -56,7 +56,7 @@ export interface App
      * @param route
      */
     addRoute (
-        route : HyperRouteDTO | RouteEntity | readonly (HyperRouteDTO | RouteEntity)[]
+        route : RouteDTO | RouteEntity | readonly (RouteDTO | RouteEntity)[]
     ) : this;
 
     /**
@@ -64,14 +64,14 @@ export interface App
      *
      * @param view
      */
-    addView (view : HyperViewDTO | ViewEntity | readonly (HyperViewDTO | ViewEntity)[]) : this;
+    addView (view : ViewDTO | ViewEntity | readonly (ViewDTO | ViewEntity)[]) : this;
 
     /**
      * Add a component.
      *
      * @param component
      */
-    addComponent (component : HyperComponentDTO | ComponentEntity | readonly (HyperComponentDTO | ComponentEntity)[] ) : this;
+    addComponent (component : ComponentDTO | ComponentEntity | readonly (ComponentDTO | ComponentEntity)[] ) : this;
 
     /**
      * Get the language.

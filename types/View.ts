@@ -1,8 +1,8 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import { ReadonlyJsonObject } from "../../../hg/core/Json";
-import { HyperComponentDTO } from "../dto/HyperComponentDTO";
-import { HyperViewDTO } from "../dto/HyperViewDTO";
+import { ComponentDTO } from "../dto/ComponentDTO";
+import { ViewDTO } from "../dto/ViewDTO";
 import { ComponentEntity } from "./ComponentEntity";
 import { Extendable } from "./Extendable";
 import { JsonSerializable } from "./JsonSerializable";
@@ -44,14 +44,14 @@ export interface View
     /**
      *
      */
-    getDTO () : HyperViewDTO;
+    getDTO () : ViewDTO;
 
     /**
      * Add inner content.
      *
      * @param value
      */
-    add (value : string | HyperComponentDTO | readonly (string|HyperComponentDTO|ComponentEntity)[] | ComponentEntity ) : this;
+    add (value : string | ComponentDTO | readonly (string|ComponentDTO|ComponentEntity)[] | ComponentEntity ) : this;
 
     /**
      * Add inner text content.

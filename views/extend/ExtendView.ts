@@ -12,19 +12,19 @@ import { isUndefined } from "../../../../hg/core/types/undefined";
  * This is required since the frontend usually cannot detect the Location HTTP
  * header, e.g. the HTTP client library already implements the redirection.
  */
-export interface HyperExtendView {
+export interface ExtendView {
     readonly extend: string;
 }
 
-export function createHyperExtendView (
+export function createExtendView (
     extend : string
-) : HyperExtendView {
+) : ExtendView {
     return {
         extend
     };
 }
 
-export function isHyperExtendView (value: unknown) : value is HyperExtendView {
+export function isExtendView ( value: unknown) : value is ExtendView {
     return (
         isRegularObject(value)
         && hasNoOtherKeysInDevelopment(value, [
@@ -34,7 +34,7 @@ export function isHyperExtendView (value: unknown) : value is HyperExtendView {
     );
 }
 
-export function explainHyperExtendView (value: any) : string {
+export function explainExtendView (value: any) : string {
     return explain(
         [
             explainRegularObject(value),
@@ -46,19 +46,19 @@ export function explainHyperExtendView (value: any) : string {
     );
 }
 
-export function stringifyHyperExtendView (value : HyperExtendView) : string {
-    return `HyperExtendView(${value})`;
+export function stringifyExtendView (value : ExtendView) : string {
+    return `ExtendView(${value})`;
 }
 
-export function parseHyperExtendView (value: unknown) : HyperExtendView | undefined {
-    if (isHyperExtendView(value)) return value;
+export function parseExtendView (value: unknown) : ExtendView | undefined {
+    if (isExtendView(value)) return value;
     return undefined;
 }
 
-export function isHyperExtendViewOrUndefined (value: unknown): value is HyperExtendView | undefined {
-    return isUndefined(value) || isHyperExtendView(value);
+export function isExtendViewOrUndefined ( value: unknown): value is ExtendView | undefined {
+    return isUndefined(value) || isExtendView(value);
 }
 
-export function explainHyperExtendViewOrUndefined (value: unknown): string {
-    return isHyperExtendViewOrUndefined(value) ? explainOk() : explainNot(explainOr(['HyperExtendView', 'undefined']));
+export function explainExtendViewOrUndefined (value: unknown): string {
+    return isExtendViewOrUndefined(value) ? explainOk() : explainNot(explainOr(['ExtendView', 'undefined']));
 }

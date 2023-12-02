@@ -8,8 +8,8 @@ import { isBoolean } from "../../../hg/core/types/Boolean";
 import { isNumber } from "../../../hg/core/types/Number";
 import { isString } from "../../../hg/core/types/String";
 import { TestCallbackNonStandard } from "../../../hg/core/types/TestCallback";
-import { createHyperComponentDTO, HyperComponentContent, HyperComponentDTO } from "../dto/HyperComponentDTO";
-import { HyperStyleDTO } from "../dto/HyperStyleDTO";
+import { createComponentDTO, ComponentContent, ComponentDTO } from "../dto/ComponentDTO";
+import { StyleDTO } from "../dto/StyleDTO";
 import { Component } from "./Component";
 import { Style } from "./Style";
 import { StyleEntity } from "./StyleEntity";
@@ -17,7 +17,7 @@ import { StyleEntity } from "./StyleEntity";
 /**
  * Type for internal component content.
  */
-export type ComponentEntityContent = string | ComponentEntity | HyperComponentDTO | readonly (string|ComponentEntity|HyperComponentDTO)[];
+export type ComponentEntityContent = string | ComponentEntity | ComponentDTO | readonly (string|ComponentEntity|ComponentDTO)[];
 
 /**
  * Entity for components.
@@ -44,7 +44,7 @@ export class ComponentEntity
      *
      * @protected
      */
-    protected _content : HyperComponentContent | undefined;
+    protected _content : ComponentContent | undefined;
 
     /**
      * Meta information.
@@ -58,7 +58,7 @@ export class ComponentEntity
      *
      * @protected
      */
-    protected _style : HyperStyleDTO | undefined;
+    protected _style : StyleDTO | undefined;
 
     /**
      * Construct the component entity.
@@ -86,8 +86,8 @@ export class ComponentEntity
     /**
      * @inheritDoc
      */
-    public getDTO () : HyperComponentDTO {
-        return createHyperComponentDTO(
+    public getDTO () : ComponentDTO {
+        return createComponentDTO(
             this._name,
             this._extend,
             this._content ?? [],
@@ -271,10 +271,10 @@ export class ComponentEntity
             value = [value];
         }
 
-        const list : readonly (string | HyperComponentDTO)[] = map(
+        const list : readonly (string | ComponentDTO)[] = map(
             value,
-            (item : string | HyperComponentDTO | ComponentEntity) : string | HyperComponentDTO => isComponentEntity( item ) ? item.getDTO() : item
-        ) as readonly (string | HyperComponentDTO)[];
+            (item : string | ComponentDTO | ComponentEntity) : string | ComponentDTO => isComponentEntity( item ) ? item.getDTO() : item
+        ) as readonly (string | ComponentDTO)[];
 
         if (this._content === undefined) {
             this._content = list;

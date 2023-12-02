@@ -1,6 +1,6 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { HyperComponentContent } from "../../dto/HyperComponentDTO";
+import { ComponentContent } from "../../dto/ComponentDTO";
 import { ComponentEntity } from "../../types/ComponentEntity";
 import { FORM_COMPONENT_NAME } from "./FormComponent";
 
@@ -17,7 +17,7 @@ export class FormEntity extends ComponentEntity {
 
     public static createForm (
         name: string,
-        content: HyperComponentContent,
+        content: ComponentContent,
     ) : FormEntity {
         return this.create(name).add(content).setMeta({});
     }

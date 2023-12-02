@@ -3,10 +3,10 @@
 import { forEach } from "../../../hg/core/functions/forEach";
 import { ReadonlyJsonObject } from "../../../hg/core/Json";
 import { isArray } from "../../../hg/core/types/Array";
-import { HyperComponentDTO } from "../dto/HyperComponentDTO";
-import { createHyperDTO, HyperDTO } from "../dto/HyperDTO";
-import { HyperRouteDTO } from "../dto/HyperRouteDTO";
-import { HyperViewDTO } from "../dto/HyperViewDTO";
+import { ComponentDTO } from "../dto/ComponentDTO";
+import { createAppDTO, AppDTO } from "../dto/AppDTO";
+import { RouteDTO } from "../dto/RouteDTO";
+import { ViewDTO } from "../dto/ViewDTO";
 import { App } from "./App";
 import { ComponentEntity, isComponentEntity } from "./ComponentEntity";
 import { Extendable } from "./Extendable";
@@ -25,9 +25,9 @@ export class AppEntity
 
     protected _name : string;
     protected _extend : string | undefined;
-    protected _components : HyperComponentDTO[];
-    protected _views : HyperViewDTO[];
-    protected _routes : HyperRouteDTO[];
+    protected _components : ComponentDTO[];
+    protected _views : ViewDTO[];
+    protected _routes : RouteDTO[];
     protected _publicUrl ?: string;
     protected _language ?: string;
 
@@ -53,8 +53,8 @@ export class AppEntity
     /**
      * @inheritDoc
      */
-    public getDTO () : HyperDTO {
-        return createHyperDTO(
+    public getDTO () : AppDTO {
+        return createAppDTO(
             this._name,
             this._extend,
             this._routes,
@@ -98,12 +98,12 @@ export class AppEntity
      * @inheritDoc
      */
     public addRoute (
-        route : HyperRouteDTO | RouteEntity | readonly (HyperRouteDTO | RouteEntity)[]
+        route : RouteDTO | RouteEntity | readonly (RouteDTO | RouteEntity)[]
     ) : this {
         if ( isArray(route) ) {
             forEach(
                 route,
-                (item: HyperRouteDTO | RouteEntity) : void => {
+                (item: RouteDTO | RouteEntity) : void => {
                     this.addRoute(item);
                 }
             );
@@ -118,11 +118,11 @@ export class AppEntity
     /**
      * @inheritDoc
      */
-    public addView (view : HyperViewDTO | ViewEntity | readonly (HyperViewDTO | ViewEntity)[]) : this {
+    public addView (view : ViewDTO | ViewEntity | readonly (ViewDTO | ViewEntity)[]) : this {
         if ( isArray(view) ) {
             forEach(
                 view,
-                (item: HyperViewDTO | ViewEntity) : void => {
+                (item: ViewDTO | ViewEntity) : void => {
                     this.addView(item);
                 }
             );
@@ -137,11 +137,11 @@ export class AppEntity
     /**
      * @inheritDoc
      */
-    public addComponent (component : HyperComponentDTO | ComponentEntity | readonly (HyperComponentDTO | ComponentEntity)[] ) : this {
+    public addComponent (component : ComponentDTO | ComponentEntity | readonly (ComponentDTO | ComponentEntity)[] ) : this {
         if ( isArray(component) ) {
             forEach(
                 component,
-                (item: HyperComponentDTO | ComponentEntity) : void => {
+                (item: ComponentDTO | ComponentEntity) : void => {
                     this.addComponent(item);
                 }
             );

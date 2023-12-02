@@ -3,10 +3,10 @@
 import { map } from "../../../hg/core/functions/map";
 import { ReadonlyJsonObject } from "../../../hg/core/Json";
 import { isArray } from "../../../hg/core/types/Array";
-import { HyperComponentContent, HyperComponentDTO } from "../dto/HyperComponentDTO";
-import { HyperSeoDTO } from "../dto/HyperSeoDTO";
-import { HyperStyleDTO } from "../dto/HyperStyleDTO";
-import { createHyperViewDTO, HyperViewDTO } from "../dto/HyperViewDTO";
+import { ComponentContent, ComponentDTO } from "../dto/ComponentDTO";
+import { SeoDTO } from "../dto/SeoDTO";
+import { StyleDTO } from "../dto/StyleDTO";
+import { createViewDTO, ViewDTO } from "../dto/ViewDTO";
 import { ComponentEntity, isComponentEntity } from "./ComponentEntity";
 import { Extendable } from "./Extendable";
 import { JsonSerializable } from "./JsonSerializable";
@@ -30,9 +30,9 @@ export class ViewEntity
     protected _extend : string | undefined;
     protected _publicUrl : string | undefined;
     protected _language : string | undefined;
-    protected _seo : HyperSeoDTO | undefined;
-    protected _style : HyperStyleDTO | undefined;
-    protected _content : HyperComponentContent | undefined;
+    protected _seo : SeoDTO | undefined;
+    protected _style : StyleDTO | undefined;
+    protected _content : ComponentContent | undefined;
     protected _meta : ReadonlyJsonObject | undefined;
 
     protected constructor (
@@ -68,8 +68,8 @@ export class ViewEntity
     /**
      * @inheritDoc
      */
-    public getDTO () : HyperViewDTO {
-        return createHyperViewDTO(
+    public getDTO () : ViewDTO {
+        return createViewDTO(
             this._name,
             this._extend,
             this._publicUrl,
@@ -98,7 +98,7 @@ export class ViewEntity
     /**
      * @inheritDoc
      */
-    public add (value : string | HyperComponentDTO | readonly (string|HyperComponentDTO|ComponentEntity)[] | ComponentEntity ) : this {
+    public add (value : string | ComponentDTO | readonly (string|ComponentDTO|ComponentEntity)[] | ComponentEntity ) : this {
 
         if (isComponentEntity(value)) {
             value = [value.getDTO()];
@@ -106,10 +106,10 @@ export class ViewEntity
             value = [value];
         }
 
-        const list : readonly (string | HyperComponentDTO)[] = map(
+        const list : readonly (string | ComponentDTO)[] = map(
             value,
-            (item : string | HyperComponentDTO | ComponentEntity) : string | HyperComponentDTO => isComponentEntity( item ) ? item.getDTO() : item
-        ) as readonly (string | HyperComponentDTO)[];
+            (item : string | ComponentDTO | ComponentEntity) : string | ComponentDTO => isComponentEntity( item ) ? item.getDTO() : item
+        ) as readonly (string | ComponentDTO)[];
 
         if (this._content === undefined) {
             this._content = list;

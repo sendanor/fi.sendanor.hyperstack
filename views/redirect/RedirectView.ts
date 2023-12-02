@@ -12,19 +12,19 @@ import { isUndefined } from "../../../../hg/core/types/undefined";
  * This is required since the frontend usually cannot detect the Location HTTP
  * header, e.g. the HTTP client library already implements the redirection.
  */
-export interface HyperRedirectView {
+export interface RedirectView {
     readonly location: string;
 }
 
-export function createHyperRedirectView (
+export function createRedirectView (
     location : string
-) : HyperRedirectView {
+) : RedirectView {
     return {
         location
     };
 }
 
-export function isHyperRedirectView (value: unknown) : value is HyperRedirectView {
+export function isRedirectView ( value: unknown) : value is RedirectView {
     return (
         isRegularObject(value)
         && hasNoOtherKeysInDevelopment(value, [
@@ -34,7 +34,7 @@ export function isHyperRedirectView (value: unknown) : value is HyperRedirectVie
     );
 }
 
-export function explainHyperRedirectView (value: any) : string {
+export function explainRedirectView (value: any) : string {
     return explain(
         [
             explainRegularObject(value),
@@ -46,19 +46,19 @@ export function explainHyperRedirectView (value: any) : string {
     );
 }
 
-export function stringifyHyperRedirectView (value : HyperRedirectView) : string {
-    return `HyperRedirectView(${value})`;
+export function stringifyRedirectView (value : RedirectView) : string {
+    return `RedirectView(${value})`;
 }
 
-export function parseHyperRedirectView (value: unknown) : HyperRedirectView | undefined {
-    if (isHyperRedirectView(value)) return value;
+export function parseRedirectView (value: unknown) : RedirectView | undefined {
+    if (isRedirectView(value)) return value;
     return undefined;
 }
 
-export function isHyperRedirectViewOrUndefined (value: unknown): value is HyperRedirectView | undefined {
-    return isUndefined(value) || isHyperRedirectView(value);
+export function isRedirectViewOrUndefined ( value: unknown): value is RedirectView | undefined {
+    return isUndefined(value) || isRedirectView(value);
 }
 
-export function explainHyperRedirectViewOrUndefined (value: unknown): string {
-    return isHyperRedirectViewOrUndefined(value) ? explainOk() : explainNot(explainOr(['HyperRedirectView', 'undefined']));
+export function explainRedirectViewOrUndefined (value: unknown): string {
+    return isRedirectViewOrUndefined(value) ? explainOk() : explainNot(explainOr(['RedirectView', 'undefined']));
 }

@@ -6,37 +6,39 @@ import { explainNoOtherKeysInDevelopment, hasNoOtherKeysInDevelopment } from "..
 import { explainRegularObject, isRegularObject } from "../../../hg/core/types/RegularObject";
 import { explainString, explainStringOrUndefined, isString, isStringOrUndefined } from "../../../hg/core/types/String";
 import { isUndefined } from "../../../hg/core/types/undefined";
-import { explainHyperComponentContentOrUndefined, HyperComponentContent, isHyperComponentContentOrUndefined } from "./HyperComponentDTO";
-import { explainHyperSeoDTOOrUndefined, HyperSeoDTO, isHyperSeoDTOOrUndefined } from "./HyperSeoDTO";
-import { explainHyperStyleDTOOrUndefined, HyperStyleDTO, isHyperStyleDTOOrUndefined } from "./HyperStyleDTO";
+import { ExtendableDTO } from "./types/ExtendableDTO";
+import { explainComponentContentOrUndefined, ComponentContent, isComponentContentOrUndefined } from "./ComponentDTO";
+import { explainSeoDTOOrUndefined, SeoDTO, isSeoDTOOrUndefined } from "./SeoDTO";
+import { explainStyleDTOOrUndefined, StyleDTO, isStyleDTOOrUndefined } from "./StyleDTO";
 import { DTOWithOptionalExtend } from "./types/DTOWithOptionalExtend";
 import { DTOWithName } from "./types/DTOWithName";
 
-export interface HyperViewDTO
+export interface ViewDTO
     extends
         DTOWithOptionalExtend,
-        DTOWithName
+        DTOWithName,
+        ExtendableDTO
 {
     readonly name            : string;
     readonly extend         ?: string;
     readonly publicUrl      ?: string;
     readonly language       ?: string;
-    readonly seo            ?: HyperSeoDTO;
-    readonly style          ?: HyperStyleDTO;
-    readonly content        ?: HyperComponentContent;
+    readonly seo            ?: SeoDTO;
+    readonly style          ?: StyleDTO;
+    readonly content        ?: ComponentContent;
     readonly meta           ?: ReadonlyJsonObject;
 }
 
-export function createHyperViewDTO (
+export function createViewDTO (
     name      : string,
     extend    : string | undefined,
     publicUrl : string | undefined,
     language  : string | undefined,
-    seo       : HyperSeoDTO | undefined,
-    content   : HyperComponentContent | undefined,
-    style     : HyperStyleDTO | undefined,
+    seo       : SeoDTO | undefined,
+    content   : ComponentContent | undefined,
+    style     : StyleDTO | undefined,
     meta      : ReadonlyJsonObject | undefined,
-) : HyperViewDTO {
+) : ViewDTO {
     return {
         name,
         extend,
@@ -49,7 +51,7 @@ export function createHyperViewDTO (
     };
 }
 
-export function isHyperViewDTO (value: unknown) : value is HyperViewDTO {
+export function isViewDTO ( value: unknown) : value is ViewDTO {
     return (
         isRegularObject(value)
         && hasNoOtherKeysInDevelopment(value, [
@@ -66,14 +68,14 @@ export function isHyperViewDTO (value: unknown) : value is HyperViewDTO {
         && isStringOrUndefined(value?.extend)
         && isStringOrUndefined(value?.publicUrl)
         && isStringOrUndefined(value?.language)
-        && isHyperSeoDTOOrUndefined(value?.seo)
-        && isHyperStyleDTOOrUndefined(value?.style)
-        && isHyperComponentContentOrUndefined(value?.content)
+        && isSeoDTOOrUndefined(value?.seo)
+        && isStyleDTOOrUndefined(value?.style)
+        && isComponentContentOrUndefined(value?.content)
         && isReadonlyJsonObjectOrUndefined(value?.meta)
     );
 }
 
-export function explainHyperViewDTO (value: any) : string {
+export function explainViewDTO ( value: any) : string {
     return explain(
         [
             explainRegularObject(value),
@@ -91,27 +93,27 @@ export function explainHyperViewDTO (value: any) : string {
             , explainProperty("extend", explainStringOrUndefined(value?.extend))
             , explainProperty("publicUrl", explainStringOrUndefined(value?.publicUrl))
             , explainProperty("language", explainStringOrUndefined(value?.language))
-            , explainProperty("seo", explainHyperSeoDTOOrUndefined(value?.seo))
-            , explainProperty("style", explainHyperStyleDTOOrUndefined(value?.style))
-            , explainProperty("content", explainHyperComponentContentOrUndefined(value?.content))
+            , explainProperty("seo", explainSeoDTOOrUndefined(value?.seo))
+            , explainProperty("style", explainStyleDTOOrUndefined(value?.style))
+            , explainProperty("content", explainComponentContentOrUndefined(value?.content))
             , explainProperty("meta", explainReadonlyJsonObjectOrUndefined(value?.meta))
         ]
     );
 }
 
-export function stringifyHyperViewDTO (value : HyperViewDTO) : string {
-    return `HyperViewDTO(${value})`;
+export function stringifyViewDTO ( value : ViewDTO) : string {
+    return `ViewDTO(${value})`;
 }
 
-export function parseHyperViewDTO (value: unknown) : HyperViewDTO | undefined {
-    if (isHyperViewDTO(value)) return value;
+export function parseViewDTO ( value: unknown) : ViewDTO | undefined {
+    if (isViewDTO(value)) return value;
     return undefined;
 }
 
-export function isHyperViewDTOOrUndefined (value: unknown): value is HyperViewDTO | undefined {
-    return isUndefined(value) || isHyperViewDTO(value);
+export function isViewDTOOrUndefined ( value: unknown): value is ViewDTO | undefined {
+    return isUndefined(value) || isViewDTO(value);
 }
 
-export function explainHyperViewDTOOrUndefined (value: unknown): string {
-    return isHyperViewDTOOrUndefined(value) ? explainOk() : explainNot(explainOr(['HyperViewDTO', 'undefined']));
+export function explainViewDTOOrUndefined ( value: unknown): string {
+    return isViewDTOOrUndefined(value) ? explainOk() : explainNot(explainOr(['ViewDTO', 'undefined']));
 }

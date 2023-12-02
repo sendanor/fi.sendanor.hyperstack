@@ -1,16 +1,16 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { createHyperComponentDTO, HyperComponentDTO } from "../../dto/HyperComponentDTO";
+import { createComponentDTO, ComponentDTO } from "../../dto/ComponentDTO";
 import { HyperComponent } from "../../dto/types/HyperComponent";
 import { ComponentFactory } from "../../services/ComponentFactory";
 
 export const TITLE_TEXT_COMPONENT_NAME: string = 'TitleTextComponent';
 
-export type TitleTextComponent = HyperComponentDTO;
+export type TitleTextComponent = ComponentDTO;
 
 export function createTitleTextComponent (
 ) : TitleTextComponent {
-    return createHyperComponentDTO(
+    return createComponentDTO(
         TITLE_TEXT_COMPONENT_NAME,
         HyperComponent.H1,
         [],

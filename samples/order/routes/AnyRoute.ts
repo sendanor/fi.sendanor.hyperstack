@@ -1,15 +1,15 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { createHyperRouteDTO, HyperRouteDTO } from "../../../dto/HyperRouteDTO";
+import { createRouteDTO, RouteDTO } from "../../../dto/RouteDTO";
 
 export const ANY_ROUTE_NAME : string = 'AnyRoute';
 
-export type AnyRoute = HyperRouteDTO;
+export type AnyRoute = RouteDTO;
 
 export function createAnyRoute (
     redirect: string
 ) : AnyRoute {
-    return createHyperRouteDTO(
+    return createRouteDTO(
         ANY_ROUTE_NAME,
         '*',
         undefined,

@@ -1,6 +1,6 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { HyperComponentContent } from "../../dto/HyperComponentDTO";
+import { ComponentContent } from "../../dto/ComponentDTO";
 import { ComponentEntity } from "../../types/ComponentEntity";
 import { TABLE_COMPONENT_NAME } from "./TableComponent";
 import { TableRowEntity } from "./row/TableRowEntity";
@@ -22,7 +22,7 @@ export class TableEntity extends ComponentEntity {
 
     public static createTable (
         name: string,
-        data: HyperComponentContent,
+        data: ComponentContent,
     ) : TableEntity {
         return this.create(name).add(data);
     }

@@ -1,14 +1,14 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { createHyperRouteDTO, HyperRouteDTO } from "../../../dto/HyperRouteDTO";
+import { createRouteDTO, RouteDTO } from "../../../dto/RouteDTO";
 import { LOADING_VIEW_NAME } from "../views/LoadingView";
 
-export type LoadingRoute = HyperRouteDTO;
+export type LoadingRoute = RouteDTO;
 
 export function createLoadingRoute (
     name: string,
 ) : LoadingRoute {
-    return createHyperRouteDTO(
+    return createRouteDTO(
         name,
         '/',
         undefined,

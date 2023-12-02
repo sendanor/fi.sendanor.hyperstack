@@ -1,16 +1,16 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { createHyperComponentDTO, HyperComponentDTO } from "../../dto/HyperComponentDTO";
+import { createComponentDTO, ComponentDTO } from "../../dto/ComponentDTO";
 import { HyperComponent } from "../../dto/types/HyperComponent";
 import { ComponentFactory } from "../../services/ComponentFactory";
 
 export const BUTTON_COMPONENT_NAME: string = 'ButtonComponent';
 
-export type ButtonComponent = HyperComponentDTO;
+export type ButtonComponent = ComponentDTO;
 
 export function createButtonComponent (
 ) : ButtonComponent {
-    return createHyperComponentDTO(
+    return createComponentDTO(
         BUTTON_COMPONENT_NAME,
         HyperComponent.Button,
         [],

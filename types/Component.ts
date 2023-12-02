@@ -4,7 +4,7 @@ import { ReadonlyJsonAny, ReadonlyJsonArray, ReadonlyJsonArrayOf, ReadonlyJsonOb
 import { isFunction } from "../../../hg/core/types/Function";
 import { isObject } from "../../../hg/core/types/Object";
 import { TestCallbackNonStandard } from "../../../hg/core/types/TestCallback";
-import { HyperComponentDTO } from "../dto/HyperComponentDTO";
+import { ComponentDTO } from "../dto/ComponentDTO";
 import { ComponentEntityContent } from "./ComponentEntity";
 import { Extendable } from "./Extendable";
 import { JsonSerializable } from "./JsonSerializable";
@@ -37,7 +37,7 @@ export interface Component
     /**
      * Get component DTO
      */
-    getDTO () : HyperComponentDTO;
+    getDTO () : ComponentDTO;
 
     /**
      * Get value of component, e.g. a JSON object.

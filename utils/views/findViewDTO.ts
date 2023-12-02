@@ -3,23 +3,23 @@
 import { find } from "../../../../hg/core/functions/find";
 import { LogService } from "../../../../hg/core/LogService";
 import {
-    createHyperViewDTO,
-    HyperViewDTO,
-} from "../../dto/HyperViewDTO";
+    createViewDTO,
+    ViewDTO,
+} from "../../dto/ViewDTO";
 
 const LOG = LogService.createLogger( 'findHyperViewDTO' );
 
-export function findHyperViewDTO (
+export function findViewDTO (
     viewName : string,
-    allViews : readonly HyperViewDTO[],
-) : HyperViewDTO {
-    const view : HyperViewDTO | undefined = find(
+    allViews : readonly ViewDTO[],
+) : ViewDTO {
+    const view : ViewDTO | undefined = find(
         allViews,
-        (a: HyperViewDTO) : boolean => a.name === viewName
+        (a: ViewDTO) : boolean => a.name === viewName
     );
     if (!view) {
         LOG.warn(`Warning! Could not find view by name: ${viewName}`);
-        return createHyperViewDTO(
+        return createViewDTO(
             viewName,
             undefined,
             undefined,

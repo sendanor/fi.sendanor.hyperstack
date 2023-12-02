@@ -5,18 +5,19 @@ import { explainNoOtherKeysInDevelopment, hasNoOtherKeysInDevelopment } from "..
 import { explainRegularObject, isRegularObject } from "../../../hg/core/types/RegularObject";
 import { explainStringOrUndefined, isStringOrUndefined } from "../../../hg/core/types/String";
 import { isUndefined } from "../../../hg/core/types/undefined";
+import { ExtendableDTO } from "./types/ExtendableDTO";
 
-export interface HyperSeoDTO {
+export interface SeoDTO {
     readonly title       ?: string;
     readonly description ?: string;
     readonly siteName    ?: string;
 }
 
-export function createHyperSeoDTO (
+export function createSeoDTO (
     title       : string | undefined,
     description : string | undefined,
     siteName    : string | undefined,
-) : HyperSeoDTO {
+) : SeoDTO {
     return {
         title,
         description,
@@ -24,7 +25,7 @@ export function createHyperSeoDTO (
     };
 }
 
-export function isHyperSeoDTO (value: unknown) : value is HyperSeoDTO {
+export function isSeoDTO ( value: unknown) : value is SeoDTO {
     return (
         isRegularObject(value)
         && hasNoOtherKeysInDevelopment(value, [
@@ -38,7 +39,7 @@ export function isHyperSeoDTO (value: unknown) : value is HyperSeoDTO {
     );
 }
 
-export function explainHyperSeoDTO (value: any) : string {
+export function explainSeoDTO ( value: any) : string {
     return explain(
         [
             explainRegularObject(value),
@@ -54,19 +55,19 @@ export function explainHyperSeoDTO (value: any) : string {
     );
 }
 
-export function stringifyHyperSeoDTO (value : HyperSeoDTO) : string {
-    return `HyperSeoDTO(${value})`;
+export function stringifySeoDTO ( value : SeoDTO) : string {
+    return `SeoDTO(${value})`;
 }
 
-export function parseHyperSeoDTO (value: unknown) : HyperSeoDTO | undefined {
-    if (isHyperSeoDTO(value)) return value;
+export function parseSeoDTO ( value: unknown) : SeoDTO | undefined {
+    if (isSeoDTO(value)) return value;
     return undefined;
 }
 
-export function isHyperSeoDTOOrUndefined (value: unknown): value is HyperSeoDTO | undefined {
-    return isUndefined(value) || isHyperSeoDTO(value);
+export function isSeoDTOOrUndefined ( value: unknown): value is SeoDTO | undefined {
+    return isUndefined(value) || isSeoDTO(value);
 }
 
-export function explainHyperSeoDTOOrUndefined (value: unknown): string {
-    return isHyperSeoDTOOrUndefined(value) ? explainOk() : explainNot(explainOr(['HyperSeoDTO', 'undefined']));
+export function explainSeoDTOOrUndefined ( value: unknown): string {
+    return isSeoDTOOrUndefined(value) ? explainOk() : explainNot(explainOr(['SeoDTO', 'undefined']));
 }

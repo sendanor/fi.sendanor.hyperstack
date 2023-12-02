@@ -1,6 +1,6 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { createHyperDTO, HyperDTO } from "../../dto/HyperDTO";
+import { createAppDTO, AppDTO } from "../../dto/AppDTO";
 import { createAnyRoute } from "./routes/AnyRoute";
 import { createLoadingRoute } from "./routes/LoadingRoute";
 import { createTextComponent } from "./components/TextComponent";
@@ -9,14 +9,14 @@ import { createLoadingView } from "./views/LoadingView";
 
 export const LOADING_ROUTE_NAME : string = 'LoadingRoute';
 
-export type LoadingAppDefinition = HyperDTO;
+export type LoadingAppDefinition = AppDTO;
 
 export function createLoadingAppDefinition (
     myAppName: string,
     publicUrl: string,
     language: string
 ) : LoadingAppDefinition {
-    return createHyperDTO(
+    return createAppDTO(
         myAppName,
         undefined,
         [

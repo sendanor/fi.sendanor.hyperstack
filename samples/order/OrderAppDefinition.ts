@@ -1,6 +1,6 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { createHyperDTO, HyperDTO } from "../../dto/HyperDTO";
+import { createAppDTO, AppDTO } from "../../dto/AppDTO";
 import { createAnyRoute } from "./routes/AnyRoute";
 import { createLoginRoute } from "./routes/LoginRoute";
 import { createTextComponent } from "./components/TextComponent";
@@ -9,14 +9,14 @@ import { createLoginView } from "./views/LoginView";
 
 export const LOGIN_ROUTE_NAME : string = 'LoginRoute';
 
-export type OrderAppDefinition = HyperDTO;
+export type OrderAppDefinition = AppDTO;
 
 export function createOrderAppDefinitions (
     myAppName: string,
     publicUrl: string,
     language: string
 ) : OrderAppDefinition {
-    return createHyperDTO(
+    return createAppDTO(
         myAppName,
         undefined,
         [

@@ -1,16 +1,16 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { createHyperComponentDTO, HyperComponentDTO } from "../../dto/HyperComponentDTO";
+import { createComponentDTO, ComponentDTO } from "../../dto/ComponentDTO";
 import { HyperComponent } from "../../dto/types/HyperComponent";
 import { ComponentFactory } from "../../services/ComponentFactory";
 
 export const IMAGE_COMPONENT_NAME: string = 'ImageComponent';
 
-export type ImageComponent = HyperComponentDTO;
+export type ImageComponent = ComponentDTO;
 
 export function createImageComponent (
 ) : ImageComponent {
-    return createHyperComponentDTO(
+    return createComponentDTO(
         IMAGE_COMPONENT_NAME,
         HyperComponent.Image,
         [],

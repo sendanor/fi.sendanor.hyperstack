@@ -1,7 +1,7 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import { has } from "../../../hg/core/functions/has";
-import { HyperComponentDTO } from "../dto/HyperComponentDTO";
+import { ComponentDTO } from "../dto/ComponentDTO";
 import { ComponentFactoryService } from "./ComponentFactoryService";
 import { ComponentFactoryFunction, ComponentFactory } from "./ComponentFactory";
 
@@ -67,7 +67,7 @@ export class ComponentFactoryImpl implements ComponentFactory {
      */
     public createComponentDTO (
         name : string
-    ) : HyperComponentDTO | undefined {
+    ) : ComponentDTO | undefined {
         if (has(this._factories, name)) {
             return this._factories[name]();
         }

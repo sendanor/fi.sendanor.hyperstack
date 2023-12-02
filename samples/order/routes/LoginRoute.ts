@@ -1,14 +1,14 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { createHyperRouteDTO, HyperRouteDTO } from "../../../dto/HyperRouteDTO";
+import { createRouteDTO, RouteDTO } from "../../../dto/RouteDTO";
 import { LOGIN_VIEW_NAME } from "../views/LoginView";
 
-export type LoginRoute = HyperRouteDTO;
+export type LoginRoute = RouteDTO;
 
 export function createLoginRoute (
     name: string,
 ) : LoginRoute {
-    return createHyperRouteDTO(
+    return createRouteDTO(
         name,
         '/',
         undefined,

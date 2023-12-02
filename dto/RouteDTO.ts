@@ -5,17 +5,19 @@ import { explainNoOtherKeysInDevelopment, hasNoOtherKeysInDevelopment } from "..
 import { explainRegularObject, isRegularObject } from "../../../hg/core/types/RegularObject";
 import { explainString, explainStringOrUndefined, isString, isStringOrUndefined } from "../../../hg/core/types/String";
 import { isUndefined } from "../../../hg/core/types/undefined";
+import { ExtendableDTO } from "./types/ExtendableDTO";
 import { DTOWithOptionalExtend } from "./types/DTOWithOptionalExtend";
 import { DTOWithName } from "./types/DTOWithName";
 import { DTOWithOptionalLanguage } from "./types/DTOWithOptionalLanguage";
 import { DTOWithOptionalPublicUrl } from "./types/DTOWithOptionalPublicUrl";
 
-export interface HyperRouteDTO
+export interface RouteDTO
     extends
         DTOWithName,
         DTOWithOptionalExtend,
         DTOWithOptionalPublicUrl,
-        DTOWithOptionalLanguage
+        DTOWithOptionalLanguage,
+        ExtendableDTO
 {
     readonly name       : string;
     readonly path       : string;
@@ -26,7 +28,7 @@ export interface HyperRouteDTO
     readonly redirect  ?: string;
 }
 
-export function createHyperRouteDTO (
+export function createRouteDTO (
     name      : string,
     path      : string,
     extend    : string | undefined,
@@ -34,7 +36,7 @@ export function createHyperRouteDTO (
     language  : string | undefined,
     view      : string | undefined,
     redirect  : string | undefined,
-) : HyperRouteDTO {
+) : RouteDTO {
     return {
         name,
         path,
@@ -46,7 +48,7 @@ export function createHyperRouteDTO (
     };
 }
 
-export function isHyperRouteDTO (value: unknown) : value is HyperRouteDTO {
+export function isRouteDTO ( value: unknown) : value is RouteDTO {
     return (
         isRegularObject(value)
         && hasNoOtherKeysInDevelopment(value, [
@@ -68,7 +70,7 @@ export function isHyperRouteDTO (value: unknown) : value is HyperRouteDTO {
     );
 }
 
-export function explainHyperRouteDTO (value: any) : string {
+export function explainRouteDTO ( value: any) : string {
     return explain(
         [
             explainRegularObject(value),
@@ -92,19 +94,19 @@ export function explainHyperRouteDTO (value: any) : string {
     );
 }
 
-export function stringifyHyperRouteDTO (value : HyperRouteDTO) : string {
-    return `HyperRouteDTO(${value})`;
+export function stringifyRouteDTO ( value : RouteDTO) : string {
+    return `RouteDTO(${value})`;
 }
 
-export function parseHyperRouteDTO (value: unknown) : HyperRouteDTO | undefined {
-    if (isHyperRouteDTO(value)) return value;
+export function parseRouteDTO ( value: unknown) : RouteDTO | undefined {
+    if (isRouteDTO(value)) return value;
     return undefined;
 }
 
-export function isHyperRouteDTOOrUndefined (value: unknown): value is HyperRouteDTO | undefined {
-    return isUndefined(value) || isHyperRouteDTO(value);
+export function isRouteDTOOrUndefined ( value: unknown): value is RouteDTO | undefined {
+    return isUndefined(value) || isRouteDTO(value);
 }
 
-export function explainHyperRouteDTOOrUndefined (value: unknown): string {
-    return isHyperRouteDTOOrUndefined(value) ? explainOk() : explainNot(explainOr(['HyperRouteDTO', 'undefined']));
+export function explainRouteDTOOrUndefined ( value: unknown): string {
+    return isRouteDTOOrUndefined(value) ? explainOk() : explainNot(explainOr(['RouteDTO', 'undefined']));
 }

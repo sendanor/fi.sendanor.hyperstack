@@ -1,8 +1,8 @@
 // Copyright (c) 2023. Heusala Group Oy <info@heusalagroup.fi>. All rights reserved.
 
 import { ReadonlyJsonObject } from "../../../hg/core/Json";
-import { createHyperStyleDTO } from "../dto/HyperStyleDTO";
-import { HyperStyleDTO } from "../dto/HyperStyleDTO";
+import { createStyleDTO } from "../dto/StyleDTO";
+import { StyleDTO } from "../dto/StyleDTO";
 import { Style } from "./Style";
 
 /**
@@ -11,20 +11,6 @@ import { Style } from "./Style";
 export class StyleEntity
     implements Style
 {
-
-    /**
-     * The name of the component.
-     *
-     * @protected
-     */
-    protected _name : string;
-
-    /**
-     * The name of the component where to extend.
-     *
-     * @protected
-     */
-    protected _extend : string | undefined;
 
     /**
      * Text color.
@@ -46,7 +32,7 @@ export class StyleEntity
      * @param style
      */
     public static create (
-        style ?: HyperStyleDTO | undefined,
+        style ?: StyleDTO | undefined,
     ) : StyleEntity {
         return new this(
             style?.textColor,
@@ -72,32 +58,8 @@ export class StyleEntity
     /**
      * @inheritDoc
      */
-    public getName (): string | undefined {
-        return this._name;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public getExtend (): string | undefined {
-        return this._extend;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public extend (name: string): this {
-        this._extend = name;
-        return this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public getDTO () : HyperStyleDTO {
-        return createHyperStyleDTO(
-            this._name,
-            this._extend,
+    public getDTO () : StyleDTO {
+        return createStyleDTO(
             this._textColor,
             this._backgroundColor,
         );

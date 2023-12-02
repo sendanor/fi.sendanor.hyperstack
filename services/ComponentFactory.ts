@@ -1,12 +1,12 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { HyperComponentDTO } from "../dto/HyperComponentDTO";
+import { ComponentDTO } from "../dto/ComponentDTO";
 
 /**
  * Type of Component DTO factory function.
  */
 export interface ComponentFactoryFunction {
-    () : HyperComponentDTO;
+    () : ComponentDTO;
 }
 
 /**
@@ -49,6 +49,6 @@ export interface ComponentFactory {
      *
      * @param name The name of the component
      */
-    createComponentDTO (name : string) : HyperComponentDTO | undefined;
+    createComponentDTO (name : string) : ComponentDTO | undefined;
 
 }

@@ -2,11 +2,11 @@
 
 import { find } from "../../../../hg/core/functions/find";
 import { LogService } from "../../../../hg/core/LogService";
-import { HyperComponentContent } from "../../dto/HyperComponentDTO";
-import { createHyperViewDTO, HyperViewDTO } from "../../dto/HyperViewDTO";
-import { mergeHyperComponentContent } from "../components/mergeHyperComponentContent";
+import { ComponentContent } from "../../dto/ComponentDTO";
+import { createViewDTO, ViewDTO } from "../../dto/ViewDTO";
+import { mergeComponentContent } from "../components/mergeComponentContent";
 
-const LOG = LogService.createLogger( 'populateHyperViewDTO' );
+const LOG = LogService.createLogger( 'populateViewDTO' );
 
 /**
  *
@@ -14,11 +14,11 @@ const LOG = LogService.createLogger( 'populateHyperViewDTO' );
  * @param views
  * @param publicUrl
  */
-export function populateHyperViewDTO (
-    view: HyperViewDTO,
-    views: readonly HyperViewDTO[],
+export function populateViewDTO (
+    view: ViewDTO,
+    views: readonly ViewDTO[],
     publicUrl : string,
-): HyperViewDTO {
+): ViewDTO {
 
     publicUrl = view.publicUrl ?? publicUrl;
 
@@ -30,9 +30,9 @@ export function populateHyperViewDTO (
         extend = `${publicUrl}${extend}`;
     }
 
-    const extendView: HyperViewDTO | undefined = find(
+    const extendView: ViewDTO | undefined = find(
         views,
-        (c: HyperViewDTO): boolean => c.name === extend
+        (c: ViewDTO): boolean => c.name === extend
     );
 
     if ( !extendView ) {
@@ -40,11 +40,11 @@ export function populateHyperViewDTO (
         throw new TypeError( `Could not find view by name ${extend} to extend for ${view.name}` );
     }
 
-    const componentContent: HyperComponentContent | undefined = view.content;
-    const extendContent: HyperComponentContent | undefined = extendView.content;
+    const componentContent: ComponentContent | undefined = view.content;
+    const extendContent: ComponentContent | undefined = extendView.content;
 
-    return populateHyperViewDTO(
-        createHyperViewDTO(
+    return populateViewDTO(
+        createViewDTO(
             extendView.name,
             extendView.extend,
             extendView.publicUrl ?? view.publicUrl,
@@ -53,7 +53,7 @@ export function populateHyperViewDTO (
                 ...(extendView.seo ? extendView.seo : {}),
                 ...(view.seo ? view.seo : {}),
             },
-            mergeHyperComponentContent(extendContent, componentContent),
+            mergeComponentContent(extendContent, componentContent),
             {
                 ...(extendView.style ? extendView.style : {}),
                 ...(view.style ? view.style : {}),

@@ -1,15 +1,15 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
-import { createHyperViewDTO, HyperViewDTO } from "../../../dto/HyperViewDTO";
+import { createViewDTO, ViewDTO } from "../../../dto/ViewDTO";
 import { createText } from "../components/Text";
 import { DEFAULT_VIEW_NAME } from "./DefaultView";
 
 export const LOGIN_VIEW_NAME: string = 'LoginView';
 
-export type LoginView = HyperViewDTO;
+export type LoginView = ViewDTO;
 
 export function createLoginView () : LoginView {
-    return createHyperViewDTO(
+    return createViewDTO(
         LOGIN_VIEW_NAME,
         DEFAULT_VIEW_NAME,
         undefined,

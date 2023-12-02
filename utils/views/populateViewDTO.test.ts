@@ -1,20 +1,20 @@
-import { populateHyperViewDTO } from "../../utils/views/populateHyperViewDTO";
+import { populateViewDTO } from "./populateViewDTO";
 import { isArrayOf } from "../../../../hg/core/types/Array";
-import { createHyperViewDTO } from '../../dto/HyperViewDTO';
+import { createViewDTO } from '../../dto/ViewDTO';
 
-describe('populateHyperViewDTO', () => {
+describe('populateViewDTO', () => {
 
-    const viewWithoutExtension = createHyperViewDTO('View1', undefined, 'url1', 'en', undefined, ["Content 1", "Content 2"], undefined);
-    const viewWithExtension = createHyperViewDTO('View2', 'View1', undefined, 'fr', undefined, "Content 3", undefined);
+    const viewWithoutExtension = createViewDTO('View1', undefined, 'url1', 'en', undefined, ["Content 1", "Content 2"], undefined, undefined);
+    const viewWithExtension = createViewDTO('View2', 'View1', undefined, 'fr', undefined, "Content 3", undefined, undefined);
     const components = [viewWithoutExtension, viewWithExtension];
   
     it('should return the original view when extend is undefined', () => {
-      const result = populateHyperViewDTO(viewWithoutExtension, components);
+      const result = populateViewDTO(viewWithoutExtension, components, '');
       expect(result).toEqual(viewWithoutExtension);
     });
   
     it('should populate the view with properties from the extended view', () => {
-      const result = populateHyperViewDTO(viewWithExtension, components);
+      const result = populateViewDTO(viewWithExtension, components, '');
   
       // Verify that properties from the extended view are merged correctly
       expect(result.name).toEqual('View1'); // Name from the extended view
@@ -29,8 +29,8 @@ describe('populateHyperViewDTO', () => {
     });
   
     it('should throw an error when the extended view is not found', () => {
-      const viewNotFound = createHyperViewDTO('View3', 'NonexistentView', undefined, 'es', undefined, "Content 4", undefined);
-      expect(() => populateHyperViewDTO(viewNotFound, components)).toThrowError(
+      const viewNotFound = createViewDTO('View3', 'NonexistentView', undefined, 'es', undefined, "Content 4", undefined, undefined);
+      expect(() => populateViewDTO(viewNotFound, components, '')).toThrowError(
         new TypeError('Could not find view by name NonexistentView to extend for View3')
       );
     });

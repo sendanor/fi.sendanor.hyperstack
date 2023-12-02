@@ -1,21 +1,21 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import { some } from "../../../hg/core/functions/some";
-import { explainHyperViewDTO, HyperViewDTO, isHyperViewDTO } from "../dto/HyperViewDTO";
-import { HyperDTO } from "../dto/HyperDTO";
+import { explainViewDTO, ViewDTO, isViewDTO } from "../dto/ViewDTO";
+import { AppDTO } from "../dto/AppDTO";
 import { HttpService } from "../../../hg/core/HttpService";
 import { LogService } from "../../../hg/core/LogService";
 import { ReadonlyJsonAny } from "../../../hg/core/Json";
-import { explainHyperComponentDTO, HyperComponentDTO, isHyperComponentDTO } from "../dto/HyperComponentDTO";
-import { explainHyperRouteDTO, HyperRouteDTO, isHyperRouteDTO } from "../dto/HyperRouteDTO";
+import { explainComponentDTO, ComponentDTO, isComponentDTO } from "../dto/ComponentDTO";
+import { explainRouteDTO, RouteDTO, isRouteDTO } from "../dto/RouteDTO";
 
-const LOG = LogService.createLogger('populateHyperDTO');
+const LOG = LogService.createLogger('populateAppDTO');
 
 export async function fetchMissingViews (
-    views: readonly HyperViewDTO[],
+    views: readonly ViewDTO[],
     baseUrl: string,
-) : Promise<HyperViewDTO[]> {
-    let newViews : HyperViewDTO[] = [];
+) : Promise<ViewDTO[]> {
+    let newViews : ViewDTO[] = [];
     for (const view of views) {
 
         let extend: string | undefined = view.extend;
@@ -37,20 +37,20 @@ export async function fetchMissingViews (
             // Skip if we already have the resource
             if (some(
                 [...newViews, ...views],
-                (item: HyperViewDTO) : boolean => item.name === extend
+                (item: ViewDTO) : boolean => item.name === extend
             )) {
                 continue;
             }
 
             // Fetch missing resources
-            const response: ReadonlyJsonAny | HyperViewDTO | undefined = await HttpService.getJson(extend);
-            if ( isHyperViewDTO(response) ) {
+            const response: ReadonlyJsonAny | ViewDTO | undefined = await HttpService.getJson(extend);
+            if ( isViewDTO(response) ) {
                 newViews.push( {
-                    ...(response as HyperViewDTO),
+                    ...(response as ViewDTO),
                     name: extend,
                 } );
             } else {
-                LOG.debug( `response: ${explainHyperViewDTO(response)}: `, response );
+                LOG.debug( `response: ${explainViewDTO(response)}: `, response );
                 throw new TypeError( `Response was not HyperViewDTO` );
             }
 
@@ -62,10 +62,10 @@ export async function fetchMissingViews (
 }
 
 export async function fetchMissingComponents (
-    components : readonly HyperComponentDTO[],
+    components : readonly ComponentDTO[],
     baseUrl : string,
-) : Promise<HyperComponentDTO[]> {
-    let newComponents : HyperComponentDTO[] = [];
+) : Promise<ComponentDTO[]> {
+    let newComponents : ComponentDTO[] = [];
     for (const component of components) {
         newComponents.push(component);
         let extend: string | undefined = component.extend;
@@ -81,20 +81,20 @@ export async function fetchMissingComponents (
             // Skip if we already have the resource
             if (some(
                 [...newComponents, ...components],
-                (item: HyperComponentDTO) : boolean => item.name === extend
+                (item: ComponentDTO) : boolean => item.name === extend
             )) {
                 continue;
             }
 
             // Fetch missing resources
             const response: ReadonlyJsonAny | undefined = await HttpService.getJson(extend);
-            if ( isHyperComponentDTO( response ) ) {
+            if ( isComponentDTO( response ) ) {
                 newComponents.push( {
-                    ...(response as HyperComponentDTO),
+                    ...(response as ComponentDTO),
                     name: extend
                 } );
             } else {
-                LOG.debug( `response: ${explainHyperComponentDTO( response )}: `, response );
+                LOG.debug( `response: ${explainComponentDTO( response )}: `, response );
                 throw new TypeError( `Response was not HyperComponentDTO` );
             }
 
@@ -104,10 +104,10 @@ export async function fetchMissingComponents (
 }
 
 export async function fetchMissingRoutes (
-    routes : readonly HyperRouteDTO[],
+    routes : readonly RouteDTO[],
     baseUrl: string,
-): Promise<HyperRouteDTO[]> {
-    let newRoutes : HyperRouteDTO[] = [];
+): Promise<RouteDTO[]> {
+    let newRoutes : RouteDTO[] = [];
     for (const route of routes) {
         newRoutes.push(route);
         let extend: string | undefined = route.extend;
@@ -123,20 +123,20 @@ export async function fetchMissingRoutes (
             // Skip if we already have the resource
             if (some(
                 [...newRoutes, ...routes],
-                (item: HyperRouteDTO) : boolean => item.name === extend
+                (item: RouteDTO) : boolean => item.name === extend
             )) {
                 continue;
             }
 
             // Fetch missing resources
             const response: ReadonlyJsonAny | undefined = await HttpService.getJson(extend);
-            if ( isHyperRouteDTO( response ) ) {
+            if ( isRouteDTO( response ) ) {
                 newRoutes.push( {
-                    ...(response as HyperRouteDTO),
+                    ...(response as RouteDTO),
                     name: extend
                 } );
             } else {
-                LOG.debug( `response: ${explainHyperRouteDTO( response )}: `, response );
+                LOG.debug( `response: ${explainRouteDTO( response )}: `, response );
                 throw new TypeError( `Response was not HyperRouteDTO` );
             }
             newRoutes.push(response);
@@ -146,10 +146,10 @@ export async function fetchMissingRoutes (
     return newRoutes;
 }
 
-export async function populateHyperDTO (
-    hyper: HyperDTO,
+export async function populateAppDTO (
+    hyper: AppDTO,
     baseUrl: string | undefined = undefined,
-): Promise<HyperDTO> {
+): Promise<AppDTO> {
 
     baseUrl = baseUrl ?? hyper.publicUrl ?? '';
 
