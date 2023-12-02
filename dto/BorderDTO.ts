@@ -1,6 +1,5 @@
 // Copyright (c) 2023. Heusala Group Oy <info@heusalagroup.fi>. All rights reserved.
 
-import { BorderStyle } from "../../../hg/core/style/compiled/BorderStyle";
 import { isArray } from "../../../hg/core/types/Array";
 import { explain, explainNot, explainOk, explainOr, explainProperty } from "../../../hg/core/types/explain";
 import { explainNoOtherKeysInDevelopment, hasNoOtherKeysInDevelopment } from "../../../hg/core/types/OtherKeys";
@@ -8,7 +7,7 @@ import { explainRegularObject, isRegularObject } from "../../../hg/core/types/Re
 import { isUndefined } from "../../../hg/core/types/undefined";
 import { ColorDTO, explainColorDTOOrUndefined, isColorDTOOrUndefined } from "./ColorDTO";
 import { explainSizeDTOOrUndefined, isSizeDTOOrUndefined, SizeDTO } from "./SizeDTO";
-import { explainBorderStyleOrUndefined, isBorderStyleOrUndefined } from "./types/BorderStyle";
+import { BorderStyle, explainBorderStyleOrUndefined, isBorderStyleOrUndefined } from "./types/BorderStyle";
 
 export interface BorderDTO {
 
