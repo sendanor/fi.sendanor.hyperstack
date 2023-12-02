@@ -2,11 +2,7 @@
 
 import { ReadonlyJsonObject } from "../../../hg/core/Json";
 import { ColorDTO, createColorDTO } from "../dto/ColorDTO";
-import { SizeDTO } from "../dto/SizeDTO";
 import { Color } from "./types/Color";
-import { FontStyle } from "./types/FontStyle";
-import { FontVariant } from "./types/FontVariant";
-import { FontWeight } from "./types/FontWeight";
 
 /**
  * Color entity.

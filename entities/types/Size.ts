@@ -5,7 +5,6 @@ import { isFunction } from "../../../../hg/core/types/Function";
 import { isObject } from "../../../../hg/core/types/Object";
 import { SizeDTO } from "../../dto/SizeDTO";
 import { JsonSerializable } from "./JsonSerializable";
-import { Style } from "./Style";
 import { UnitType } from "./UnitType";
 
 /**

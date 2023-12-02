@@ -98,14 +98,14 @@ export interface Font extends JsonSerializable {
     /**
      * Get a font family.
      */
-    getFontFamily () : string;
+    getFontFamily () : string | undefined;
 
     /**
      * Set a font family.
      *
      * @param value
      */
-    setFontFamily (value : string) : this;
+    setFontFamily (value : string | undefined) : this;
 
 }
 

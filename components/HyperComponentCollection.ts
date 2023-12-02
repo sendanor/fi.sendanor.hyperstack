@@ -15,7 +15,7 @@ import { registerFormComponent } from "./form/FormComponent";
 import { registerHeadingComponent } from "./heading/HeadingComponent";
 import { registerImageComponent } from "./image/ImageComponent";
 import { registerLinkButtonComponent } from "./linkButton/LinkButtonComponent";
-import { registerSubTitleComponent } from "./subTitle/SubTItleComponent";
+import { registerSubTitleComponent } from "./subTitle/SubTitleComponent";
 import { registerTableColumnComponent } from "./table/column/TableColumnComponent";
 import { registerTableRowComponent } from "./table/row/TableRowComponent";
 import { registerTableComponent } from "./table/TableComponent";
