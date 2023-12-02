@@ -7,7 +7,7 @@ import { explainRegularObject, isRegularObject } from "../../../hg/core/types/Re
 import { explainString, isString } from "../../../hg/core/types/String";
 import { isUndefined } from "../../../hg/core/types/undefined";
 
-export interface HyperAction {
+export interface ActionDTO {
 
     /**
      * Label of the action
@@ -42,7 +42,7 @@ export interface HyperAction {
      * property. The response from the first action will be provided as the body
      * for this action if the success action does not define one.
      */
-    readonly successRedirect : string | HyperAction | undefined;
+    readonly successRedirect : string | ActionDTO | undefined;
 
     /**
      * The action when the response was unsuccessful.
@@ -53,18 +53,18 @@ export interface HyperAction {
      * property. The response from the first action will be provided as the body
      * for this action if the success action does not define one.
      */
-    readonly errorRedirect ?: string | HyperAction | undefined;
+    readonly errorRedirect ?: string | ActionDTO | undefined;
 
 }
 
-export function createHyperAction (
+export function createActionDTO (
     label : string,
     target : string,
     method : string,
     body : ReadonlyJsonObject | undefined,
-    successRedirect : string | HyperAction | undefined,
-    errorRedirect : string | HyperAction | undefined,
-) : HyperAction {
+    successRedirect : string | ActionDTO | undefined,
+    errorRedirect : string | ActionDTO | undefined,
+) : ActionDTO {
     return {
         label,
         target,
@@ -75,7 +75,7 @@ export function createHyperAction (
     };
 }
 
-export function isHyperAction (value: unknown) : value is HyperAction {
+export function isActionDTO (value: unknown) : value is ActionDTO {
     return (
         isRegularObject(value)
         && hasNoOtherKeysInDevelopment(value, [
@@ -90,12 +90,12 @@ export function isHyperAction (value: unknown) : value is HyperAction {
         && isString(value?.target)
         && isString(value?.method)
         && isReadonlyJsonObjectOrUndefined(value?.body)
-        && isHyperActionOrStringOrUndefined(value?.successRedirect)
-        && isHyperActionOrStringOrUndefined(value?.errorRedirect)
+        && isActionDTOOrStringOrUndefined(value?.successRedirect)
+        && isActionDTOOrStringOrUndefined(value?.errorRedirect)
     );
 }
 
-export function explainHyperAction (value: any) : string {
+export function explainActionDTO (value: any) : string {
     return explain(
         [
             explainRegularObject(value),
@@ -111,41 +111,41 @@ export function explainHyperAction (value: any) : string {
             , explainProperty("target", explainString(value?.target))
             , explainProperty("method", explainString(value?.method))
             , explainProperty("body", explainString(value?.body))
-            , explainProperty("successRedirect", explainHyperActionOrStringOrUndefined(value?.successRedirect))
-            , explainProperty("errorRedirect", explainHyperActionOrStringOrUndefined(value?.errorRedirect))
+            , explainProperty("successRedirect", explainActionDTOOrStringOrUndefined(value?.successRedirect))
+            , explainProperty("errorRedirect", explainActionDTOOrStringOrUndefined(value?.errorRedirect))
         ]
     );
 }
 
-export function stringifyHyperAction (value : HyperAction) : string {
+export function stringifyActionDTO (value : ActionDTO) : string {
     return `HyperAction(${value})`;
 }
 
-export function parseHyperAction (value: unknown) : HyperAction | undefined {
-    if (isHyperAction(value)) return value;
+export function parseActionDTO (value: unknown) : ActionDTO | undefined {
+    if (isActionDTO(value)) return value;
     return undefined;
 }
 
-export function isHyperActionOrUndefined (value: unknown): value is HyperAction | undefined {
-    return isUndefined(value) || isHyperAction(value);
+export function isActionDTOOrUndefined (value: unknown): value is ActionDTO | undefined {
+    return isUndefined(value) || isActionDTO(value);
 }
 
-export function explainHyperActionOrUndefined (value: unknown): string {
-    return isHyperActionOrUndefined(value) ? explainOk() : explainNot(explainOr(['HyperAction', 'undefined']));
+export function explainActionDTOOrUndefined (value: unknown): string {
+    return isActionDTOOrUndefined(value) ? explainOk() : explainNot(explainOr(['HyperAction', 'undefined']));
 }
 
-export function isHyperActionOrStringOrUndefined (value: unknown): value is string | HyperAction | undefined {
-    return isUndefined(value) || isString(value) || isHyperAction(value);
+export function isActionDTOOrStringOrUndefined (value: unknown): value is string | ActionDTO | undefined {
+    return isUndefined(value) || isString(value) || isActionDTO(value);
 }
 
-export function explainHyperActionOrStringOrUndefined (value: unknown): string {
-    return isHyperActionOrStringOrUndefined(value) ? explainOk() : explainNot(explainOr(['HyperAction', 'undefined', 'string']));
+export function explainActionDTOOrStringOrUndefined (value: unknown): string {
+    return isActionDTOOrStringOrUndefined(value) ? explainOk() : explainNot(explainOr(['HyperAction', 'undefined', 'string']));
 }
 
-export function isHyperActionOrString (value: unknown): value is HyperAction | string {
-    return isString(value) || isHyperAction(value);
+export function isActionDTOOrString (value: unknown): value is ActionDTO | string {
+    return isString(value) || isActionDTO(value);
 }
 
-export function explainHyperActionOrString (value: unknown): string {
-    return isHyperActionOrString(value) ? explainOk() : explainNot(explainOr(['HyperAction', 'string']));
+export function explainActionDTOOrString (value: unknown): string {
+    return isActionDTOOrString(value) ? explainOk() : explainNot(explainOr(['HyperAction', 'string']));
 }

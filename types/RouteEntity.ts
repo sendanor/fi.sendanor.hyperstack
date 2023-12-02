@@ -2,8 +2,22 @@
 
 import { ReadonlyJsonObject } from "../../../hg/core/Json";
 import { createHyperRouteDTO, HyperRouteDTO } from "../dto/HyperRouteDTO";
+import { Extendable } from "./Extendable";
+import { JsonSerializable } from "./JsonSerializable";
 
-export class RouteEntity {
+export class RouteEntity
+    implements
+        Extendable,
+        JsonSerializable
+{
+
+    public static create (
+        name : string,
+        path : string,
+    ) : RouteEntity {
+        return new RouteEntity( name, path );
+    }
+
 
     protected _name : string;
     protected _path : string;
@@ -22,6 +36,9 @@ export class RouteEntity {
         this._extend = undefined;
     }
 
+    /**
+     * @inheritDoc
+     */
     public getName () : string {
         return this._name;
     }
@@ -30,8 +47,19 @@ export class RouteEntity {
         return this._path;
     }
 
+    /**
+     * @inheritDoc
+     */
     public getExtend () : string | undefined {
         return this._extend;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public extend (name : string) : this {
+        this._extend = name;
+        return this;
     }
 
     public getView () : string | undefined {
@@ -72,24 +100,18 @@ export class RouteEntity {
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public valueOf() : ReadonlyJsonObject {
         return this.toJSON();
     }
 
+    /**
+     * @inheritDoc
+     */
     public toJSON () : ReadonlyJsonObject {
         return this.getDTO() as unknown as ReadonlyJsonObject;
-    }
-
-    public extend (name : string) : this {
-        this._extend = name;
-        return this;
-    }
-
-    public static create (
-        name : string,
-        path : string,
-    ) : RouteEntity {
-        return new RouteEntity( name, path );
     }
 
 }

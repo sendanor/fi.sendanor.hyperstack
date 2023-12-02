@@ -14,5 +14,6 @@ export function createTextComponent (
         HyperComponent.Article,
         [],
         undefined,
+        undefined,
     );
 }

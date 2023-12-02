@@ -16,5 +16,6 @@ export function createText (
             text
         ],
         undefined,
+        undefined,
     );
 }

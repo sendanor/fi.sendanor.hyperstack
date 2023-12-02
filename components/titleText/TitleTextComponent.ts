@@ -14,7 +14,8 @@ export function createTitleTextComponent (
         TITLE_TEXT_COMPONENT_NAME,
         HyperComponent.H1,
         [],
-        undefined
+        undefined,
+        undefined,
     );
 }
 

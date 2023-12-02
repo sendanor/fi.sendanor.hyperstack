@@ -14,7 +14,8 @@ export function createArticleComponent (
         ARTICLE_COMPONENT_NAME,
         HyperComponent.Article,
         [],
-        undefined
+        undefined,
+        undefined,
     );
 }
 

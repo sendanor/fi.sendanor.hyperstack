@@ -14,7 +14,8 @@ export function createImageComponent (
         IMAGE_COMPONENT_NAME,
         HyperComponent.Image,
         [],
-        undefined
+        undefined,
+        undefined,
     );
 }
 

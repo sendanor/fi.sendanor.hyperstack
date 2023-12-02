@@ -8,8 +8,23 @@ import { HyperSeoDTO } from "../dto/HyperSeoDTO";
 import { HyperStyleDTO } from "../dto/HyperStyleDTO";
 import { createHyperViewDTO, HyperViewDTO } from "../dto/HyperViewDTO";
 import { ComponentEntity, isComponentEntity } from "./ComponentEntity";
+import { Extendable } from "./Extendable";
+import { JsonSerializable } from "./JsonSerializable";
+import { View } from "./View";
 
-export class ViewEntity {
+/**
+ * Entity for Hyper views.
+ */
+export class ViewEntity
+    implements
+        View
+{
+
+    public static create (name : string) : ViewEntity {
+        return new ViewEntity(
+            name,
+        );
+    }
 
     protected _name : string;
     protected _extend : string | undefined;
@@ -28,10 +43,31 @@ export class ViewEntity {
         this._content = undefined;
     }
 
+    /**
+     * @inheritDoc
+     */
     public getName () : string {
         return this._name;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public getExtend () : string | undefined {
+        return this._extend;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public extend (name : string) : this {
+        this._extend = name;
+        return this;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public getDTO () : HyperViewDTO {
         return createHyperViewDTO(
             this._name,
@@ -45,19 +81,23 @@ export class ViewEntity {
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public valueOf() : ReadonlyJsonObject {
         return this.toJSON();
     }
 
+    /**
+     * @inheritDoc
+     */
     public toJSON () : ReadonlyJsonObject {
         return this.getDTO() as unknown as ReadonlyJsonObject;
     }
 
-    public extend (name : string) : this {
-        this._extend = name;
-        return this;
-    }
-
+    /**
+     * @inheritDoc
+     */
     public add (value : string | HyperComponentDTO | readonly (string|HyperComponentDTO|ComponentEntity)[] | ComponentEntity ) : this {
 
         if (isComponentEntity(value)) {
@@ -82,34 +122,46 @@ export class ViewEntity {
         return this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public addText (value : string) : this {
         return this.add(value);
     }
 
-    public static create (name : string) : ViewEntity {
-        return new ViewEntity(
-            name,
-        );
-    }
-
+    /**
+     * @inheritDoc
+     */
     public getLanguage () : string | undefined {
         return this._language;
     }
 
+    /**
+     * @inheritDoc
+     */
     public setLanguage (value : string) : this {
         this._language = value;
         return this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public getPublicUrl () : string | undefined {
         return this._publicUrl;
     }
 
+    /**
+     * @inheritDoc
+     */
     public setPublicUrl (value : string) : this {
         this._publicUrl = value;
         return this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public setMeta (value: ReadonlyJsonObject) : this {
         if (this._meta) {
             this._meta = {
@@ -125,11 +177,7 @@ export class ViewEntity {
     }
 
     /**
-     * Set automatic refresh of the view after a timeout.
-     *
-     * See also `.setTimestamp()`.
-     *
-     * @param value
+     * @inheritDoc
      */
     public setRefresh (value: number) : this {
         return this.setMeta({
@@ -138,22 +186,14 @@ export class ViewEntity {
     }
 
     /**
-     * Set automatic refresh of the view after a timeout.
-     *
-     * @param value
+     * @inheritDoc
      */
     public setIntervalRefresh (value: number) : this {
         return this.setRefresh(value).setTimestamp(new Date().toISOString());
     }
 
     /**
-     * Set timestamp of the view.
-     *
-     * This should be in ISO format like `'2023-11-29T21:38:38.483Z'`.
-     *
-     * Together with `.setRefresh()` this enables the view to update by intervals.
-     *
-     * @param value
+     * @inheritDoc
      */
     public setTimestamp (value: string) : this {
         return this.setMeta({

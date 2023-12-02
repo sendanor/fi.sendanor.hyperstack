@@ -13,7 +13,8 @@ export function createTableColumnComponent () : TableColumnComponent {
         TABLE_COLUMN_COMPONENT_NAME,
         HyperComponent.TableColumn,
         [],
-        undefined
+        undefined,
+        undefined,
     );
 }
 

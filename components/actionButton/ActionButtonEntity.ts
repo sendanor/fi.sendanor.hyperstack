@@ -3,7 +3,7 @@
 import { ReadonlyJsonAny } from "../../../../hg/core/Json";
 import { isString } from "../../../../hg/core/types/String";
 import { ComponentEntity } from "../../types/ComponentEntity";
-import { createHyperAction, HyperAction } from "../../types/HyperAction";
+import { createActionDTO, ActionDTO } from "../../types/ActionDTO";
 import { ACTION_BUTTON_COMPONENT_NAME } from "./ActionButtonComponent";
 
 export class ActionButtonEntity extends ComponentEntity {
@@ -19,13 +19,13 @@ export class ActionButtonEntity extends ComponentEntity {
 
     public static createButton (
         name: string,
-        dto: HyperAction | string,
+        dto: ActionDTO | string,
     ) : ActionButtonEntity {
 
         if (isString(dto)) {
             return this.createButton(
                 name,
-                createHyperAction(
+                createActionDTO(
                     '',
                     dto,
                     'link',

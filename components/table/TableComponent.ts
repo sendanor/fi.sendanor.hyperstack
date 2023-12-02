@@ -14,7 +14,8 @@ export function createTableComponent (
         TABLE_COMPONENT_NAME,
         HyperComponent.Table,
         [],
-        undefined
+        undefined,
+        undefined,
     );
 }
 

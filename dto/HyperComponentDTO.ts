@@ -7,6 +7,7 @@ import { explainNoOtherKeysInDevelopment, hasNoOtherKeysInDevelopment } from "..
 import { explainRegularObject, isRegularObject } from "../../../hg/core/types/RegularObject";
 import { explainString, explainStringOrUndefined, isString, isStringOrUndefined } from "../../../hg/core/types/String";
 import { isUndefined } from "../../../hg/core/types/undefined";
+import { explainHyperStyleDTOOrUndefined, HyperStyleDTO, isHyperStyleDTOOrUndefined } from "./HyperStyleDTO";
 import { DTOWithContent } from "./types/DTOWithContent";
 import { DTOWithOptionalExtend } from "./types/DTOWithOptionalExtend";
 import { DTOWithName } from "./types/DTOWithName";
@@ -39,6 +40,7 @@ export interface HyperComponentDTO
     readonly content  : HyperComponentContent;
     readonly extend  ?: string;
     readonly meta    ?: ReadonlyJsonObject;
+    readonly style   ?: HyperStyleDTO;
 }
 
 export function createHyperComponentDTO (
@@ -46,12 +48,14 @@ export function createHyperComponentDTO (
     extend    : string | undefined,
     content   : HyperComponentContent,
     meta      : ReadonlyJsonObject | undefined,
+    style     : HyperStyleDTO | undefined,
 ) : HyperComponentDTO {
     return {
         name,
         extend,
         content,
         meta,
+        style,
     };
 }
 
@@ -63,11 +67,13 @@ export function isHyperComponentDTO (value: unknown) : value is HyperComponentDT
             'extend',
             'content',
             'meta',
+            'style',
         ])
         && isString(value?.name)
         && isStringOrUndefined(value?.extend)
         && isHyperComponentContentOrUndefined(value?.content)
         && isReadonlyJsonObjectOrUndefined(value?.meta)
+        && isHyperStyleDTOOrUndefined(value?.style)
     );
 }
 
@@ -80,11 +86,13 @@ export function explainHyperComponentDTO (value: any) : string {
                 'extend',
                 'content',
                 'meta',
+                'style',
             ])
             , explainProperty("name", explainString(value?.name))
             , explainProperty("extend", explainStringOrUndefined(value?.extend))
             , explainProperty("content", explainHyperComponentContentOrUndefined(value?.content))
             , explainProperty("meta", explainReadonlyJsonObjectOrUndefined(value?.meta))
+            , explainProperty("style", explainHyperStyleDTOOrUndefined(value?.style))
         ]
     );
 }

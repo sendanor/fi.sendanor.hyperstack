@@ -6,8 +6,11 @@ import { explainNoOtherKeysInDevelopment, hasNoOtherKeysInDevelopment } from "..
 import { explainRegularObject, isRegularObject } from "../../../hg/core/types/RegularObject";
 import { explainString, isStringOrUndefined } from "../../../hg/core/types/String";
 import { isUndefined } from "../../../hg/core/types/undefined";
+import { ExtendableDTO } from "../types/ExtendableDTO";
 
-export interface HyperStyleDTO {
+export interface HyperStyleDTO extends ExtendableDTO {
+    readonly name             : string;
+    readonly extend          ?: string;
     readonly textColor       ?: string;
     readonly backgroundColor ?: string;
 }
@@ -22,10 +25,14 @@ export function getCssStyles (
 }
 
 export function createHyperStyleDTO (
+    name            : string,
+    extend          : string | undefined,
     textColor       : string | undefined,
     backgroundColor : string | undefined,
 ) : HyperStyleDTO {
     return {
+        name,
+        extend,
         textColor,
         backgroundColor,
     };
@@ -35,9 +42,13 @@ export function isHyperStyleDTO (value: unknown) : value is HyperStyleDTO {
     return (
         isRegularObject(value)
         && hasNoOtherKeysInDevelopment(value, [
+            'name',
+            'extend',
             'textColor',
             'backgroundColor',
         ])
+        && isStringOrUndefined(value?.name)
+        && isStringOrUndefined(value?.extend)
         && isStringOrUndefined(value?.textColor)
         && isStringOrUndefined(value?.backgroundColor)
     );
@@ -48,9 +59,13 @@ export function explainHyperStyleDTO (value: any) : string {
         [
             explainRegularObject(value),
             explainNoOtherKeysInDevelopment(value, [
+                'name',
+                'extend',
                 'textColor',
                 'backgroundColor',
             ])
+            , explainProperty("name", explainString(value?.name))
+            , explainProperty("extend", explainString(value?.extend))
             , explainProperty("textColor", explainString(value?.textColor))
             , explainProperty("backgroundColor", explainString(value?.backgroundColor))
         ]

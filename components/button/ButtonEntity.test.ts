@@ -10,7 +10,7 @@ describe('ButtonEntity', () => {
             const text = 'Click me';
             const eventName = 'buttonClick';
 
-            const expectedButton: ButtonEntity = {
+            const expectedButton: any = {
                 name: name,
                 content: [text],
                 extend: BUTTON_COMPONENT_NAME,

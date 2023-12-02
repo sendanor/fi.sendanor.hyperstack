@@ -7,11 +7,21 @@ import { HyperComponentDTO } from "../dto/HyperComponentDTO";
 import { createHyperDTO, HyperDTO } from "../dto/HyperDTO";
 import { HyperRouteDTO } from "../dto/HyperRouteDTO";
 import { HyperViewDTO } from "../dto/HyperViewDTO";
+import { App } from "./App";
 import { ComponentEntity, isComponentEntity } from "./ComponentEntity";
+import { Extendable } from "./Extendable";
+import { JsonSerializable } from "./JsonSerializable";
 import { isRouteEntity, RouteEntity } from "./RouteEntity";
 import { isViewEntity, ViewEntity } from "./ViewEntity";
 
-export class HyperEntity {
+export class AppEntity
+    implements
+        App
+{
+
+    public static create (name : string) : AppEntity {
+        return new this(name);
+    }
 
     protected _name : string;
     protected _extend : string | undefined;
@@ -20,10 +30,6 @@ export class HyperEntity {
     protected _routes : HyperRouteDTO[];
     protected _publicUrl ?: string;
     protected _language ?: string;
-
-    public static create (name : string) : HyperEntity {
-        return new this(name);
-    }
 
     protected constructor (
         name : string,
@@ -37,10 +43,16 @@ export class HyperEntity {
         this._language = undefined;
     }
 
+    /**
+     * @inheritDoc
+     */
     public getName () : string {
         return this._name;
     }
 
+    /**
+     * @inheritDoc
+     */
     public getDTO () : HyperDTO {
         return createHyperDTO(
             this._name,
@@ -53,19 +65,38 @@ export class HyperEntity {
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public valueOf() : ReadonlyJsonObject {
         return this.toJSON();
     }
 
+    /**
+     * @inheritDoc
+     */
     public toJSON () : ReadonlyJsonObject {
         return this.getDTO() as unknown as ReadonlyJsonObject;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public getExtend () : string | undefined {
+        return this._extend;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public extend (name : string) : this {
         this._extend = name;
         return this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public addRoute (
         route : HyperRouteDTO | RouteEntity | readonly (HyperRouteDTO | RouteEntity)[]
     ) : this {
@@ -84,6 +115,9 @@ export class HyperEntity {
         return this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public addView (view : HyperViewDTO | ViewEntity | readonly (HyperViewDTO | ViewEntity)[]) : this {
         if ( isArray(view) ) {
             forEach(
@@ -100,6 +134,9 @@ export class HyperEntity {
         return this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public addComponent (component : HyperComponentDTO | ComponentEntity | readonly (HyperComponentDTO | ComponentEntity)[] ) : this {
         if ( isArray(component) ) {
             forEach(
@@ -116,19 +153,31 @@ export class HyperEntity {
         return this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public getLanguage () : string | undefined {
         return this._language;
     }
 
+    /**
+     * @inheritDoc
+     */
     public setLanguage (value : string) : this {
         this._language = value;
         return this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public getPublicUrl () : string | undefined {
         return this._publicUrl;
     }
 
+    /**
+     * @inheritDoc
+     */
     public setPublicUrl (value : string) : this {
         this._publicUrl = value;
         return this;
@@ -136,7 +185,7 @@ export class HyperEntity {
 
 }
 
-export function isHyperEntity (value: unknown): value is HyperEntity {
-    return value instanceof HyperEntity;
+export function isHyperEntity (value: unknown): value is AppEntity {
+    return value instanceof AppEntity;
 }
 

@@ -17,6 +17,8 @@ export function createDefaultView () : DefaultView {
         undefined,
         undefined,
         createHyperStyleDTO(
+            "DarkTheme",
+            undefined,
             DARK_TEXT_COLOR,
             DARK_BACKGROUND_COLOR,
         ),

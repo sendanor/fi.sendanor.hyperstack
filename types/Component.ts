@@ -6,36 +6,177 @@ import { isObject } from "../../../hg/core/types/Object";
 import { TestCallbackNonStandard } from "../../../hg/core/types/TestCallback";
 import { HyperComponentDTO } from "../dto/HyperComponentDTO";
 import { ComponentEntityContent } from "./ComponentEntity";
+import { Extendable } from "./Extendable";
+import { JsonSerializable } from "./JsonSerializable";
+import { Style } from "./Style";
 
-export interface Component {
+/**
+ * Interface for Component entities.
+ */
+export interface Component
+    extends
+        Extendable,
+        JsonSerializable
+{
+
+    /**
+     * @inheritDoc
+     */
     getName () : string;
+
+    /**
+     * @inheritDoc
+     */
+    extend (name : string) : this;
+
+    /**
+     * @inheritDoc
+     */
+    getExtend () : string | undefined;
+
+    /**
+     * Get component DTO
+     */
     getDTO () : HyperComponentDTO;
+
+    /**
+     * Get value of component, e.g. a JSON object.
+     */
     valueOf() : ReadonlyJsonObject;
+
+    /**
+     * Get JSON presentation of the component.
+     */
     toJSON () : ReadonlyJsonObject;
+
+    /**
+     * Returns true if the meta property exists.
+     *
+     * @param name
+     */
     hasMeta (name : string) : boolean;
+
+    /**
+     * Returns the value of a meta property.
+     * @param name
+     */
     getMeta (name : string) : any | undefined;
+
+    /**
+     * Set internal meta object.
+     *
+     * @param value
+     */
     setMeta (value: ReadonlyJsonObject) : this;
 
+    /**
+     * Get a value of internal string meta property.
+     *
+     * @param name
+     */
     getMetaString (name : string) : string | undefined;
+
+    /**
+     * Set a value of internal string meta property.
+     *
+     * @param name
+     * @param value
+     */
     setMetaString (name : string, value: string) : this;
 
+    /**
+     * Get a value of internal number meta property.
+     *
+     * @param name
+     */
     getMetaNumber (name : string) : number | undefined;
+
+    /**
+     * Set a value of internal number meta property.
+     *
+     * @param name
+     * @param value
+     */
     setMetaNumber (name : string, value: number) : this;
 
+    /**
+     * Get a value of internal boolean meta property.
+     *
+     * @param name
+     */
     getMetaBoolean (name : string) : boolean | undefined;
+
+    /**
+     * Set a value of internal boolean meta property.
+     *
+     * @param name
+     * @param value
+     */
     setMetaBoolean (name : string, value: boolean) : this;
 
+    /**
+     * Get a value of internal object meta property.
+     *
+     * @param name
+     */
     getMetaObject (name : string) : ReadonlyJsonObject | null | undefined;
+
+    /**
+     * Set a value of internal object meta property.
+     *
+     * @param name
+     * @param value
+     */
     setMetaObject (name : string, value: ReadonlyJsonObject | null) : this;
 
+    /**
+     * Get a value of internal array meta property.
+     *
+     * @param name
+     */
     getMetaArray (name : string) : ReadonlyJsonArray | undefined;
+
+    /**
+     * Get a value of internal array meta property.
+     *
+     * @param name
+     */
     getMetaArrayOf<T extends ReadonlyJsonAny = ReadonlyJsonAny> (name : string, isItemOf : TestCallbackNonStandard) : ReadonlyJsonArrayOf<T> | undefined;
+
+    /**
+     * Set a value of internal array meta property.
+     *
+     * @param name
+     * @param value
+     */
     setMetaArray (name : string, value: ReadonlyJsonArray) : this;
 
-    extend (name : string) : this;
-    getExtend () : string | undefined;
+    /**
+     * Add inner content.
+     *
+     * @param value
+     */
     add (value : ComponentEntityContent) : this;
+
+    /**
+     * Add inner content as a string.
+     *
+     * @param value
+     */
     addText (value : string) : this;
+
+    /**
+     * Set internal style entity.
+     *
+     * @param style
+     */
+    setStyle (style : Style) : this;
+
+    /**
+     * Get internal style entity.
+     */
+    getStyle () : Style;
+
 }
 
 /**

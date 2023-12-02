@@ -7,7 +7,7 @@ describe('ArticleTextEntity', () => {
             const name = 'ArticleTextName';
             const text = 'Lorem ipsum dolor sit amet.';
 
-            const expectedArticleText: ArticleTextEntity = {
+            const expectedArticleText: any = {
                 name: name,
                 extend: ARTICLE_COMPONENT_NAME,
                 content: [text],

@@ -7,7 +7,7 @@ describe('TitleTextEntity', () => {
             const name = 'TitleTextName';
             const text = 'The Title';
 
-            const expectedTitleText: TitleTextEntity = {
+            const expectedTitleText: any = {
                 name: name,
                 extend: TITLE_TEXT_COMPONENT_NAME,
                 content: [text],

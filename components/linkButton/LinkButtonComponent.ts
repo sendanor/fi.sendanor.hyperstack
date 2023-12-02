@@ -14,7 +14,8 @@ export function createLinkButtonComponent (
         LINK_BUTTON_COMPONENT_NAME,
         HyperComponent.LinkButton,
         [],
-        {}
+        {},
+        undefined,
     );
 }
 

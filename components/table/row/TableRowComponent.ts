@@ -14,7 +14,8 @@ export function createTableRowComponent (
         TABLE_ROW_COMPONENT_NAME,
         HyperComponent.TableRow,
         [],
-        undefined
+        undefined,
+        undefined,
     );
 }
 

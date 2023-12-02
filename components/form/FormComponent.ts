@@ -14,7 +14,8 @@ export function createFormComponent (
         FORM_COMPONENT_NAME,
         HyperComponent.Form,
         [],
-        {}
+        {},
+        undefined,
     );
 }
 
