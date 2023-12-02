@@ -90,9 +90,9 @@ export class BorderEntity
     }
 
     public getCssStyles (): string {
-        return `${ SizeEntity.createFromDTO(this._width).getCssStyles() } ${
+        return `${ this._width ? SizeEntity.createFromDTO(this._width).getCssStyles() : '0' } ${
             this._style
-        } ${ ColorEntity.createFromDTO(this._color).getCssStyles() }`;
+        }${ this._color ? ' ' + ColorEntity.createFromDTO(this._color).getCssStyles() : '' }`;
     }
 
     public setStyle (value : BorderStyle) : this {

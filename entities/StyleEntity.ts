@@ -6,6 +6,10 @@ import { isArray } from "../../../hg/core/types/Array";
 import { isNumber } from "../../../hg/core/types/Number";
 import { isString } from "../../../hg/core/types/String";
 import {
+    BorderDTO,
+    createBorderDTO,
+} from "../dto/BorderDTO";
+import {
     ColorDTO,
     createColorDTO,
 } from "../dto/ColorDTO";
@@ -16,6 +20,10 @@ import {
 } from "../dto/SizeDTO";
 import { createStyleDTO } from "../dto/StyleDTO";
 import { StyleDTO } from "../dto/StyleDTO";
+import {
+    BorderEntity,
+    isBorderEntity,
+} from "./BorderEntity";
 import { ColorEntity, isColorEntity } from "./ColorEntity";
 import { isSizeEntity, SizeEntity } from "./SizeEntity";
 import { Style } from "./types/Style";
@@ -56,6 +64,14 @@ export class StyleEntity
      */
     protected _margin : SizeDTO | [SizeDTO, SizeDTO, SizeDTO, SizeDTO] | undefined;
 
+
+    /**
+     * Border element(s).
+     *
+     * @protected
+     */
+    protected _border : BorderDTO | [BorderDTO, BorderDTO, BorderDTO, BorderDTO] | undefined;
+
     /**
      * Text color.
      *
@@ -72,6 +88,7 @@ export class StyleEntity
 
     public static create () : StyleEntity {
         return new this(
+            undefined,
             undefined,
             undefined,
             undefined,
@@ -96,6 +113,7 @@ export class StyleEntity
             StyleEntity.prepareSizeDTO(style?.height),
             StyleEntity.prepareSizeListDTO(style?.margin),
             StyleEntity.prepareSizeListDTO(style?.padding),
+            StyleEntity.prepareBorderListDTO(style?.border),
         );
     }
 
@@ -117,6 +135,7 @@ export class StyleEntity
         height : SizeDTO | undefined,
         margin : SizeDTO | [SizeDTO, SizeDTO, SizeDTO, SizeDTO] | undefined,
         padding : SizeDTO | [SizeDTO, SizeDTO, SizeDTO, SizeDTO] | undefined,
+        border : BorderDTO | [BorderDTO, BorderDTO, BorderDTO, BorderDTO] | undefined,
     ) {
         this._textColor = textColor;
         this._backgroundColor = backgroundColor;
@@ -124,6 +143,7 @@ export class StyleEntity
         this._height = height;
         this._margin = margin;
         this._padding = padding;
+        this._border = border;
     }
 
     public static prepareColorDTO (value : ColorEntity | ColorDTO | string | undefined) : ColorDTO | undefined {
@@ -137,6 +157,21 @@ export class StyleEntity
         if (value === undefined) return undefined;
         if (isNumber(value)) return createSizeDTO(value, UnitType.PX);
         if (isSizeEntity(value)) return value.getDTO();
+        return value;
+    }
+
+    public static prepareBorderDTO (
+        value : BorderEntity | BorderDTO | number | undefined
+    ) : BorderDTO | undefined {
+        if (value === undefined) return undefined;
+        if (isNumber(value)) {
+            return createBorderDTO(
+                createSizeDTO(value),
+                undefined,
+                undefined,
+            );
+        }
+        if (isBorderEntity(value)) return value.getDTO();
         return value;
     }
 
@@ -201,6 +236,73 @@ export class StyleEntity
         return value;
     }
 
+    public static prepareBorderListDTO (
+        value : (
+            BorderEntity
+            | [
+                BorderEntity | BorderDTO | number | undefined,
+                BorderEntity | BorderDTO | number | undefined,
+            ]
+            | [
+                BorderEntity | BorderDTO | number | undefined,
+                BorderEntity | BorderDTO | number | undefined,
+                BorderEntity | BorderDTO | number | undefined,
+                BorderEntity | BorderDTO | number | undefined,
+            ]
+            | BorderDTO
+            | number
+            | undefined
+            )
+    ) : BorderDTO | [BorderDTO, BorderDTO, BorderDTO, BorderDTO] | undefined {
+        if (value === undefined) return undefined;
+        if (isNumber(value)) {
+            return createBorderDTO(
+                createSizeDTO( value ),
+                undefined,
+                undefined,
+            );
+        }
+        if (isBorderEntity(value)) return value.getDTO();
+        if (isArray(value)) {
+
+            if (value.length === 2) {
+                const top_and_bottom : BorderDTO | undefined = StyleEntity.prepareBorderDTO(value[0]);
+                if (!top_and_bottom) throw new TypeError(`prepareBorderListDTO: Invalid [undefined, *] array provided`);
+                const right_and_left: BorderDTO | undefined = StyleEntity.prepareBorderDTO(value[1]);
+                if (!right_and_left) throw new TypeError(`prepareBorderListDTO: Invalid [BorderDTO, undefined] array provided`);
+                return [
+                    top_and_bottom, // top
+                    right_and_left, // right
+                    top_and_bottom, // bottom
+                    right_and_left, // left
+                ];
+            }
+
+            if (value.length === 4) {
+                const top : BorderDTO | undefined = StyleEntity.prepareBorderDTO( value[0] );
+                if (!top) throw new TypeError(`prepareBorderListDTO: Invalid [undefined, *, *, *] array provided`);
+                const right : BorderDTO | undefined = StyleEntity.prepareBorderDTO( value[1] );
+                if (!right) throw new TypeError(`prepareBorderListDTO: Invalid [BorderDTO, undefined, *, *] array provided`);
+                const bottom : BorderDTO | undefined = StyleEntity.prepareBorderDTO( value[2] );
+                if (!bottom) throw new TypeError(`prepareBorderListDTO: Invalid [BorderDTO, BorderDTO, undefined, *] array provided`);
+                const left : BorderDTO | undefined = StyleEntity.prepareBorderDTO( value[3] );
+                if (!left) throw new TypeError(`prepareBorderListDTO: Invalid [BorderDTO, BorderDTO, BorderDTO, undefined] array provided`);
+                return [
+                    top,
+                    right,
+                    bottom,
+                    left,
+                ];
+            }
+
+            // Runtime assert, should not happen.
+            // @ts-ignore
+            throw new TypeError(`prepareBorderListDTO: Incorrect array length: ${value.length}`);
+
+        }
+        return value;
+    }
+
     /**
      * @inheritDoc
      */
@@ -212,6 +314,7 @@ export class StyleEntity
             this._height,
             this._margin,
             this._padding,
+            this._border,
         );
     }
 
