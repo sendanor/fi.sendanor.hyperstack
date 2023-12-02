@@ -144,16 +144,6 @@ export class StyleEntity
         value : (
             SizeEntity
             | [
-            ]
-            | [
-                SizeEntity | SizeDTO | number | undefined,
-            ]
-            | [
-                SizeEntity | SizeDTO | number | undefined,
-                SizeEntity | SizeDTO | number | undefined,
-            ]
-            | [
-                SizeEntity | SizeDTO | number | undefined,
                 SizeEntity | SizeDTO | number | undefined,
                 SizeEntity | SizeDTO | number | undefined,
             ]
@@ -172,13 +162,12 @@ export class StyleEntity
         if (isNumber(value)) return createSizeDTO(value, UnitType.PX);
         if (isSizeEntity(value)) return value.getDTO();
         if (isArray(value)) {
-            if (value.length === 0) return undefined;
-            if (value.length === 1) {
-                return StyleEntity.prepareSizeDTO(value[0]);
-            }
+
             if (value.length === 2) {
-                const top_and_bottom : SizeDTO = StyleEntity.prepareSizeDTO(value[0]);
-                const right_and_left: SizeDTO = StyleEntity.prepareSizeDTO(value[1]);
+                const top_and_bottom : SizeDTO | undefined = StyleEntity.prepareSizeDTO(value[0]);
+                if (!top_and_bottom) throw new TypeError(`prepareSizeListDTO: Invalid [undefined, *] array provided`);
+                const right_and_left: SizeDTO | undefined = StyleEntity.prepareSizeDTO(value[1]);
+                if (!right_and_left) throw new TypeError(`prepareSizeListDTO: Invalid [SizeDTO, undefined] array provided`);
                 return [
                     top_and_bottom, // top
                     right_and_left, // right
@@ -186,27 +175,28 @@ export class StyleEntity
                     right_and_left, // left
                 ];
             }
-            if (value.length === 3) {
-                const top : SizeDTO = StyleEntity.prepareSizeDTO(value[0]);
-                const right: SizeDTO = StyleEntity.prepareSizeDTO(value[1]);
-                const bottom: SizeDTO = StyleEntity.prepareSizeDTO(value[2]);
+
+            if (value.length === 4) {
+                const top : SizeDTO | undefined = StyleEntity.prepareSizeDTO( value[0] );
+                if (!top) throw new TypeError(`prepareSizeListDTO: Invalid [undefined, *, *, *] array provided`);
+                const right : SizeDTO | undefined = StyleEntity.prepareSizeDTO( value[1] );
+                if (!right) throw new TypeError(`prepareSizeListDTO: Invalid [SizeDTO, undefined, *, *] array provided`);
+                const bottom : SizeDTO | undefined = StyleEntity.prepareSizeDTO( value[2] );
+                if (!bottom) throw new TypeError(`prepareSizeListDTO: Invalid [SizeDTO, SizeDTO, undefined, *] array provided`);
+                const left : SizeDTO | undefined = StyleEntity.prepareSizeDTO( value[3] );
+                if (!left) throw new TypeError(`prepareSizeListDTO: Invalid [SizeDTO, SizeDTO, SizeDTO, undefined] array provided`);
                 return [
                     top,
                     right,
                     bottom,
-                    undefined, // left
+                    left,
                 ];
             }
-            const top : SizeDTO = StyleEntity.prepareSizeDTO(value[0]);
-            const right: SizeDTO = StyleEntity.prepareSizeDTO(value[1]);
-            const bottom: SizeDTO = StyleEntity.prepareSizeDTO(value[2]);
-            const left: SizeDTO = StyleEntity.prepareSizeDTO(value[3]);
-            return [
-                top,
-                right,
-                bottom,
-                left,
-            ];
+
+            // Runtime assert, should not happen.
+            // @ts-ignore
+            throw new TypeError(`prepareSizeListDTO: Incorrect array length: ${value.length}`);
+
         }
         return value;
     }
