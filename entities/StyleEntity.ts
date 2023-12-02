@@ -5,17 +5,53 @@ import { ReadonlyJsonObject } from "../../../hg/core/Json";
 import { isArray } from "../../../hg/core/types/Array";
 import { isNumber } from "../../../hg/core/types/Number";
 import { isString } from "../../../hg/core/types/String";
-import { BorderDTO, createBorderDTO } from "../dto/BorderDTO";
-import { ColorDTO, createColorDTO } from "../dto/ColorDTO";
-import { createFontDTO, FontDTO } from "../dto/FontDTO";
-import { createSizeDTO, isSizeDTO, SizeDTO } from "../dto/SizeDTO";
-import { createStyleDTO, StyleDTO } from "../dto/StyleDTO";
-import { BorderEntity, isBorderEntity } from "./BorderEntity";
-import { ColorEntity, isColorEntity } from "./ColorEntity";
-import { FontEntity, isFontEntity } from "./FontEntity";
-import { isSizeEntity, SizeEntity } from "./SizeEntity";
-import { Border, isBorder } from "./types/Border";
-import { Font, isFont } from "./types/Font";
+import {
+    BorderDTO,
+    createBorderDTO,
+    isBorderDTO,
+} from "../dto/BorderDTO";
+import {
+    ColorDTO,
+    createColorDTO,
+} from "../dto/ColorDTO";
+import {
+    createFontDTO,
+    FontDTO,
+} from "../dto/FontDTO";
+import {
+    createSizeDTO,
+    isSizeDTO,
+    SizeDTO,
+} from "../dto/SizeDTO";
+import {
+    createStyleDTO,
+    StyleDTO,
+} from "../dto/StyleDTO";
+import { BorderStyle } from "../dto/types/BorderStyle";
+import {
+    BorderEntity,
+    isBorderEntity,
+} from "./BorderEntity";
+import {
+    ColorEntity,
+    isColorEntity,
+} from "./ColorEntity";
+import {
+    FontEntity,
+    isFontEntity,
+} from "./FontEntity";
+import {
+    isSizeEntity,
+    SizeEntity,
+} from "./SizeEntity";
+import {
+    Border,
+    isBorder,
+} from "./types/Border";
+import {
+    Font,
+    isFont,
+} from "./types/Font";
 import { Style } from "./types/Style";
 import { UnitType } from "./types/UnitType";
 
@@ -213,6 +249,7 @@ export class StyleEntity
                 createSizeDTO(value),
                 undefined,
                 undefined,
+                undefined,
             );
         }
         if (isBorderEntity(value)) return value.getDTO();
@@ -303,6 +340,7 @@ export class StyleEntity
         if (isNumber(value)) {
             return createBorderDTO(
                 createSizeDTO( value ),
+                undefined,
                 undefined,
                 undefined,
             );
@@ -879,6 +917,8 @@ export class StyleEntity
             ...(this._height ? { height: SizeEntity.createFromDTO(this._height).getCssStyles() } : {}),
             ...(this._margin ? StyleEntity.prepareSizeListCssStyles("margin", this._margin) : {}),
             ...(this._padding ? StyleEntity.prepareSizeListCssStyles("padding", this._padding) : {}),
+            ...(this._border ? StyleEntity.prepareBorderListCssStyles( this._border ) : {}),
+            ...(this._font ? FontEntity.createFromDTO(this._font).getCssStyles() : {}),
         };
     }
 
@@ -899,6 +939,37 @@ export class StyleEntity
                     value,
                     (item: SizeDTO) : string => SizeEntity.createFromDTO(item).getCssStyles()
                 ).join(' ')
+            };
+        }
+
+        return {};
+
+    }
+
+    public static prepareBorderListCssStyles (
+        value : BorderDTO | [BorderDTO, BorderDTO, BorderDTO, BorderDTO] | undefined
+    ) : ReadonlyJsonObject {
+
+        if (isBorderDTO(value)) {
+            return {
+                border: BorderEntity.createFromDTO(value).getCssStyles()
+            };
+        }
+
+        if (isArray(value)) {
+            return {
+                borderStyle: map(
+                    value,
+                    (item: BorderDTO) : string => (BorderEntity.createFromDTO(item).getStyle() ?? BorderStyle.NONE),
+                ).join(' '),
+                borderWidth: map(
+                    value,
+                    (item: BorderDTO) : string => (BorderEntity.createFromDTO(item).getWidth() ?? SizeEntity.createZero()).getCssStyles(),
+                ).join(' '),
+                borderColor: map(
+                    value,
+                    (item: BorderDTO) : string => (BorderEntity.createFromDTO(item).getColor() ?? ColorEntity.createTransparent()).getCssStyles(),
+                ).join(' '),
             };
         }
 

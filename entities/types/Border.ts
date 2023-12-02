@@ -7,7 +7,10 @@ import { BorderDTO } from "../../dto/BorderDTO";
 import { ColorDTO } from "../../dto/ColorDTO";
 import { SizeDTO } from "../../dto/SizeDTO";
 import { BorderStyle } from "../../dto/types/BorderStyle";
+import { ColorEntity } from "../ColorEntity";
+import { Color } from "./Color";
 import { JsonSerializable } from "./JsonSerializable";
+import { Size } from "./Size";
 
 /**
  * Presents a border value
@@ -34,11 +37,17 @@ export interface Border extends JsonSerializable {
     setStyle (value : BorderStyle) : this;
     getStyle () : BorderStyle | undefined;
 
-    setWidth (value : SizeDTO | number | undefined) : this;
-    getWidth () : SizeDTO | undefined;
+    setWidth (value : Size | SizeDTO | number | undefined) : this;
+    getWidth () : Size | undefined;
+    getWidthDTO () : SizeDTO | undefined;
 
-    setColor (value : ColorDTO | string) : this;
-    getColor () : ColorDTO | undefined;
+    setRadius (value : Size | SizeDTO | number | undefined) : this;
+    getRadius () : Size | undefined;
+    getRadiusDTO () : SizeDTO | undefined;
+
+    setColor (value : Color | ColorDTO | ColorEntity | string) : this;
+    getColor () : Color | undefined;
+    getColorDTO () : ColorDTO | undefined;
 
 }
 

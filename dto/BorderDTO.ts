@@ -18,6 +18,8 @@ export interface BorderDTO {
 
     readonly width ?: SizeDTO | undefined;
 
+    readonly radius ?: SizeDTO | undefined;
+
     readonly color ?: ColorDTO | undefined;
 
 }
@@ -26,11 +28,13 @@ export function createBorderDTO (
     width : SizeDTO | undefined,
     style : BorderStyle | undefined,
     color : ColorDTO | undefined,
+    radius : SizeDTO | undefined,
 ) : BorderDTO {
     return {
         width,
         style,
         color,
+        radius,
     };
 }
 
@@ -41,8 +45,10 @@ export function isBorderDTO (value: unknown) : value is BorderDTO {
             'width',
             'style',
             'color',
+            'radius',
         ])
         && isSizeDTOOrUndefined(value?.width)
+        && isSizeDTOOrUndefined(value?.radius)
         && isBorderStyleOrUndefined(value?.style)
         && isColorDTOOrUndefined(value?.color)
     );
@@ -56,8 +62,10 @@ export function explainBorderDTO (value: any) : string {
                 'width',
                 'style',
                 'color',
+                'radius',
             ])
             , explainProperty("width", explainSizeDTOOrUndefined(value?.width))
+            , explainProperty("radius", explainSizeDTOOrUndefined(value?.radius))
             , explainProperty("style", explainBorderStyleOrUndefined(value?.style))
             , explainProperty("color", explainColorDTOOrUndefined(value?.color))
         ]

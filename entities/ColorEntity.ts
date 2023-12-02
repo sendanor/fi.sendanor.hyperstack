@@ -23,6 +23,16 @@ export class ColorEntity
     }
 
     /**
+     * Creates a transparent color entity.
+     *
+     * @param value
+     */
+    public static createTransparent (
+    ) : ColorEntity {
+        return new ColorEntity("transparent");
+    }
+
+    /**
      * Creates a color entity from DTO.
      *
      * @param value

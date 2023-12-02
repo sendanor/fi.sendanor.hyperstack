@@ -44,12 +44,12 @@ export function populateComponentDTO (
             extendComponent.extend,
             mergeComponentContent(extendContent, componentContent),
             {
-                ...extendComponent.meta,
-                ...component.meta,
+                ...(extendComponent.meta ? extendComponent.meta : {}),
+                ...(component.meta ? component.meta : {}),
             },
             {
-                ...extendComponent.style,
-                ...component.style,
+                ...(extendComponent.style ? extendComponent.style : {}),
+                ...(component.style ? component.style : {}),
             }
         ),
         components

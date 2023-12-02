@@ -8,9 +8,16 @@ import { ColorDTO, createColorDTO } from "../dto/ColorDTO";
 import { createSizeDTO, SizeDTO } from "../dto/SizeDTO";
 import { BorderStyle } from "../dto/types/BorderStyle";
 import { ColorEntity, isColorEntity } from "./ColorEntity";
-import { SizeEntity } from "./SizeEntity";
+import {
+    isSizeEntity,
+    SizeEntity,
+} from "./SizeEntity";
 import { Border } from "./types/Border";
 import { Color, isColor } from "./types/Color";
+import {
+    isSize,
+    Size,
+} from "./types/Size";
 
 /**
  * Border entity.
@@ -29,17 +36,20 @@ export class BorderEntity
     public static create (
         style ?: BorderStyle | undefined,
         width ?: SizeDTO | undefined,
-        color ?: ColorDTO | undefined
+        color ?: ColorDTO | undefined,
+        radius ?: SizeDTO | undefined,
     ) : BorderEntity {
         return new BorderEntity(
             style ?? BorderStyle.NONE,
             width,
             color,
+            radius,
         );
     }
 
     public static createEmptyBorder () : BorderEntity {
         return this.create(
+            undefined,
             undefined,
             undefined,
             undefined,
@@ -58,21 +68,25 @@ export class BorderEntity
             dto?.style,
             dto?.width,
             dto?.color,
+            dto?.radius,
         );
     }
 
     private _style : BorderStyle;
     private _width : SizeDTO | undefined;
+    private _radius : SizeDTO | undefined;
     private _color : ColorDTO | undefined;
 
     protected constructor (
         style : BorderStyle,
         width : SizeDTO | undefined,
-        color : ColorDTO | undefined
+        color : ColorDTO | undefined,
+        radius : SizeDTO | undefined,
     ) {
         this._style = style;
         this._width = width;
         this._color = color;
+        this._radius = radius;
     }
 
     /**
@@ -83,6 +97,7 @@ export class BorderEntity
             this._width,
             this._style,
             this._color,
+            this._radius,
         );
     }
 
@@ -115,8 +130,12 @@ export class BorderEntity
         return this._style;
     }
 
-    public setWidth (value : SizeDTO | number | undefined) : this {
-        if (isNumber(value)) {
+    public setWidth (value : Size | SizeEntity | SizeDTO | number | undefined) : this {
+        if (isSizeEntity(value)) {
+            this._width = value.getDTO();
+        } else if (isSize(value)) {
+            this._width = value.getDTO();
+        } else if (isNumber(value)) {
             this._width = createSizeDTO(value);
         } else {
             this._width = value;
@@ -124,11 +143,36 @@ export class BorderEntity
         return this;
     }
 
-    public getWidth () : SizeDTO | undefined {
+    public getWidth () : Size | undefined {
+        return this._width ? SizeEntity.createFromDTO(this._width) : undefined;
+    }
+
+    public getWidthDTO () : SizeDTO | undefined {
         return this._width;
     }
 
-    public setColor (value : Color | ColorDTO | string) : this {
+    public setRadius (value : Size | SizeEntity | SizeDTO | number | undefined) : this {
+        if (isSizeEntity(value)) {
+            this._radius = value.getDTO();
+        } else if (isSize(value)) {
+            this._radius = value.getDTO();
+        } else if (isNumber(value)) {
+            this._radius = createSizeDTO(value);
+        } else {
+            this._radius = value;
+        }
+        return this;
+    }
+
+    public getRadius () : Size | undefined {
+        return this._radius ? SizeEntity.createFromDTO(this._radius) : undefined;
+    }
+
+    public getRadiusDTO () : SizeDTO | undefined {
+        return this._radius;
+    }
+
+    public setColor (value : Color | ColorEntity | ColorDTO | string) : this {
         if (isString(value)) {
             this._color = createColorDTO( value );
         } else if (isColorEntity(value)) {
@@ -141,7 +185,11 @@ export class BorderEntity
         return this;
     }
 
-    public getColor () : ColorDTO | undefined {
+    public getColor () : Color | undefined {
+        return this._color ? ColorEntity.createFromDTO( this._color ) : undefined;
+    }
+
+    public getColorDTO () : ColorDTO | undefined {
         return this._color;
     }
 
