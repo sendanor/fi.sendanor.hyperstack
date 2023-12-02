@@ -414,7 +414,7 @@ export class StyleEntity
         if (this._margin === undefined) {
             const empty = SizeEntity.createZero().getDTO();
             this._margin = [
-                StyleEntity.prepareSizeDTO(value), // top
+                StyleEntity.prepareSizeDTO(value) ?? empty, // top
                 empty, // right
                 empty, // bottom
                 empty, // left
@@ -441,7 +441,7 @@ export class StyleEntity
             this._margin = [
                 empty, // top
                 empty, // right
-                StyleEntity.prepareSizeDTO(value), // bottom
+                StyleEntity.prepareSizeDTO(value) ?? empty, // bottom
                 empty, // left
             ];
         } else if (isArray(this._margin)) {
@@ -492,7 +492,7 @@ export class StyleEntity
                 empty, // top
                 empty, // right
                 empty, // bottom
-                StyleEntity.prepareSizeDTO(value), // left
+                StyleEntity.prepareSizeDTO(value) ?? empty, // left
             ];
         } else if (isArray(this._margin)) {
             this._margin[LEFT_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value) ?? SizeEntity.createZero().getDTO();
@@ -559,16 +559,16 @@ export class StyleEntity
         if (this._padding === undefined) {
             const empty = SizeEntity.createZero().getDTO();
             this._padding = [
-                StyleEntity.prepareSizeDTO(value), // top
+                StyleEntity.prepareSizeDTO(value) ?? empty, // top
                 empty, // right
                 empty, // bottom
                 empty, // left
             ];
         } else if (isArray(this._padding)) {
-            this._padding[TOP_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value);
+            this._padding[TOP_MARGIN_INDEX] = StyleEntity.prepareSizeDTO(value) ?? SizeEntity.createZero().getDTO();
         } else {
             this._padding = [
-                StyleEntity.prepareSizeDTO(value), // top
+                StyleEntity.prepareSizeDTO(value) ?? SizeEntity.createZero().getDTO(), // top
                 this._padding, // right
                 this._padding, // bottom
                 this._padding, // left
@@ -586,7 +586,7 @@ export class StyleEntity
             this._padding = [
                 empty, // top
                 empty, // right
-                StyleEntity.prepareSizeDTO(value), // bottom
+                StyleEntity.prepareSizeDTO(value) ?? empty, // bottom
                 empty, // left
             ];
         } else if (isArray(this._padding)) {
@@ -610,7 +610,7 @@ export class StyleEntity
             const empty = SizeEntity.createZero().getDTO();
             this._padding = [
                 empty, // top
-                StyleEntity.prepareSizeDTO(value), // right
+                StyleEntity.prepareSizeDTO(value) ?? empty, // right
                 empty, // bottom
                 empty, // left
             ];
@@ -781,7 +781,6 @@ export class StyleEntity
     public setLeftBorder (value: Border | BorderDTO | number | undefined) : this {
         const v = StyleEntity.prepareBorderDTO(value);
         if (this._border === undefined) {
-            if (v === undefined) return undefined;
             const empty = BorderEntity.createEmptyBorder().getDTO();
             this._border = [
                 empty, // top
