@@ -149,6 +149,22 @@ export interface Style
     getHeightDTO () : SizeDTO | undefined;
     setHeight (value: Size | SizeEntity | number | undefined) : this;
 
+    getMinWidth () : SizeEntity | undefined;
+    getMinWidthDTO () : SizeDTO | undefined;
+    setMinWidth (value: Size | SizeEntity | number | undefined) : this;
+
+    getMinHeight () : SizeEntity | undefined;
+    getMinHeightDTO () : SizeDTO | undefined;
+    setMinHeight (value: Size | SizeEntity | number | undefined) : this;
+
+    getMaxWidth () : SizeEntity | undefined;
+    getMaxWidthDTO () : SizeDTO | undefined;
+    setMaxWidth (value: Size | SizeEntity | number | undefined) : this;
+
+    getMaxHeight () : SizeEntity | undefined;
+    getMaxHeightDTO () : SizeDTO | undefined;
+    setMaxHeight (value: Size | SizeEntity | number | undefined) : this;
+
     getBackground () : Background | undefined;
     getBackgroundDTO () : BackgroundDTO | undefined;
     setBackground (value: Background | BackgroundEntity | number | undefined) : this;

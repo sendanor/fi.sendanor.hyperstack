@@ -100,6 +100,34 @@ export class StyleEntity
     protected _height : SizeDTO | undefined;
 
     /**
+     * Minimum width of the element.
+     *
+     * @protected
+     */
+    protected _minWidth : SizeDTO | undefined;
+
+    /**
+     * Maximum height of the element.
+     *
+     * @protected
+     */
+    protected _maxHeight : SizeDTO | undefined;
+
+    /**
+     * Maximum width of the element.
+     *
+     * @protected
+     */
+    protected _maxWidth : SizeDTO | undefined;
+
+    /**
+     * Minimum height of the element.
+     *
+     * @protected
+     */
+    protected _minHeight : SizeDTO | undefined;
+
+    /**
      * Padding of the element.
      *
      * @protected
@@ -160,6 +188,10 @@ export class StyleEntity
             undefined,
             undefined,
             undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
         );
     }
 
@@ -181,6 +213,10 @@ export class StyleEntity
             StyleEntity.prepareBorderListDTO(style?.border),
             StyleEntity.prepareFontDTO(style?.font),
             style?.textDecoration,
+            StyleEntity.prepareSizeDTO(style?.minWidth),
+            StyleEntity.prepareSizeDTO(style?.minHeight),
+            StyleEntity.prepareSizeDTO(style?.maxWidth),
+            StyleEntity.prepareSizeDTO(style?.maxHeight),
         );
     }
 
@@ -196,6 +232,10 @@ export class StyleEntity
      * @param border
      * @param font
      * @param textDecoration
+     * @param minWidth
+     * @param minHeight
+     * @param maxWidth
+     * @param maxHeight
      * @protected
      */
     protected constructor (
@@ -208,6 +248,10 @@ export class StyleEntity
         border : BorderDTO | [BorderDTO, BorderDTO, BorderDTO, BorderDTO] | undefined,
         font : FontDTO | undefined,
         textDecoration : TextDecorationDTO | undefined,
+        minWidth : SizeDTO | undefined,
+        minHeight : SizeDTO | undefined,
+        maxWidth : SizeDTO | undefined,
+        maxHeight : SizeDTO | undefined,
     ) {
         this._textColor = textColor;
         this._background = background;
@@ -218,6 +262,10 @@ export class StyleEntity
         this._border = border;
         this._font = font;
         this._textDecoration = textDecoration;
+        this._minWidth = minWidth;
+        this._minHeight = minHeight;
+        this._maxWidth = maxWidth;
+        this._maxHeight = maxHeight;
     }
 
     public static prepareBackgroundDTO (
@@ -515,6 +563,10 @@ export class StyleEntity
                     undefined,
                     undefined,
                     undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
                 ),
             )
         );
@@ -548,6 +600,10 @@ export class StyleEntity
             this._border,
             this._font,
             this._textDecoration,
+            this._minWidth,
+            this._minHeight,
+            this._maxWidth,
+            this._maxHeight,
         );
     }
 
@@ -609,6 +665,99 @@ export class StyleEntity
         this._height = StyleEntity.prepareSizeDTO(value);
         return this;
     }
+
+
+    /**
+     * @inheritDoc
+     */
+    public getMinWidth () : SizeEntity | undefined {
+        return this._minWidth ? SizeEntity.create(this._minWidth.value) : undefined;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public getMinWidthDTO () : SizeDTO | undefined {
+        return this._minWidth;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setMinWidth (value: Size | SizeEntity | number | undefined) : this {
+        this._minWidth = StyleEntity.prepareSizeDTO(value);
+        return this;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public getMinHeight () : SizeEntity | undefined {
+        return this._minHeight ? SizeEntity.create(this._minHeight.value) : undefined;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public getMinHeightDTO () : SizeDTO | undefined {
+        return this._minHeight;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setMinHeight (value: Size | SizeEntity | number | undefined) : this {
+        this._minHeight = StyleEntity.prepareSizeDTO(value);
+        return this;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public getMaxWidth () : SizeEntity | undefined {
+        return this._maxWidth ? SizeEntity.create(this._maxWidth.value) : undefined;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public getMaxWidthDTO () : SizeDTO | undefined {
+        return this._maxWidth;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setMaxWidth (value: Size | SizeEntity | number | undefined) : this {
+        this._maxWidth = StyleEntity.prepareSizeDTO(value);
+        return this;
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    public getMaxHeight () : SizeEntity | undefined {
+        return this._maxHeight ? SizeEntity.create(this._maxHeight.value) : undefined;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public getMaxHeightDTO () : SizeDTO | undefined {
+        return this._maxHeight;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setMaxHeight (value: Size | SizeEntity | number | undefined) : this {
+        this._maxHeight = StyleEntity.prepareSizeDTO(value);
+        return this;
+    }
+
 
     /**
      * @inheritDoc
@@ -1168,6 +1317,10 @@ export class StyleEntity
             ...(this._background ? BackgroundEntity.createFromDTO(this._background).getCssStyles() : {}),
             ...(this._width ? { width: SizeEntity.createFromDTO(this._width).getCssStyles() } : {}),
             ...(this._height ? { height: SizeEntity.createFromDTO(this._height).getCssStyles() } : {}),
+            ...(this._minWidth ? { width: SizeEntity.createFromDTO(this._minWidth).getCssStyles() } : {}),
+            ...(this._minHeight ? { height: SizeEntity.createFromDTO(this._minHeight).getCssStyles() } : {}),
+            ...(this._maxWidth ? { width: SizeEntity.createFromDTO(this._maxWidth).getCssStyles() } : {}),
+            ...(this._maxHeight ? { height: SizeEntity.createFromDTO(this._maxHeight).getCssStyles() } : {}),
             ...(this._margin ? StyleEntity.prepareSizeListCssStyles("margin", this._margin) : {}),
             ...(this._padding ? StyleEntity.prepareSizeListCssStyles("padding", this._padding) : {}),
             ...(this._border ? StyleEntity.prepareBorderListCssStyles( this._border ) : {}),

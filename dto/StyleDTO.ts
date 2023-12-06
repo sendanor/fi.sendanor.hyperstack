@@ -30,6 +30,10 @@ export interface StyleDTO {
     readonly font            ?: FontDTO;
     readonly textDecoration  ?: TextDecorationDTO;
     readonly background      ?: BackgroundDTO;
+    readonly minWidth           ?: SizeDTO;
+    readonly minHeight          ?: SizeDTO;
+    readonly maxWidth           ?: SizeDTO;
+    readonly maxHeight          ?: SizeDTO;
 }
 
 export function createStyleDTO (
@@ -42,6 +46,10 @@ export function createStyleDTO (
     border          : BorderDTO | [BorderDTO, BorderDTO] | [BorderDTO, BorderDTO, BorderDTO, BorderDTO] | undefined,
     font            : FontDTO | undefined,
     textDecoration  : TextDecorationDTO | undefined,
+    minWidth           : SizeDTO | undefined,
+    minHeight          : SizeDTO | undefined,
+    maxWidth           : SizeDTO | undefined,
+    maxHeight          : SizeDTO | undefined,
 ) : StyleDTO {
     return {
         ...(textColor !== undefined ? { textColor } : {}),
@@ -53,6 +61,10 @@ export function createStyleDTO (
         ...(border !== undefined ? { border } : {}),
         ...(font !== undefined ? { font } : {}),
         ...(textDecoration !== undefined ? { textDecoration } : {}),
+        ...(minWidth !== undefined ? { minWidth } : {}),
+        ...(minHeight !== undefined ? { minHeight } : {}),
+        ...(maxWidth !== undefined ? { maxWidth } : {}),
+        ...(maxHeight !== undefined ? { maxHeight } : {}),
     };
 }
 
@@ -62,6 +74,10 @@ export function isStyleDTO ( value: unknown) : value is StyleDTO {
         && hasNoOtherKeysInDevelopment(value, [
             'width',
             'height',
+            'minWidth',
+            'minHeight',
+            'maxWidth',
+            'maxHeight',
             'textColor',
             'margin',
             'padding',
@@ -73,6 +89,10 @@ export function isStyleDTO ( value: unknown) : value is StyleDTO {
         && isColorDTOOrUndefined(value?.textColor)
         && isSizeDTOOrUndefined(value?.width)
         && isSizeDTOOrUndefined(value?.height)
+        && isSizeDTOOrUndefined(value?.minWidth)
+        && isSizeDTOOrUndefined(value?.minHeight)
+        && isSizeDTOOrUndefined(value?.maxWidth)
+        && isSizeDTOOrUndefined(value?.maxHeight)
         && isMultiSizeDTOOrUndefined(value?.margin)
         && isMultiSizeDTOOrUndefined(value?.padding)
         && isMultiBorderDTOOrUndefined(value?.border)
@@ -89,6 +109,10 @@ export function explainStyleDTO ( value: any) : string {
             explainNoOtherKeysInDevelopment(value, [
                 'width',
                 'height',
+                'minWidth',
+                'minHeight',
+                'maxWidth',
+                'maxHeight',
                 'textColor',
                 'margin',
                 'padding',
@@ -99,6 +123,10 @@ export function explainStyleDTO ( value: any) : string {
             ])
             , explainProperty("width", explainSizeDTOOrUndefined(value?.width))
             , explainProperty("height", explainSizeDTOOrUndefined(value?.height))
+            , explainProperty("minWidth", explainSizeDTOOrUndefined(value?.minWidth))
+            , explainProperty("minHeight", explainSizeDTOOrUndefined(value?.minHeight))
+            , explainProperty("maxWidth", explainSizeDTOOrUndefined(value?.maxWidth))
+            , explainProperty("maxHeight", explainSizeDTOOrUndefined(value?.maxHeight))
             , explainProperty("textColor", explainColorDTOOrUndefined(value?.textColor))
             , explainProperty("margin", explainMultiSizeDTOOrUndefined(value?.margin))
             , explainProperty("padding", explainMultiSizeDTOOrUndefined(value?.padding))
