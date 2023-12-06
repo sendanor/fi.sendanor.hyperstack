@@ -62,7 +62,7 @@ export class SizeEntity
 
         return new SizeEntity(
             value,
-            isAutoSizeType(value) ? undefined : (unit ?? UnitType.PX),
+            unit ?? UnitType.PX,
         );
     }
 
@@ -275,7 +275,7 @@ export class SizeEntity
     /**
      * @inheritDoc
      */
-    public getUnitType () : UnitType {
+    public getUnitType () : UnitType | undefined {
         return this._unit;
     }
 

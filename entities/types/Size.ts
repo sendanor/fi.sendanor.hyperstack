@@ -46,7 +46,7 @@ export interface Size extends JsonSerializable {
     /**
      * Get unit type.
      */
-    getUnitType () : UnitType;
+    getUnitType () : UnitType | undefined;
 
     /**
      * Returns CSS styles.
