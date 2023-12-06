@@ -33,6 +33,7 @@ import {
     TextDecorationDTO,
 } from "../dto/TextDecorationDTO";
 import { BorderStyle } from "../dto/types/BorderStyle";
+import { BoxSizing } from "../dto/types/BoxSizing";
 import { TextAlign } from "../dto/types/TextAlign";
 import { BackgroundEntity, isBackgroundEntity } from "./BackgroundEntity";
 import {
@@ -164,6 +165,13 @@ export class StyleEntity
     protected _textAlign : TextAlign | undefined;
 
     /**
+     * Box sizing.
+     *
+     * @protected
+     */
+    protected _boxSizing : BoxSizing | undefined;
+
+    /**
      * Background options.
      *
      * @protected
@@ -187,6 +195,7 @@ export class StyleEntity
     public static create (
     ) : StyleEntity {
         return new this(
+            undefined,
             undefined,
             undefined,
             undefined,
@@ -227,6 +236,7 @@ export class StyleEntity
             StyleEntity.prepareSizeDTO(style?.maxWidth),
             StyleEntity.prepareSizeDTO(style?.maxHeight),
             style?.textAlign,
+            style?.boxSizing,
         );
     }
 
@@ -247,6 +257,7 @@ export class StyleEntity
      * @param maxWidth
      * @param maxHeight
      * @param textAlign
+     * @param boxSizing
      * @protected
      */
     protected constructor (
@@ -264,6 +275,7 @@ export class StyleEntity
         maxWidth : SizeDTO | undefined,
         maxHeight : SizeDTO | undefined,
         textAlign : TextAlign | undefined,
+        boxSizing : BoxSizing | undefined,
     ) {
         this._textColor = textColor;
         this._background = background;
@@ -279,6 +291,7 @@ export class StyleEntity
         this._maxWidth = maxWidth;
         this._maxHeight = maxHeight;
         this._textAlign = textAlign;
+        this._boxSizing = boxSizing;
     }
 
     public static prepareBackgroundDTO (
@@ -581,6 +594,7 @@ export class StyleEntity
                     undefined,
                     undefined,
                     undefined,
+                    undefined,
                 ),
             )
         );
@@ -619,6 +633,7 @@ export class StyleEntity
             this._maxWidth,
             this._maxHeight,
             this._textAlign,
+            this._boxSizing,
         );
     }
 
@@ -801,6 +816,21 @@ export class StyleEntity
      */
     public setTextAlign (value: TextAlign | undefined) : this {
         this._textAlign = value;
+        return this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public getBoxSizing () : BoxSizing | undefined {
+        return this._boxSizing;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setBoxSizing (value: BoxSizing | undefined) : this {
+        this._boxSizing = value;
         return this;
     }
 
@@ -1345,6 +1375,7 @@ export class StyleEntity
         return {
             ...(this._textColor ? { color: ColorEntity.createFromDTO(this._textColor).getCssStyles() } : {}),
             ...(this._textAlign ? { textAlign: this._textAlign } : {}),
+            ...(this._boxSizing ? { boxSizing: this._boxSizing } : {}),
             ...(this._background ? BackgroundEntity.createFromDTO(this._background).getCssStyles() : {}),
             ...(this._width ? { width: SizeEntity.createFromDTO(this._width).getCssStyles() } : {}),
             ...(this._height ? { height: SizeEntity.createFromDTO(this._height).getCssStyles() } : {}),

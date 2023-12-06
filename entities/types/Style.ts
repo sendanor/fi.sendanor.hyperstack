@@ -10,6 +10,7 @@ import { FontDTO } from "../../dto/FontDTO";
 import { SizeDTO } from "../../dto/SizeDTO";
 import { StyleDTO } from "../../dto/StyleDTO";
 import { TextDecorationDTO } from "../../dto/TextDecorationDTO";
+import { BoxSizing } from "../../dto/types/BoxSizing";
 import { TextAlign } from "../../dto/types/TextAlign";
 import { BackgroundEntity } from "../BackgroundEntity";
 import { BorderEntity } from "../BorderEntity";
@@ -70,6 +71,18 @@ export interface Style
      * @param value
      */
     setTextAlign (value: TextAlign | undefined) : this;
+
+    /**
+     * Get box sizing.
+     */
+    getBoxSizing () : BoxSizing | undefined;
+
+    /**
+     * Set box sizing.
+     *
+     * @param value
+     */
+    setBoxSizing (value: BoxSizing | undefined) : this;
 
     /**
      * Get background color

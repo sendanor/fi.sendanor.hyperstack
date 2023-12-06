@@ -19,6 +19,7 @@ import {
     isTextDecorationDTOOrUndefined,
     TextDecorationDTO,
 } from "./TextDecorationDTO";
+import { BoxSizing, explainBoxSizingOrUndefined, isBoxSizingOrUndefined } from "./types/BoxSizing";
 import { explainTextAlignOrUndefined, isTextAlignOrUndefined, TextAlign } from "./types/TextAlign";
 
 export interface StyleDTO {
@@ -36,6 +37,7 @@ export interface StyleDTO {
     readonly minHeight          ?: SizeDTO;
     readonly maxWidth           ?: SizeDTO;
     readonly maxHeight          ?: SizeDTO;
+    readonly boxSizing          ?: BoxSizing;
 }
 
 export function createStyleDTO (
@@ -53,6 +55,7 @@ export function createStyleDTO (
     maxWidth           : SizeDTO | undefined,
     maxHeight          : SizeDTO | undefined,
     textAlign          : TextAlign | undefined,
+    boxSizing          : BoxSizing | undefined,
 ) : StyleDTO {
     return {
         ...(textColor !== undefined ? { textColor } : {}),
@@ -69,6 +72,7 @@ export function createStyleDTO (
         ...(minHeight !== undefined ? { minHeight } : {}),
         ...(maxWidth !== undefined ? { maxWidth } : {}),
         ...(maxHeight !== undefined ? { maxHeight } : {}),
+        ...(boxSizing !== undefined ? { boxSizing } : {}),
     };
 }
 
@@ -90,6 +94,7 @@ export function isStyleDTO ( value: unknown) : value is StyleDTO {
             'font',
             'textDecoration',
             'background',
+            'boxSizing',
         ])
         && isColorDTOOrUndefined(value?.textColor)
         && isTextAlignOrUndefined(value?.textAlign)
@@ -105,6 +110,7 @@ export function isStyleDTO ( value: unknown) : value is StyleDTO {
         && isFontDTOOrUndefined(value?.font)
         && isTextDecorationDTOOrUndefined(value?.textDecoration)
         && isBackgroundDTOOrUndefined(value?.background)
+        && isBoxSizingOrUndefined(value?.boxSizing)
     );
 }
 
@@ -127,6 +133,7 @@ export function explainStyleDTO ( value: any) : string {
                 'font',
                 'textDecoration',
                 'background',
+                'boxSizing',
             ])
             , explainProperty("width", explainSizeDTOOrUndefined(value?.width))
             , explainProperty("height", explainSizeDTOOrUndefined(value?.height))
@@ -142,6 +149,7 @@ export function explainStyleDTO ( value: any) : string {
             , explainProperty("font", explainFontDTOOrUndefined(value?.font))
             , explainProperty("textDecoration", explainTextDecorationDTOOrUndefined(value?.textDecoration))
             , explainProperty("background", explainBackgroundDTOOrUndefined(value?.background))
+            , explainProperty("boxSizing", explainBoxSizingOrUndefined(value?.boxSizing))
         ]
     );
 }
