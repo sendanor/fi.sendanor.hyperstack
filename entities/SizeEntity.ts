@@ -29,7 +29,7 @@ export class SizeEntity
     }
 
     /**
-     * Creates a size entity.
+     * Creates a size entity using percents.
      *
      * @param value Value in percents.
      */
@@ -39,6 +39,48 @@ export class SizeEntity
         return this.create(
             value,
             UnitType.PERCENT,
+        );
+    }
+
+    /**
+     * Creates a size entity using pixels.
+     *
+     * @param value Value in pixels.
+     */
+    public static createPx (
+        value  : number,
+    ) : SizeEntity {
+        return this.create(
+            value,
+            UnitType.PX,
+        );
+    }
+
+    /**
+     * Creates a size entity using points.
+     *
+     * @param value Value in points.
+     */
+    public static createPt (
+        value  : number,
+    ) : SizeEntity {
+        return this.create(
+            value,
+            UnitType.PT,
+        );
+    }
+
+    /**
+     * Creates a size entity using em.
+     *
+     * @param value Value in em.
+     */
+    public static createEm (
+        value  : number,
+    ) : SizeEntity {
+        return this.create(
+            value,
+            UnitType.EM,
         );
     }
 

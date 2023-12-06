@@ -61,6 +61,8 @@ export interface Background extends JsonSerializable {
     blendMode (value : BackgroundBlendMode | undefined) : this;
     clip (value : BackgroundClip | undefined) : this;
     color (value : Color | ColorDTO | undefined) : this;
+    transparentColor () : this;
+    setTransparentColor () : this;
     image (value : BackgroundImage | BackgroundImageDTO | undefined) : this;
     origin (value : BackgroundOrigin | undefined) : this;
 

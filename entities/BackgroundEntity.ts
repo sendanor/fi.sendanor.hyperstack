@@ -334,6 +334,15 @@ export class BackgroundEntity
         return this;
     }
 
+    public transparentColor () : this {
+        return this.setTransparentColor();
+    }
+
+    public setTransparentColor () : this {
+        this._color = ColorEntity.create("transparent").getDTO();
+        return this;
+    }
+
     /**
      * @inheritDoc
      */
