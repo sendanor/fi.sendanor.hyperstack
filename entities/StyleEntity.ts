@@ -655,7 +655,7 @@ export class StyleEntity
      * @inheritDoc
      */
     public getWidth () : SizeEntity | undefined {
-        return this._width ? SizeEntity.create(this._width.value) : undefined;
+        return this._width ? SizeEntity.createFromDTO(this._width) : undefined;
     }
 
     /**
@@ -678,7 +678,7 @@ export class StyleEntity
      * @inheritDoc
      */
     public getHeight () : SizeEntity | undefined {
-        return this._height ? SizeEntity.create(this._height.value) : undefined;
+        return this._height ? SizeEntity.createFromDTO(this._height) : undefined;
     }
 
     /**
@@ -701,7 +701,7 @@ export class StyleEntity
      * @inheritDoc
      */
     public getMinWidth () : SizeEntity | undefined {
-        return this._minWidth ? SizeEntity.create(this._minWidth.value) : undefined;
+        return this._minWidth ? SizeEntity.createFromDTO(this._minWidth) : undefined;
     }
 
     /**
@@ -724,7 +724,7 @@ export class StyleEntity
      * @inheritDoc
      */
     public getMinHeight () : SizeEntity | undefined {
-        return this._minHeight ? SizeEntity.create(this._minHeight.value) : undefined;
+        return this._minHeight ? SizeEntity.createFromDTO(this._minHeight) : undefined;
     }
 
     /**
@@ -747,7 +747,7 @@ export class StyleEntity
      * @inheritDoc
      */
     public getMaxWidth () : SizeEntity | undefined {
-        return this._maxWidth ? SizeEntity.create(this._maxWidth.value) : undefined;
+        return this._maxWidth ? SizeEntity.createFromDTO(this._maxWidth) : undefined;
     }
 
     /**
@@ -770,7 +770,7 @@ export class StyleEntity
      * @inheritDoc
      */
     public getMaxHeight () : SizeEntity | undefined {
-        return this._maxHeight ? SizeEntity.create(this._maxHeight.value) : undefined;
+        return this._maxHeight ? SizeEntity.createFromDTO(this._maxHeight) : undefined;
     }
 
     /**

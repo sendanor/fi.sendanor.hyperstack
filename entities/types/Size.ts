@@ -3,7 +3,7 @@
 import { ReadonlyJsonObject } from "../../../../hg/core/Json";
 import { isFunction } from "../../../../hg/core/types/Function";
 import { isObject } from "../../../../hg/core/types/Object";
-import { SizeDTO } from "../../dto/SizeDTO";
+import { AutoSizeType, SizeDTO } from "../../dto/SizeDTO";
 import { JsonSerializable } from "./JsonSerializable";
 import { UnitType } from "./UnitType";
 
@@ -30,7 +30,7 @@ export interface Size extends JsonSerializable {
     /**
      * Get a value.
      */
-    getValue () : number;
+    getValue () : number | AutoSizeType;
 
     /**
      * Set a value.
@@ -52,6 +52,16 @@ export interface Size extends JsonSerializable {
      * Returns CSS styles.
      */
     getCssStyles () : string;
+
+    /**
+     * Set the size to be special auto value.
+     */
+    setAuto () : this;
+
+    /**
+     * Returns true if the size is special auto value.
+     */
+    isAuto () : boolean;
 
 }
 

@@ -2,15 +2,23 @@
 
 import { isArray } from "../../../hg/core/types/Array";
 import { explain, explainNot, explainOk, explainOr, explainProperty } from "../../../hg/core/types/explain";
-import { explainNumber, isNumber } from "../../../hg/core/types/Number";
+import { isNumber } from "../../../hg/core/types/Number";
 import { explainNoOtherKeysInDevelopment, hasNoOtherKeysInDevelopment } from "../../../hg/core/types/OtherKeys";
 import { explainRegularObject, isRegularObject } from "../../../hg/core/types/RegularObject";
 import { isUndefined } from "../../../hg/core/types/undefined";
 import { explainUnitTypeOrUndefined, isUnitTypeOrUndefined, UnitType } from "../entities/types/UnitType";
 
+export const AUTO_KEYWORD : AutoSizeType = "auto";
+
+export type AutoSizeType = "auto";
+
+export function isAutoSizeType (value : unknown) : value is AutoSizeType {
+    return value === AUTO_KEYWORD;
+}
+
 export interface SizeDTO {
 
-    readonly value: number;
+    readonly value: number | AutoSizeType;
 
     /**
      * Defaults to pixels.
@@ -20,7 +28,7 @@ export interface SizeDTO {
 }
 
 export function createSizeDTO (
-    value : number,
+    value : number | AutoSizeType,
     unit  ?: UnitType | undefined,
 ) : SizeDTO {
     return {
@@ -36,7 +44,7 @@ export function isSizeDTO (value: unknown) : value is SizeDTO {
             'value',
             'unit',
         ])
-        && isNumber(value?.value)
+        && (isNumber(value?.value) || value?.value === AUTO_KEYWORD)
         && isUnitTypeOrUndefined(value?.unit)
     );
 }
@@ -49,10 +57,15 @@ export function explainSizeDTO (value: any) : string {
                 'value',
                 'unit',
             ])
-            , explainProperty("value", explainNumber(value?.value))
+            , explainProperty("value", explainNumberOrAuto(value?.value))
             , explainProperty("unit", explainUnitTypeOrUndefined(value?.unit))
         ]
     );
+}
+
+
+export function explainNumberOrAuto (value: unknown) : string {
+    return isNumber(value) || value === AUTO_KEYWORD ? explainOk() : explainNot(explainOr(['number', '"auto"']));
 }
 
 export function stringifySizeDTO (value : SizeDTO) : string {
