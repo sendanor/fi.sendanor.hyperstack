@@ -8,8 +8,8 @@ import { SeoDTO } from "../dto/SeoDTO";
 import { StyleDTO } from "../dto/StyleDTO";
 import { createViewDTO, ViewDTO } from "../dto/ViewDTO";
 import { ComponentEntity, isComponentEntity } from "./ComponentEntity";
-import { Extendable } from "./types/Extendable";
-import { JsonSerializable } from "./types/JsonSerializable";
+import { isStyleEntity, StyleEntity } from "./StyleEntity";
+import { isStyle, Style } from "./types/Style";
 import { View } from "./types/View";
 
 /**
@@ -199,6 +199,34 @@ export class ViewEntity
         return this.setMeta({
             timestamp: value,
         });
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public getStyle () : Style | undefined {
+        return this._style ? StyleEntity.createFromDTO(this._style) : undefined;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public getStyleDTO () : StyleDTO | undefined {
+        return this._style;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public setStyle (value : StyleEntity | Style | StyleDTO | undefined) : this {
+        if (isStyleEntity(value)) {
+            this._style = value.getDTO();
+        } else if (isStyle(value)) {
+            this._style = value.getDTO();
+        } else {
+            this._style = value;
+        }
+        return this;
     }
 
 }

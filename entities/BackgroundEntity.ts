@@ -11,6 +11,7 @@ import { BackgroundBlendMode } from "../dto/types/BackgroundBlendMode";
 import { BackgroundClip } from "../dto/types/BackgroundClip";
 import { BackgroundOrigin } from "../dto/types/BackgroundOrigin";
 import { BackgroundPositionOptions, getCssStylesForBackgroundPosition } from "../dto/types/BackgroundPositionOptions";
+import { BackgroundRepeatType, isBackgroundRepeatType } from "../dto/types/BackgroundRepeatType";
 import { BackgroundSizeOptions, getCssStylesForBackgroundSizeOptions } from "../dto/types/BackgroundSizeOptions";
 import { BackgroundImageEntity, isBackgroundImageEntity } from "./BackgroundImageEntity";
 import { BackgroundRepeatEntity, isBackgroundRepeatEntity } from "./BackgroundRepeatEntity";
@@ -93,8 +94,14 @@ export class BackgroundEntity
 
     /**
      */
-    public static image (value : BackgroundImageDTO | undefined) : BackgroundEntity {
+    public static image (value : BackgroundImageEntity | BackgroundImage | BackgroundImageDTO | string | undefined) : BackgroundEntity {
         return this.create().image(value);
+    }
+
+    /**
+     */
+    public static imageUrl (value : string) : BackgroundEntity {
+        return this.create().imageUrl(value);
     }
 
     /**
@@ -330,15 +337,27 @@ export class BackgroundEntity
      * @inheritDoc
      */
     public image (
-        value : BackgroundImageEntity | BackgroundImage | BackgroundImageDTO | undefined
+        value : BackgroundImageEntity | BackgroundImage | BackgroundImageDTO | string | undefined
     ) : this {
-        if (isBackgroundImageEntity(value)) {
+        if (isString(value)) {
+            return this.imageUrl(value);
+        } else if (isBackgroundImageEntity(value)) {
             this._image = value.getDTO();
         } else if (isBackgroundImage(value)) {
             this._image = value.getDTO();
         } else {
             this._image = value;
         }
+        return this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public imageUrl (
+        value : string,
+    ) : this {
+        this._image = BackgroundImageEntity.url(value).getDTO();
         return this;
     }
 
@@ -361,8 +380,12 @@ export class BackgroundEntity
     /**
      * @inheritDoc
      */
-    public repeat (value : BackgroundRepeatEntity | BackgroundRepeat | BackgroundRepeatDTO | undefined) : this {
-        if (isBackgroundRepeatEntity(value)) {
+    public repeat (
+        value : BackgroundRepeatEntity | BackgroundRepeat | BackgroundRepeatDTO | BackgroundRepeatType | undefined,
+    ) : this {
+        if (isBackgroundRepeatType(value)) {
+            this._repeat = BackgroundRepeatEntity.create(value, value).getDTO();
+        } else if (isBackgroundRepeatEntity(value)) {
             this._repeat = value.getDTO();
         } else if (isBackgroundRepeat(value)) {
             this._repeat = value.getDTO();

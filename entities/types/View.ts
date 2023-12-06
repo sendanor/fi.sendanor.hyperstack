@@ -2,10 +2,13 @@
 
 import { ReadonlyJsonObject } from "../../../../hg/core/Json";
 import { ComponentDTO } from "../../dto/ComponentDTO";
+import { StyleDTO } from "../../dto/StyleDTO";
 import { ViewDTO } from "../../dto/ViewDTO";
 import { ComponentEntity } from "../ComponentEntity";
+import { StyleEntity } from "../StyleEntity";
 import { Extendable } from "./Extendable";
 import { JsonSerializable } from "./JsonSerializable";
+import { Style } from "./Style";
 
 /**
  * Interface for Hyper views.
@@ -114,5 +117,22 @@ export interface View
      * @param value
      */
     setTimestamp (value: string) : this;
+
+    /**
+     * Returns the style entity.
+     */
+    getStyle () : Style | undefined;
+
+    /**
+     * Returns the style DTO.
+     */
+    getStyleDTO () : StyleDTO | undefined;
+
+    /**
+     * Sets the style.
+     *
+     * @param value
+     */
+    setStyle (value : StyleEntity | Style | StyleDTO | undefined) : this;
 
 }
