@@ -15,12 +15,11 @@ import { DTOWithName } from "./types/DTOWithName";
 
 export type ComponentContent = string | ComponentDTO | readonly (string|ComponentDTO)[];
 
-export function isStringOrComponentDTO ( value: unknown) : value is string | ComponentContent {
-    return isString(value) || isComponentDTO(value);
-}
-
 export function isComponentContent ( value: unknown) : value is ComponentContent {
-    return isStringOrComponentDTO(value) || isArrayOf<string|ComponentDTO>(value, isStringOrComponentDTO);
+    return (
+        isStringOrComponentDTO(value)
+        || isArrayOf<string|ComponentDTO>(value, isStringOrComponentDTO)
+    );
 }
 
 export function isComponentContentOrUndefined ( value: unknown) : value is ComponentContent | undefined {
@@ -79,7 +78,7 @@ export function isComponentDTO ( value: unknown) : value is ComponentDTO {
     );
 }
 
-export function explainComponentDTO ( value: any) : string {
+export function explainComponentDTO (value: any) : string {
     return explain(
         [
             explainRegularObject(value),
@@ -99,19 +98,40 @@ export function explainComponentDTO ( value: any) : string {
     );
 }
 
-export function stringifyComponentDTO ( value : ComponentDTO) : string {
+export function stringifyComponentDTO (value : ComponentDTO) : string {
     return `ComponentDTO(${value})`;
 }
 
-export function parseComponentDTO ( value: unknown) : ComponentDTO | undefined {
+export function parseComponentDTO (value: unknown) : ComponentDTO | undefined {
     if (isComponentDTO(value)) return value;
     return undefined;
 }
 
-export function isComponentDTOOrUndefined ( value: unknown): value is ComponentDTO | undefined {
+export function isComponentDTOOrUndefined (value: unknown): value is ComponentDTO | undefined {
     return isUndefined(value) || isComponentDTO(value);
 }
 
-export function explainComponentDTOOrUndefined ( value: unknown): string {
+export function explainComponentDTOOrUndefined (value: unknown): string {
     return isComponentDTOOrUndefined(value) ? explainOk() : explainNot(explainOr(['ComponentDTO', 'undefined']));
+}
+
+export type StringOrComponentDTO = string | ComponentContent;
+
+export function isStringOrComponentDTO (value: unknown) : value is StringOrComponentDTO {
+    return (
+        isString(value)
+        || isComponentDTO(value)
+    );
+}
+
+export function explainStringOrComponentDTO (value: unknown): string {
+    return isStringOrComponentDTO(value) ? explainOk() : explainNot(explainOr(['ComponentDTO', 'string']));
+}
+
+export function isComponentDTOOrString (value: unknown): value is StringOrComponentDTO {
+    return isStringOrComponentDTO(value);
+}
+
+export function explainComponentDTOOrString (value: unknown): string {
+    return explainStringOrComponentDTO(value);
 }

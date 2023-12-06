@@ -11,11 +11,13 @@ import { ComponentType } from "../entities/types/ComponentType";
 import { registerActionButtonComponent } from "./actionButton/ActionButtonComponent";
 import { registerArticleComponent } from "./article/ArticleComponent";
 import { registerButtonComponent } from "./button/ButtonComponent";
+import { registerDivComponent } from "./div/DivComponent";
 import { registerFormComponent } from "./form/FormComponent";
 import { registerHeadingComponent } from "./heading/HeadingComponent";
 import { registerImageComponent } from "./image/ImageComponent";
 import { registerLinkButtonComponent } from "./linkButton/LinkButtonComponent";
 import { registerParagraphComponent } from "./paragraph/ParagraphComponent";
+import { registerSpanComponent } from "./span/SpanComponent";
 import { registerSubTitleComponent } from "./subTitle/SubTitleComponent";
 import { registerTableColumnComponent } from "./table/column/TableColumnComponent";
 import { registerTableRowComponent } from "./table/row/TableRowComponent";
@@ -40,16 +42,18 @@ export class HyperComponentCollection {
         registerActionButtonComponent(factory);
         registerArticleComponent(factory);
         registerButtonComponent(factory);
+        registerDivComponent(factory);
         registerFormComponent(factory);
+        registerHeadingComponent(factory);
         registerImageComponent(factory);
         registerLinkButtonComponent(factory);
+        registerParagraphComponent(factory);
+        registerSpanComponent(factory);
+        registerSubTitleComponent(factory);
         registerTableColumnComponent(factory);
         registerTableRowComponent(factory);
         registerTableComponent(factory);
         registerTitleComponent(factory);
-        registerSubTitleComponent(factory);
-        registerHeadingComponent(factory);
-        registerParagraphComponent(factory);
     }
 
     /**
