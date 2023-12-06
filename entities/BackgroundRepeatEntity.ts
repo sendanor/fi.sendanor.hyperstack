@@ -142,21 +142,21 @@ export class BackgroundRepeatEntity
     /**
      * @inheritDoc
      */
-    public getX () : BackgroundRepeatType | undefined {
+    public getX () : BackgroundRepeatType {
         return this._x;
     }
 
     /**
      * @inheritDoc
      */
-    public getY () : BackgroundRepeatType | undefined {
+    public getY () : BackgroundRepeatType {
         return this._y;
     }
 
     /**
      * @inheritDoc
      */
-    public x (value : BackgroundRepeatType | undefined) : this {
+    public x (value : BackgroundRepeatType) : this {
         this._x = value;
         return this;
     }
@@ -164,7 +164,7 @@ export class BackgroundRepeatEntity
     /**
      * @inheritDoc
      */
-    public y (value : BackgroundRepeatType | undefined) : this {
+    public y (value : BackgroundRepeatType) : this {
         this._y = value;
         return this;
     }
