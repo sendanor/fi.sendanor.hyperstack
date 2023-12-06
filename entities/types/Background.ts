@@ -11,6 +11,7 @@ import { BackgroundAttachment } from "../../dto/types/BackgroundAttachment";
 import { BackgroundBlendMode } from "../../dto/types/BackgroundBlendMode";
 import { BackgroundClip } from "../../dto/types/BackgroundClip";
 import { BackgroundOrigin } from "../../dto/types/BackgroundOrigin";
+import { BackgroundPosition } from "../../dto/types/BackgroundPosition";
 import { BackgroundPositionOptions } from "../../dto/types/BackgroundPositionOptions";
 import { BackgroundSizeOptions } from "../../dto/types/BackgroundSizeOptions";
 import { BackgroundImage } from "./BackgroundImage";
@@ -62,7 +63,13 @@ export interface Background extends JsonSerializable {
     color (value : Color | ColorDTO | undefined) : this;
     image (value : BackgroundImage | BackgroundImageDTO | undefined) : this;
     origin (value : BackgroundOrigin | undefined) : this;
+
+    position (
+        a : BackgroundPosition | undefined,
+        b : BackgroundPosition | undefined,
+    ) : this;
     position (value : BackgroundPositionOptions | undefined) : this;
+
     repeat (value : BackgroundRepeat | BackgroundRepeatDTO | undefined) : this;
     size (value : BackgroundSizeOptions | undefined) : this;
 

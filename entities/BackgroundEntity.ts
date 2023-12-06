@@ -10,7 +10,8 @@ import { BackgroundAttachment } from "../dto/types/BackgroundAttachment";
 import { BackgroundBlendMode } from "../dto/types/BackgroundBlendMode";
 import { BackgroundClip } from "../dto/types/BackgroundClip";
 import { BackgroundOrigin } from "../dto/types/BackgroundOrigin";
-import { BackgroundPositionOptions, getCssStylesForBackgroundPosition } from "../dto/types/BackgroundPositionOptions";
+import { BackgroundPosition, isBackgroundPosition } from "../dto/types/BackgroundPosition";
+import { BackgroundPositionOptions, getCssStylesForBackgroundPosition, isBackgroundPositionOptions } from "../dto/types/BackgroundPositionOptions";
 import { BackgroundRepeatType, isBackgroundRepeatType } from "../dto/types/BackgroundRepeatType";
 import { BackgroundSizeOptions, getCssStylesForBackgroundSizeOptions } from "../dto/types/BackgroundSizeOptions";
 import { BackgroundImageEntity, isBackgroundImageEntity } from "./BackgroundImageEntity";
@@ -372,8 +373,15 @@ export class BackgroundEntity
     /**
      * @inheritDoc
      */
-    public position (value : BackgroundPositionOptions | undefined) : this {
-        this._position = value;
+    public position (
+        a : BackgroundPositionOptions | undefined,
+        b : BackgroundPosition | undefined = undefined,
+    ) : this {
+        if ( isBackgroundPosition(a) && isBackgroundPosition(b) ) {
+            this._position = [a, b];
+        } else {
+            this._position = a;
+        }
         return this;
     }
 
