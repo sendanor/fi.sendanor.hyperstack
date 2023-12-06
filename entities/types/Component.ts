@@ -5,7 +5,9 @@ import { isFunction } from "../../../../hg/core/types/Function";
 import { isObject } from "../../../../hg/core/types/Object";
 import { TestCallbackNonStandard } from "../../../../hg/core/types/TestCallback";
 import { ComponentDTO } from "../../dto/ComponentDTO";
+import { StyleDTO } from "../../dto/StyleDTO";
 import { ComponentEntityContent } from "../ComponentEntity";
+import { StyleEntity } from "../StyleEntity";
 import { Extendable } from "./Extendable";
 import { JsonSerializable } from "./JsonSerializable";
 import { Style } from "./Style";
@@ -170,7 +172,14 @@ export interface Component
      *
      * @param style
      */
-    setStyle (style : Style) : this;
+    setStyle (style : Style | StyleEntity | StyleDTO | undefined) : this;
+
+    /**
+     * Merges more styles.
+     *
+     * @param style
+     */
+    addStyles (style : Style | StyleEntity | StyleDTO | undefined) : this;
 
     /**
      * Get internal style entity.

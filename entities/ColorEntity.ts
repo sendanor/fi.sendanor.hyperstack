@@ -1,8 +1,10 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
+import { reduce } from "../../../hg/core/functions/reduce";
 import { ReadonlyJsonObject } from "../../../hg/core/Json";
+import { isString } from "../../../hg/core/types/String";
 import { ColorDTO, createColorDTO } from "../dto/ColorDTO";
-import { Color } from "./types/Color";
+import { Color, isColor } from "./types/Color";
 
 /**
  * Color entity.
@@ -41,6 +43,43 @@ export class ColorEntity
         value : ColorDTO,
     ) : ColorEntity {
         return new ColorEntity(value.value);
+    }
+
+    public static merge (
+        ...values: readonly (ColorDTO | Color | ColorEntity | string)[]
+    ) : ColorEntity {
+        return ColorEntity.createFromDTO(
+            reduce(
+                values,
+                (
+                    prev: ColorDTO,
+                    item: ColorDTO | Color | ColorEntity | string,
+                ) : ColorDTO => {
+                    const dto : ColorDTO = this.toDTO(item);
+                    return {
+                        ...prev,
+                        ...dto,
+                    };
+                },
+                createColorDTO(
+                    undefined,
+                ),
+            )
+        );
+    }
+
+    public static toDTO (
+        value: ColorDTO | Color | ColorEntity | string,
+    ) : ColorDTO {
+        if (isString(value)) {
+            return ColorEntity.create(value).getDTO();
+        } else if (isColorEntity(value)) {
+            return value.getDTO();
+        } else if (isColor(value)) {
+            return value.getDTO();
+        } else {
+            return value;
+        }
     }
 
     private _value : string;

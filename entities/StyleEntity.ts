@@ -1,6 +1,7 @@
 // Copyright (c) 2023. Heusala Group Oy <info@heusalagroup.fi>. All rights reserved.
 
 import { map } from "../../../hg/core/functions/map";
+import { reduce } from "../../../hg/core/functions/reduce";
 import { ReadonlyJsonObject } from "../../../hg/core/Json";
 import { isArray } from "../../../hg/core/types/Array";
 import { isNumber } from "../../../hg/core/types/Number";
@@ -58,12 +59,13 @@ import {
     Border,
     isBorder,
 } from "./types/Border";
+import { Color, isColor } from "./types/Color";
 import {
     Font,
     isFont,
 } from "./types/Font";
 import { isSize, Size } from "./types/Size";
-import { Style } from "./types/Style";
+import { isStyle, Style } from "./types/Style";
 import {
     isTextDecoration,
     TextDecoration,
@@ -486,6 +488,49 @@ export class StyleEntity
         style: Style,
     ) : ReadonlyJsonObject {
         return style.getCssStyles();
+    }
+
+    public static merge (
+        ...values: readonly (StyleDTO | Style | StyleEntity)[]
+    ) : StyleEntity {
+        return StyleEntity.createFromDTO(
+            reduce(
+                values,
+                (
+                    prev: StyleDTO,
+                    item: StyleDTO | Style | StyleEntity,
+                ) : StyleDTO => {
+                    const dto : StyleDTO = this.toDTO(item);
+                    return {
+                        ...prev,
+                        ...dto,
+                    };
+                },
+                createStyleDTO(
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                ),
+            )
+        );
+    }
+
+    public static toDTO (
+        value: StyleDTO | Style | StyleEntity,
+    ) : StyleDTO {
+        if (isStyleEntity(value)) {
+            return value.getDTO();
+        } else if (isStyle(value)) {
+            return value.getDTO();
+        } else {
+            return value;
+        }
     }
 
 

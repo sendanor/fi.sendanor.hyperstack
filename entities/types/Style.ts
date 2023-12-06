@@ -211,5 +211,6 @@ export function isStyle (value : unknown) : value is Style {
         && isFunction(value?.getBackground)
         && isFunction(value?.getBackgroundDTO)
         && isFunction(value?.setBackground)
+        && isFunction(value?.merge)
     );
 }

@@ -297,15 +297,25 @@ export class ComponentEntity
     /**
      * @inheritDoc
      */
-    public setStyle (style : Style | StyleEntity | StyleDTO | undefined) : this {
-        if (isStyleEntity(style)) {
-            this._style = style.getDTO();
-        } else if (isStyle(style)) {
-            this._style = style.getDTO();
-        } else {
-            this._style = style;
-        }
+    public setStyle (
+        style : Style | StyleEntity | StyleDTO | undefined,
+    ) : this {
+        this._style = style ? StyleEntity.toDTO(style) : undefined;
         return this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public addStyles (
+        style : Style | StyleEntity | StyleDTO | undefined,
+    ) : this {
+        return this.setStyle(
+            this._style ? StyleEntity.merge(
+                this._style,
+                style,
+            ) : style
+        );
     }
 
     /**
