@@ -1,5 +1,5 @@
+import { HyperComponent } from "../../dto/types/HyperComponent";
 import {ARTICLE_COMPONENT_NAME, ArticleComponent, createArticleComponent} from "./ArticleComponent";
-import {HyperComponent} from "../../../../../sendanor/hyperstack/dto/types/HyperComponent";
 
 describe('createArticleComponent', () => {
     it('should create ArticleComponent with default values', () => {

@@ -1,8 +1,15 @@
+// Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
+
+import { LogLevel } from "../../../../hg/core/types/LogLevel";
 import { populateViewDTO } from "./populateViewDTO";
 import { isArrayOf } from "../../../../hg/core/types/Array";
 import { createViewDTO } from '../../dto/ViewDTO';
 
 describe('populateViewDTO', () => {
+
+    beforeAll( () => {
+        populateViewDTO.setLogger(LogLevel.NONE);
+    })
 
     const viewWithoutExtension = createViewDTO('View1', undefined, 'url1', 'en', undefined, ["Content 1", "Content 2"], undefined, undefined);
     const viewWithExtension = createViewDTO('View2', 'View1', undefined, 'fr', undefined, "Content 3", undefined, undefined);
@@ -34,4 +41,5 @@ describe('populateViewDTO', () => {
         new TypeError('Could not find view by name NonexistentView to extend for View3')
       );
     });
+
 });

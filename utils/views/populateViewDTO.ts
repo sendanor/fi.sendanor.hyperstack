@@ -2,6 +2,7 @@
 
 import { find } from "../../../../hg/core/functions/find";
 import { LogService } from "../../../../hg/core/LogService";
+import { LogLevel } from "../../../../hg/core/types/LogLevel";
 import { ComponentContent } from "../../dto/ComponentDTO";
 import { createViewDTO, ViewDTO } from "../../dto/ViewDTO";
 import { mergeComponentContent } from "../components/mergeComponentContent";
@@ -68,3 +69,7 @@ export function populateViewDTO (
     );
 
 }
+
+populateViewDTO.setLogger = (level: LogLevel) : void => {
+    LOG.setLogLevel(level);
+};

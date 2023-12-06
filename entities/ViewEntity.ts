@@ -154,7 +154,7 @@ export class ViewEntity
     /**
      * @inheritDoc
      */
-    public setPublicUrl (value : string) : this {
+    public setPublicUrl (value : string | undefined) : this {
         this._publicUrl = value;
         return this;
     }
