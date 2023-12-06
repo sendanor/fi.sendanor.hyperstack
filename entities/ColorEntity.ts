@@ -26,8 +26,6 @@ export class ColorEntity
 
     /**
      * Creates a transparent color entity.
-     *
-     * @param value
      */
     public static createTransparent (
     ) : ColorEntity {
@@ -62,7 +60,7 @@ export class ColorEntity
                     };
                 },
                 createColorDTO(
-                    undefined,
+                    '',
                 ),
             )
         );

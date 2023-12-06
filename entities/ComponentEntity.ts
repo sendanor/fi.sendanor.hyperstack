@@ -310,12 +310,12 @@ export class ComponentEntity
     public addStyles (
         style : Style | StyleEntity | StyleDTO | undefined,
     ) : this {
-        return this.setStyle(
+        return style ? this.setStyle(
             this._style ? StyleEntity.merge(
                 this._style,
                 style,
             ) : style
-        );
+        ) : this;
     }
 
     /**

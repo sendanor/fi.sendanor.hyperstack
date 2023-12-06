@@ -6,7 +6,7 @@ import { ReadonlyJsonObject } from "../../../hg/core/Json";
 import { isArray } from "../../../hg/core/types/Array";
 import { isNumber } from "../../../hg/core/types/Number";
 import { isString } from "../../../hg/core/types/String";
-import { BackgroundDTO, createBackgroundDTO } from "../dto/BackgroundDTO";
+import { BackgroundDTO } from "../dto/BackgroundDTO";
 import {
     BorderDTO,
     createBorderDTO,
@@ -59,7 +59,6 @@ import {
     Border,
     isBorder,
 } from "./types/Border";
-import { Color, isColor } from "./types/Color";
 import {
     Font,
     isFont,
