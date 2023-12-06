@@ -11,7 +11,7 @@ import { BackgroundBlendMode } from "../dto/types/BackgroundBlendMode";
 import { BackgroundClip } from "../dto/types/BackgroundClip";
 import { BackgroundOrigin } from "../dto/types/BackgroundOrigin";
 import { BackgroundPosition, isBackgroundPosition } from "../dto/types/BackgroundPosition";
-import { BackgroundPositionOptions, getCssStylesForBackgroundPosition, isBackgroundPositionOptions } from "../dto/types/BackgroundPositionOptions";
+import { BackgroundPositionOptions, getCssStylesForBackgroundPosition } from "../dto/types/BackgroundPositionOptions";
 import { BackgroundRepeatType, isBackgroundRepeatType } from "../dto/types/BackgroundRepeatType";
 import { BackgroundSizeOptions, getCssStylesForBackgroundSizeOptions } from "../dto/types/BackgroundSizeOptions";
 import { BackgroundImageEntity, isBackgroundImageEntity } from "./BackgroundImageEntity";
