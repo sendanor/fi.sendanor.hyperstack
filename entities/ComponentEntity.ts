@@ -311,10 +311,9 @@ export class ComponentEntity
         style : Style | StyleEntity | StyleDTO | undefined,
     ) : this {
         return style ? this.setStyle(
-            this._style ? StyleEntity.merge(
-                this._style,
-                style,
-            ) : style
+            this._style
+                ? StyleEntity.merge( this._style, style )
+                : style
         ) : this;
     }
 
