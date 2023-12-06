@@ -1,11 +1,20 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import { explainReadonlyJsonObjectOrUndefined, isReadonlyJsonObjectOrUndefined, ReadonlyJsonObject } from "../../../hg/core/Json";
-import { isArrayOf } from "../../../hg/core/types/Array";
+import {
+    explainArrayOf,
+    isArrayOf,
+} from "../../../hg/core/types/Array";
 import { explain, explainNot, explainOk, explainOr, explainProperty } from "../../../hg/core/types/explain";
 import { explainNoOtherKeysInDevelopment, hasNoOtherKeysInDevelopment } from "../../../hg/core/types/OtherKeys";
 import { explainRegularObject, isRegularObject } from "../../../hg/core/types/RegularObject";
-import { explainString, explainStringOrUndefined, isString, isStringOrUndefined } from "../../../hg/core/types/String";
+import {
+    explainString,
+    explainStringOrUndefined,
+    isString,
+    isStringOrUndefined,
+    prefixLines,
+} from "../../../hg/core/types/String";
 import { isUndefined } from "../../../hg/core/types/undefined";
 import { ExtendableDTO } from "./types/ExtendableDTO";
 import { explainStyleDTOOrUndefined, StyleDTO, isStyleDTOOrUndefined } from "./StyleDTO";
@@ -22,12 +31,28 @@ export function isComponentContent ( value: unknown) : value is ComponentContent
     );
 }
 
+export function explainComponentContent (value: any) : string {
+    return isComponentContent(value) ? explainOk() : explainNot(explainOr([
+        `string|ComponentDTO (\n${prefixLines(explainStringOrComponentDTO(value), '  ')}\n)`,
+        `Array<string|ComponentDTO>(\n${prefixLines(explainArrayOf<string|ComponentDTO>(
+            "string|ComponentDTO",
+            explainStringOrComponentDTO,
+            value,
+            isStringOrComponentDTO
+        ), '  ')}\n)`
+    ]));
+
+}
+
 export function isComponentContentOrUndefined ( value: unknown) : value is ComponentContent | undefined {
     return isUndefined(value) || isComponentContent(value);
 }
 
 export function explainComponentContentOrUndefined ( value: unknown): string {
-    return isComponentContentOrUndefined(value) ? explainOk() : explainNot(explainOr(['ComponentContent', 'undefined']));
+    return isComponentContentOrUndefined(value) ? explainOk() : explainNot(explainOr([
+        `ComponentContent (\n${prefixLines(explainComponentContent(value), '  ')}\n)`,
+        'undefined'
+    ]));
 }
 
 export interface ComponentDTO
@@ -112,7 +137,10 @@ export function isComponentDTOOrUndefined (value: unknown): value is ComponentDT
 }
 
 export function explainComponentDTOOrUndefined (value: unknown): string {
-    return isComponentDTOOrUndefined(value) ? explainOk() : explainNot(explainOr(['ComponentDTO', 'undefined']));
+    return isComponentDTOOrUndefined(value) ? explainOk() : explainNot(explainOr([
+        `ComponentDTO (\n${prefixLines(explainComponentDTO(value), '  ')}\n)`,
+        'undefined'
+    ]));
 }
 
 export type StringOrComponentDTO = string | ComponentContent;
@@ -125,7 +153,14 @@ export function isStringOrComponentDTO (value: unknown) : value is StringOrCompo
 }
 
 export function explainStringOrComponentDTO (value: unknown): string {
-    return isStringOrComponentDTO(value) ? explainOk() : explainNot(explainOr(['ComponentDTO', 'string']));
+    return (
+        isStringOrComponentDTO(value)
+            ? explainOk()
+            : explainNot(explainOr([
+                `ComponentDTO (\n${prefixLines(explainComponentDTO(value), '  ')}\n)`,
+                'string'
+            ]))
+    );
 }
 
 export function isComponentDTOOrString (value: unknown): value is StringOrComponentDTO {

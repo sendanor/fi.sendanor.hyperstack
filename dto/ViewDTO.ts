@@ -115,5 +115,8 @@ export function isViewDTOOrUndefined ( value: unknown): value is ViewDTO | undef
 }
 
 export function explainViewDTOOrUndefined ( value: unknown): string {
-    return isViewDTOOrUndefined(value) ? explainOk() : explainNot(explainOr(['ViewDTO', 'undefined']));
+    return isViewDTOOrUndefined(value) ? explainOk() : explainNot(explainOr([
+        'ViewDTO',
+        'undefined'
+    ]));
 }
