@@ -159,15 +159,15 @@ export class BackgroundEntity
      */
     public getDTO () : BackgroundDTO {
         return createBackgroundDTO(
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
+            this._attachment,
+            this._blendMode,
+            this._clip,
+            this._color,
+            this._image,
+            this._origin,
+            this._position,
+            this._repeat,
+            this._size,
         );
     }
 
