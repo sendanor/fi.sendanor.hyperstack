@@ -19,8 +19,10 @@ import {
     isTextDecorationDTOOrUndefined,
     TextDecorationDTO,
 } from "./TextDecorationDTO";
+import { explainTextAlignOrUndefined, isTextAlignOrUndefined, TextAlign } from "./types/TextAlign";
 
 export interface StyleDTO {
+    readonly textAlign       ?: TextAlign;
     readonly textColor       ?: ColorDTO;
     readonly width           ?: SizeDTO;
     readonly height          ?: SizeDTO;
@@ -50,9 +52,11 @@ export function createStyleDTO (
     minHeight          : SizeDTO | undefined,
     maxWidth           : SizeDTO | undefined,
     maxHeight          : SizeDTO | undefined,
+    textAlign          : TextAlign | undefined,
 ) : StyleDTO {
     return {
         ...(textColor !== undefined ? { textColor } : {}),
+        ...(textAlign !== undefined ? { textAlign } : {}),
         ...(background !== undefined ? { background } : {}),
         ...(width !== undefined ? { width } : {}),
         ...(height !== undefined ? { height } : {}),
@@ -79,6 +83,7 @@ export function isStyleDTO ( value: unknown) : value is StyleDTO {
             'maxWidth',
             'maxHeight',
             'textColor',
+            'textAlign',
             'margin',
             'padding',
             'border',
@@ -87,6 +92,7 @@ export function isStyleDTO ( value: unknown) : value is StyleDTO {
             'background',
         ])
         && isColorDTOOrUndefined(value?.textColor)
+        && isTextAlignOrUndefined(value?.textAlign)
         && isSizeDTOOrUndefined(value?.width)
         && isSizeDTOOrUndefined(value?.height)
         && isSizeDTOOrUndefined(value?.minWidth)
@@ -114,6 +120,7 @@ export function explainStyleDTO ( value: any) : string {
                 'maxWidth',
                 'maxHeight',
                 'textColor',
+                'textAlign',
                 'margin',
                 'padding',
                 'border',
@@ -128,6 +135,7 @@ export function explainStyleDTO ( value: any) : string {
             , explainProperty("maxWidth", explainSizeDTOOrUndefined(value?.maxWidth))
             , explainProperty("maxHeight", explainSizeDTOOrUndefined(value?.maxHeight))
             , explainProperty("textColor", explainColorDTOOrUndefined(value?.textColor))
+            , explainProperty("textAlign", explainTextAlignOrUndefined(value?.textAlign))
             , explainProperty("margin", explainMultiSizeDTOOrUndefined(value?.margin))
             , explainProperty("padding", explainMultiSizeDTOOrUndefined(value?.padding))
             , explainProperty("border", explainMultiBorderDTOOrUndefined(value?.border))

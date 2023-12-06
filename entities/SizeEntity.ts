@@ -43,11 +43,53 @@ export class SizeEntity
     }
 
     /**
+     * Creates a size entity using view height (vh).
+     *
+     * @param value Value in percents.
+     */
+    public static createViewHeight (
+        value  : number,
+    ) : SizeEntity {
+        return this.create(
+            value,
+            UnitType.VH,
+        );
+    }
+
+    /**
+     * Creates a size entity using view width (vw).
+     *
+     * @param value Value in percents.
+     */
+    public static createViewWidth (
+        value  : number,
+    ) : SizeEntity {
+        return this.create(
+            value,
+            UnitType.VW,
+        );
+    }
+
+    /**
      * Creates a size entity using pixels.
      *
      * @param value Value in pixels.
      */
     public static createPx (
+        value  : number,
+    ) : SizeEntity {
+        return this.create(
+            value,
+            UnitType.PX,
+        );
+    }
+
+    /**
+     * Creates a size entity using pixels.
+     *
+     * @param value Value in pixels.
+     */
+    public static createPixels (
         value  : number,
     ) : SizeEntity {
         return this.create(
