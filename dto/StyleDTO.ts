@@ -4,6 +4,7 @@ import { explain, explainNot, explainOk, explainOr, explainProperty } from "../.
 import { explainNoOtherKeysInDevelopment, hasNoOtherKeysInDevelopment } from "../../../hg/core/types/OtherKeys";
 import { explainRegularObject, isRegularObject } from "../../../hg/core/types/RegularObject";
 import { isUndefined } from "../../../hg/core/types/undefined";
+import { BackgroundDTO, explainBackgroundDTOOrUndefined, isBackgroundDTOOrUndefined } from "./BackgroundDTO";
 import { BorderDTO, explainMultiBorderDTOOrUndefined, isMultiBorderDTOOrUndefined } from "./BorderDTO";
 import { ColorDTO, explainColorDTOOrUndefined, isColorDTOOrUndefined } from "./ColorDTO";
 import { explainFontDTOOrUndefined, FontDTO, isFontDTOOrUndefined } from "./FontDTO";
@@ -21,7 +22,6 @@ import {
 
 export interface StyleDTO {
     readonly textColor       ?: ColorDTO;
-    readonly backgroundColor ?: ColorDTO;
     readonly width           ?: SizeDTO;
     readonly height          ?: SizeDTO;
     readonly margin          ?: SizeDTO | [SizeDTO, SizeDTO] | [SizeDTO, SizeDTO, SizeDTO, SizeDTO];
@@ -29,11 +29,12 @@ export interface StyleDTO {
     readonly border          ?: BorderDTO | [BorderDTO, BorderDTO] | [BorderDTO, BorderDTO, BorderDTO, BorderDTO];
     readonly font            ?: FontDTO;
     readonly textDecoration  ?: TextDecorationDTO;
+    readonly background      ?: BackgroundDTO;
 }
 
 export function createStyleDTO (
     textColor       : ColorDTO | undefined,
-    backgroundColor : ColorDTO | undefined,
+    background      : BackgroundDTO | undefined,
     width           : SizeDTO | undefined,
     height          : SizeDTO | undefined,
     margin          : SizeDTO | [SizeDTO, SizeDTO] | [SizeDTO, SizeDTO, SizeDTO, SizeDTO] | undefined,
@@ -44,7 +45,7 @@ export function createStyleDTO (
 ) : StyleDTO {
     return {
         textColor,
-        backgroundColor,
+        background,
         width,
         height,
         margin,
@@ -62,15 +63,14 @@ export function isStyleDTO ( value: unknown) : value is StyleDTO {
             'width',
             'height',
             'textColor',
-            'backgroundColor',
             'margin',
             'padding',
             'border',
             'font',
             'textDecoration',
+            'background',
         ])
         && isColorDTOOrUndefined(value?.textColor)
-        && isColorDTOOrUndefined(value?.backgroundColor)
         && isSizeDTOOrUndefined(value?.width)
         && isSizeDTOOrUndefined(value?.height)
         && isMultiSizeDTOOrUndefined(value?.margin)
@@ -78,6 +78,7 @@ export function isStyleDTO ( value: unknown) : value is StyleDTO {
         && isMultiBorderDTOOrUndefined(value?.border)
         && isFontDTOOrUndefined(value?.font)
         && isTextDecorationDTOOrUndefined(value?.textDecoration)
+        && isBackgroundDTOOrUndefined(value?.background)
     );
 }
 
@@ -89,22 +90,22 @@ export function explainStyleDTO ( value: any) : string {
                 'width',
                 'height',
                 'textColor',
-                'backgroundColor',
                 'margin',
                 'padding',
                 'border',
                 'font',
                 'textDecoration',
+                'background',
             ])
             , explainProperty("width", explainSizeDTOOrUndefined(value?.width))
             , explainProperty("height", explainSizeDTOOrUndefined(value?.height))
             , explainProperty("textColor", explainColorDTOOrUndefined(value?.textColor))
-            , explainProperty("backgroundColor", explainColorDTOOrUndefined(value?.backgroundColor))
             , explainProperty("margin", explainMultiSizeDTOOrUndefined(value?.margin))
             , explainProperty("padding", explainMultiSizeDTOOrUndefined(value?.padding))
             , explainProperty("border", explainMultiBorderDTOOrUndefined(value?.border))
             , explainProperty("font", explainFontDTOOrUndefined(value?.font))
             , explainProperty("textDecoration", explainTextDecorationDTOOrUndefined(value?.textDecoration))
+            , explainProperty("background", explainBackgroundDTOOrUndefined(value?.background))
         ]
     );
 }

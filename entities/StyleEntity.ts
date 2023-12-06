@@ -5,6 +5,7 @@ import { ReadonlyJsonObject } from "../../../hg/core/Json";
 import { isArray } from "../../../hg/core/types/Array";
 import { isNumber } from "../../../hg/core/types/Number";
 import { isString } from "../../../hg/core/types/String";
+import { BackgroundDTO, createBackgroundDTO } from "../dto/BackgroundDTO";
 import {
     BorderDTO,
     createBorderDTO,
@@ -31,6 +32,7 @@ import {
     TextDecorationDTO,
 } from "../dto/TextDecorationDTO";
 import { BorderStyle } from "../dto/types/BorderStyle";
+import { BackgroundEntity, isBackgroundEntity } from "./BackgroundEntity";
 import {
     BorderEntity,
     isBorderEntity,
@@ -51,6 +53,7 @@ import {
     isTextDecorationEntity,
     TextDecorationEntity,
 } from "./TextDecorationEntity";
+import { Background, isBackground } from "./types/Background";
 import {
     Border,
     isBorder,
@@ -124,11 +127,11 @@ export class StyleEntity
     protected _textColor : ColorDTO | undefined;
 
     /**
-     * Background color.
+     * Background options.
      *
      * @protected
      */
-    protected _backgroundColor : ColorDTO | undefined;
+    protected _background : BackgroundDTO | undefined;
 
     /**
      * Font settings.
@@ -169,7 +172,7 @@ export class StyleEntity
     ) : StyleEntity {
         return new this(
             StyleEntity.prepareColorDTO(style?.textColor),
-            StyleEntity.prepareColorDTO(style?.backgroundColor),
+            StyleEntity.prepareBackgroundDTO(style?.background),
             StyleEntity.prepareSizeDTO(style?.width),
             StyleEntity.prepareSizeDTO(style?.height),
             StyleEntity.prepareSizeListDTO(style?.margin),
@@ -184,7 +187,7 @@ export class StyleEntity
      * Construct a style entity.
      *
      * @param textColor
-     * @param backgroundColor
+     * @param background
      * @param width
      * @param height
      * @param margin
@@ -196,7 +199,7 @@ export class StyleEntity
      */
     protected constructor (
         textColor : ColorDTO | undefined,
-        backgroundColor : ColorDTO | undefined,
+        background : BackgroundDTO | undefined,
         width : SizeDTO | undefined,
         height : SizeDTO | undefined,
         margin : SizeDTO | [SizeDTO, SizeDTO, SizeDTO, SizeDTO] | undefined,
@@ -206,7 +209,7 @@ export class StyleEntity
         textDecoration : TextDecorationDTO | undefined,
     ) {
         this._textColor = textColor;
-        this._backgroundColor = backgroundColor;
+        this._background = background;
         this._width = width;
         this._height = height;
         this._margin = margin;
@@ -214,6 +217,15 @@ export class StyleEntity
         this._border = border;
         this._font = font;
         this._textDecoration = textDecoration;
+    }
+
+    public static prepareBackgroundDTO (
+        value : BackgroundEntity | BackgroundDTO | undefined
+    ) : BackgroundDTO | undefined {
+        if (value === undefined) return undefined;
+        if (isBackgroundEntity(value)) return value.getDTO();
+        if (isBackground(value)) return value.getDTO();
+        return value;
     }
 
     public static prepareColorDTO (
@@ -411,13 +423,80 @@ export class StyleEntity
         return value;
     }
 
+    public static prepareSizeListCssStyles (
+        key : string,
+        value : SizeDTO | [SizeDTO, SizeDTO, SizeDTO, SizeDTO] | undefined
+    ) : ReadonlyJsonObject {
+
+        if (isSizeDTO(value)) {
+            return {
+                [key]: SizeEntity.createFromDTO(value).getCssStyles()
+            };
+        }
+
+        if (isArray(value)) {
+            return {
+                [key]: map(
+                    value,
+                    (item: SizeDTO) : string => SizeEntity.createFromDTO(item).getCssStyles()
+                ).join(' ')
+            };
+        }
+
+        return {};
+
+    }
+
+    public static prepareBorderListCssStyles (
+        value : BorderDTO | [BorderDTO, BorderDTO, BorderDTO, BorderDTO] | undefined
+    ) : ReadonlyJsonObject {
+
+        if (isBorderDTO(value)) {
+            return {
+                border: BorderEntity.createFromDTO(value).getCssStyles()
+            };
+        }
+
+        if (isArray(value)) {
+            return {
+                borderStyle: map(
+                    value,
+                    (item: BorderDTO) : string => (BorderEntity.createFromDTO(item).getStyle() ?? BorderStyle.NONE),
+                ).join(' '),
+                borderWidth: map(
+                    value,
+                    (item: BorderDTO) : string => (BorderEntity.createFromDTO(item).getWidth() ?? SizeEntity.createZero()).getCssStyles(),
+                ).join(' '),
+                borderColor: map(
+                    value,
+                    (item: BorderDTO) : string => (BorderEntity.createFromDTO(item).getColor() ?? ColorEntity.createTransparent()).getCssStyles(),
+                ).join(' '),
+            };
+        }
+
+        return {};
+
+    }
+
+    /**
+     *
+     * @param style
+     */
+    public static getCssStyles (
+        style: Style,
+    ) : ReadonlyJsonObject {
+        return style.getCssStyles();
+    }
+
+
+
     /**
      * @inheritDoc
      */
     public getDTO () : StyleDTO {
         return createStyleDTO(
             this._textColor,
-            this._backgroundColor,
+            this._background,
             this._width,
             this._height,
             this._margin,
@@ -534,14 +613,27 @@ export class StyleEntity
      * @inheritDoc
      */
     public getBackgroundColor () : ColorEntity | undefined {
-        return this._backgroundColor ? ColorEntity.create(this._backgroundColor.value) : undefined;
+        const color = this._background?.color;
+        return color ? ColorEntity.createFromDTO(color) : undefined;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public getBackgroundColorDTO () : ColorDTO | undefined {
+        const color = this._background?.color;
+        return color ? color : undefined;
     }
 
     /**
      * @inheritDoc
      */
     public setBackgroundColor (value: ColorEntity | string | undefined) : this {
-        this._backgroundColor = StyleEntity.prepareColorDTO(value);
+        if (this._background === undefined) {
+            this._background = BackgroundEntity.color(value).getDTO();
+        } else {
+            this._background = BackgroundEntity.createFromDTO(this._background).color(value).getDTO();
+        }
         return this;
     }
 
@@ -1007,12 +1099,29 @@ export class StyleEntity
         return this;
     }
 
+    public setBackground (value: Background | BackgroundEntity | undefined): this {
+        if (isBackgroundEntity(value)) {
+            this._background = value.getDTO();
+        } else if (isBackground(value)) {
+            this._background = value.getDTO();
+        } else {
+            this._background = value;
+        }
+        return this;
+    }
 
+    public getBackground (): Background | undefined {
+        return this._background ? BackgroundEntity.createFromDTO(this._background) : undefined;
+    }
+
+    public getBackgroundDTO (): BackgroundDTO | undefined {
+        return this._background;
+    }
 
     public getCssStyles () : ReadonlyJsonObject {
         return {
             ...(this._textColor ? { color: ColorEntity.createFromDTO(this._textColor).getCssStyles() } : {}),
-            ...(this._backgroundColor ? { backgroundColor: ColorEntity.createFromDTO(this._backgroundColor).getCssStyles() } : {}),
+            ...(this._background ? BackgroundEntity.createFromDTO(this._background).getCssStyles() : {}),
             ...(this._width ? { width: SizeEntity.createFromDTO(this._width).getCssStyles() } : {}),
             ...(this._height ? { height: SizeEntity.createFromDTO(this._height).getCssStyles() } : {}),
             ...(this._margin ? StyleEntity.prepareSizeListCssStyles("margin", this._margin) : {}),
@@ -1021,71 +1130,6 @@ export class StyleEntity
             ...(this._font ? FontEntity.createFromDTO(this._font).getCssStyles() : {}),
             ...(this._textDecoration ? TextDecorationEntity.createFromDTO(this._textDecoration).getCssStyles() : {}),
         };
-    }
-
-    public static prepareSizeListCssStyles (
-        key : string,
-        value : SizeDTO | [SizeDTO, SizeDTO, SizeDTO, SizeDTO] | undefined
-    ) : ReadonlyJsonObject {
-
-        if (isSizeDTO(value)) {
-            return {
-                [key]: SizeEntity.createFromDTO(value).getCssStyles()
-            };
-        }
-
-        if (isArray(value)) {
-            return {
-                [key]: map(
-                    value,
-                    (item: SizeDTO) : string => SizeEntity.createFromDTO(item).getCssStyles()
-                ).join(' ')
-            };
-        }
-
-        return {};
-
-    }
-
-    public static prepareBorderListCssStyles (
-        value : BorderDTO | [BorderDTO, BorderDTO, BorderDTO, BorderDTO] | undefined
-    ) : ReadonlyJsonObject {
-
-        if (isBorderDTO(value)) {
-            return {
-                border: BorderEntity.createFromDTO(value).getCssStyles()
-            };
-        }
-
-        if (isArray(value)) {
-            return {
-                borderStyle: map(
-                    value,
-                    (item: BorderDTO) : string => (BorderEntity.createFromDTO(item).getStyle() ?? BorderStyle.NONE),
-                ).join(' '),
-                borderWidth: map(
-                    value,
-                    (item: BorderDTO) : string => (BorderEntity.createFromDTO(item).getWidth() ?? SizeEntity.createZero()).getCssStyles(),
-                ).join(' '),
-                borderColor: map(
-                    value,
-                    (item: BorderDTO) : string => (BorderEntity.createFromDTO(item).getColor() ?? ColorEntity.createTransparent()).getCssStyles(),
-                ).join(' '),
-            };
-        }
-
-        return {};
-
-    }
-
-    /**
-     *
-     * @param style
-     */
-    public static getCssStyles (
-        style: Style,
-    ) : ReadonlyJsonObject {
-        return style.getCssStyles();
     }
 
 }

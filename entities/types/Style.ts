@@ -3,19 +3,21 @@
 import { ReadonlyJsonObject } from "../../../../hg/core/Json";
 import { isFunction } from "../../../../hg/core/types/Function";
 import { isObject } from "../../../../hg/core/types/Object";
+import { BackgroundDTO } from "../../dto/BackgroundDTO";
 import { BorderDTO } from "../../dto/BorderDTO";
+import { ColorDTO } from "../../dto/ColorDTO";
 import { FontDTO } from "../../dto/FontDTO";
 import { SizeDTO } from "../../dto/SizeDTO";
 import { StyleDTO } from "../../dto/StyleDTO";
 import { TextDecorationDTO } from "../../dto/TextDecorationDTO";
+import { BackgroundEntity } from "../BackgroundEntity";
 import { BorderEntity } from "../BorderEntity";
 import { ColorEntity } from "../ColorEntity";
 import { FontEntity } from "../FontEntity";
 import { SizeEntity } from "../SizeEntity";
 import { TextDecorationEntity } from "../TextDecorationEntity";
+import { Background } from "./Background";
 import { Border } from "./Border";
-import { Color } from "./Color";
-import { Extendable } from "./Extendable";
 import { Font } from "./Font";
 import { JsonSerializable } from "./JsonSerializable";
 import { Size } from "./Size";
@@ -60,6 +62,11 @@ export interface Style
      * Get background color
      */
     getBackgroundColor () : ColorEntity | undefined;
+
+    /**
+     * Get background color DTO
+     */
+    getBackgroundColorDTO () : ColorDTO | undefined;
 
     /**
      * Set background color.
@@ -137,9 +144,14 @@ export interface Style
     getWidth () : SizeEntity | undefined;
     getWidthDTO () : SizeDTO | undefined;
     setWidth (value: Size | SizeEntity | number | undefined) : this;
+
     getHeight () : SizeEntity | undefined;
     getHeightDTO () : SizeDTO | undefined;
     setHeight (value: Size | SizeEntity | number | undefined) : this;
+
+    getBackground () : Background | undefined;
+    getBackgroundDTO () : BackgroundDTO | undefined;
+    setBackground (value: Background | BackgroundEntity | number | undefined) : this;
 
 }
 
@@ -187,5 +199,17 @@ export function isStyle (value : unknown) : value is Style {
         && isFunction(value?.getFont)
         && isFunction(value?.getFontDTO)
         && isFunction(value?.setFont)
+        && isFunction(value?.getTextDecoration)
+        && isFunction(value?.getTextDecorationDTO)
+        && isFunction(value?.setTextDecoration)
+        && isFunction(value?.getWidth)
+        && isFunction(value?.getWidthDTO)
+        && isFunction(value?.setWidth)
+        && isFunction(value?.getHeight)
+        && isFunction(value?.getHeightDTO)
+        && isFunction(value?.setHeight)
+        && isFunction(value?.getBackground)
+        && isFunction(value?.getBackgroundDTO)
+        && isFunction(value?.setBackground)
     );
 }
