@@ -31,10 +31,10 @@ export function createBorderDTO (
     radius : SizeDTO | undefined,
 ) : BorderDTO {
     return {
-        width,
-        style,
-        color,
-        radius,
+        ...(width !== undefined ? {width} : {}),
+        ...(style !== undefined ? {style} : {}),
+        ...(color !== undefined ? {color} : {}),
+        ...(radius !== undefined ? {radius} : {}),
     };
 }
 

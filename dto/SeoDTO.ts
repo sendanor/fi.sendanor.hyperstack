@@ -18,9 +18,9 @@ export function createSeoDTO (
     siteName    : string | undefined,
 ) : SeoDTO {
     return {
-        title,
-        description,
-        siteName,
+        ...(title !== undefined ? {title} : {}),
+        ...(description !== undefined ? {description} : {}),
+        ...(siteName !== undefined ? {siteName} : {}),
     };
 }
 

@@ -11,10 +11,10 @@ export interface BackgroundImageDTO {
 }
 
 export function createBackgroundImageDTO (
-    url : string
+    url : string,
 ) : BackgroundImageDTO {
     return {
-        url
+        url,
     };
 }
 

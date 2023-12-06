@@ -78,10 +78,10 @@ export function createComponentDTO (
 ) : ComponentDTO {
     return {
         name,
-        extend,
         content,
-        meta,
-        style,
+        ...(extend !== undefined ? {extend} : {}),
+        ...(meta !== undefined ? {meta} : {}),
+        ...(style !== undefined ? {style} : {}),
     };
 }
 

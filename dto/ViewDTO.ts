@@ -41,13 +41,13 @@ export function createViewDTO (
 ) : ViewDTO {
     return {
         name,
-        extend,
-        publicUrl,
-        seo,
-        language,
-        content,
-        style,
-        meta,
+        ...(extend !== undefined ? {extend} : {}),
+        ...(publicUrl !== undefined ? {publicUrl} : {}),
+        ...(seo !== undefined ? {seo} : {}),
+        ...(language !== undefined ? {language} : {}),
+        ...(content !== undefined ? {content} : {}),
+        ...(style !== undefined ? {style} : {}),
+        ...(meta !== undefined ? {meta} : {}),
     };
 }
 

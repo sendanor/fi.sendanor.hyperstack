@@ -38,15 +38,15 @@ export function createBackgroundDTO (
     size : BackgroundSizeOptions | undefined,
 ) : BackgroundDTO {
     return {
-        attachment,
-        blendMode,
-        clip,
-        color,
-        image,
-        origin,
-        position,
-        repeat,
-        size,
+        ...(attachment !== undefined ? {attachment} : {}),
+        ...(blendMode !== undefined ? {blendMode} : {}),
+        ...(clip !== undefined ? {clip} : {}),
+        ...(color !== undefined ? {color} : {}),
+        ...(image !== undefined ? {image} : {}),
+        ...(origin !== undefined ? {origin} : {}),
+        ...(position !== undefined ? {position} : {}),
+        ...(repeat !== undefined ? {repeat} : {}),
+        ...(size !== undefined ? {size} : {}),
     };
 }
 

@@ -28,12 +28,12 @@ export function createFontDTO (
     family : string | undefined,
 ) : FontDTO {
     return {
-        style,
-        variant,
-        weight,
-        size,
-        lineHeight,
-        family,
+        ...(style !== undefined ? {style}: {}),
+        ...(variant !== undefined ? {variant}: {}),
+        ...(weight !== undefined ? {weight}: {}),
+        ...(size !== undefined ? {size}: {}),
+        ...(lineHeight !== undefined ? {lineHeight}: {}),
+        ...(family !== undefined ? {family}: {}),
     };
 }
 

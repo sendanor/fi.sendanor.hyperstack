@@ -44,15 +44,15 @@ export function createStyleDTO (
     textDecoration  : TextDecorationDTO | undefined,
 ) : StyleDTO {
     return {
-        textColor,
-        background,
-        width,
-        height,
-        margin,
-        padding,
-        border,
-        font,
-        textDecoration,
+        ...(textColor !== undefined ? { textColor } : {}),
+        ...(background !== undefined ? { background } : {}),
+        ...(width !== undefined ? { width } : {}),
+        ...(height !== undefined ? { height } : {}),
+        ...(margin !== undefined ? { margin } : {}),
+        ...(padding !== undefined ? { padding } : {}),
+        ...(border !== undefined ? { border } : {}),
+        ...(font !== undefined ? { font } : {}),
+        ...(textDecoration !== undefined ? { textDecoration } : {}),
     };
 }
 

@@ -27,9 +27,9 @@ export interface AppDTO
     readonly components : readonly ComponentDTO[];
     readonly views      : readonly ViewDTO[];
     readonly routes     : readonly RouteDTO[];
-    readonly extend    ?: string;
-    readonly publicUrl ?: string;
-    readonly language  ?: string;
+    readonly extend    ?: string | undefined;
+    readonly publicUrl ?: string | undefined;
+    readonly language  ?: string | undefined;
 }
 
 export function createAppDTO (
@@ -43,12 +43,12 @@ export function createAppDTO (
 ) : AppDTO {
     return {
         name,
-        extend,
-        publicUrl,
-        language,
         routes,
         components,
         views,
+        ...(extend !== undefined ? {extend} : {}),
+        ...(publicUrl !== undefined ? {publicUrl} : {}),
+        ...(language !== undefined ? {language} : {}),
     };
 }
 

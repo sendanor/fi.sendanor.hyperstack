@@ -31,7 +31,7 @@ export interface ActionDTO {
      * a success or an error handler, the response body from the previous action
      * will be used instead.
      */
-    readonly body: ReadonlyJsonObject | undefined;
+    readonly body ?: ReadonlyJsonObject | undefined;
 
     /**
      * The action when the response was successful.
@@ -42,7 +42,7 @@ export interface ActionDTO {
      * property. The response from the first action will be provided as the body
      * for this action if the success action does not define one.
      */
-    readonly successRedirect : string | ActionDTO | undefined;
+    readonly successRedirect ?: string | ActionDTO | undefined;
 
     /**
      * The action when the response was unsuccessful.
@@ -69,9 +69,9 @@ export function createActionDTO (
         label,
         target,
         method,
-        body,
-        successRedirect,
-        errorRedirect,
+        ...(body !== undefined ? {body} : {}),
+        ...(successRedirect !== undefined ? {successRedirect} : {}),
+        ...(errorRedirect !== undefined ? {errorRedirect} : {}),
     };
 }
 

@@ -40,11 +40,11 @@ export function createRouteDTO (
     return {
         name,
         path,
-        extend,
-        publicUrl,
-        language,
-        view,
-        redirect,
+        ...(extend !== undefined ? {extend}: {}),
+        ...(publicUrl !== undefined ? {publicUrl}: {}),
+        ...(language !== undefined ? {language}: {}),
+        ...(view !== undefined ? {view}: {}),
+        ...(redirect !== undefined ? {redirect}: {}),
     };
 }
 

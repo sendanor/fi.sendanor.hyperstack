@@ -51,10 +51,10 @@ export function createTextDecorationDTO (
     thickness : SizeDTO | undefined,
 ) : TextDecorationDTO {
     return {
-        lineType,
-        color,
-        style,
-        thickness,
+        ...(lineType !== undefined ? {lineType} : {}),
+        ...(color !== undefined ? {color} : {}),
+        ...(style !== undefined ? {style} : {}),
+        ...(thickness !== undefined ? {thickness} : {}),
     };
 }
 
