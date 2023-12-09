@@ -4,12 +4,12 @@ import { ReadonlyJsonObject } from "../../../../hg/core/Json";
 import { isFunction } from "../../../../hg/core/types/Function";
 import { isObject } from "../../../../hg/core/types/Object";
 import { ColorDTO } from "../../dto/ColorDTO";
-import { JsonSerializable } from "./JsonSerializable";
+import { Entity } from "./Entity";
 
 /**
  * Presents a color value
  */
-export interface Color extends JsonSerializable {
+export interface Color extends Entity<ColorDTO> {
 
     /**
      * @inheritDoc

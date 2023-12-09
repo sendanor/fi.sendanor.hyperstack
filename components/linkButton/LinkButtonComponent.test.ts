@@ -1,5 +1,5 @@
+import { HyperComponent } from "../../dto/types/HyperComponent";
 import {createLinkButtonComponent, LinkButtonComponent, LINK_BUTTON_COMPONENT_NAME} from "./LinkButtonComponent";
-import {HyperComponent} from "../../../../../sendanor/hyperstack/dto/types/HyperComponent";
 
 describe('createLinkButtonComponent', () => {
     it('should create LinkButtonComponent with default values', () => {

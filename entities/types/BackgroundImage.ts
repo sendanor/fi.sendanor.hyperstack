@@ -4,12 +4,12 @@ import { ReadonlyJsonObject } from "../../../../hg/core/Json";
 import { isFunction } from "../../../../hg/core/types/Function";
 import { isObject } from "../../../../hg/core/types/Object";
 import { BackgroundImageDTO } from "../../dto/BackgroundImageDTO";
-import { JsonSerializable } from "./JsonSerializable";
+import { Entity } from "./Entity";
 
 /**
  * Presents a background image value
  */
-export interface BackgroundImage extends JsonSerializable {
+export interface BackgroundImage extends Entity<BackgroundImageDTO> {
 
     /**
      * Returns the DTO object.

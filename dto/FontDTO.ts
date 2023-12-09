@@ -9,8 +9,9 @@ import { explainFontStyleOrUndefined, FontStyle, isFontStyleOrUndefined } from "
 import { explainFontVariantOrUndefined, FontVariant, isFontVariantOrUndefined } from "../entities/types/FontVariant";
 import { explainFontWeightOrUndefined, FontWeight, isFontWeightOrUndefined } from "../entities/types/FontWeight";
 import { explainSizeDTOOrUndefined, isSizeDTOOrUndefined, SizeDTO } from "./SizeDTO";
+import { DTO } from "./types/DTO";
 
-export interface FontDTO {
+export interface FontDTO extends DTO {
     readonly style ?: FontStyle;
     readonly variant ?: FontVariant;
     readonly weight ?: FontWeight;

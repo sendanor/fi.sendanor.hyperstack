@@ -6,17 +6,14 @@ import { StyleDTO } from "../../dto/StyleDTO";
 import { ViewDTO } from "../../dto/ViewDTO";
 import { ComponentEntity } from "../ComponentEntity";
 import { StyleEntity } from "../StyleEntity";
-import { Extendable } from "./Extendable";
-import { JsonSerializable } from "./JsonSerializable";
+import { ExtendableEntity } from "./ExtendableEntity";
 import { Style } from "./Style";
 
 /**
  * Interface for Hyper views.
  */
 export interface View
- extends
-     Extendable,
-     JsonSerializable
+ extends ExtendableEntity<ViewDTO>
 {
 
     /**

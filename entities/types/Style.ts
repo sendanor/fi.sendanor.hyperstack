@@ -20,8 +20,8 @@ import { SizeEntity } from "../SizeEntity";
 import { TextDecorationEntity } from "../TextDecorationEntity";
 import { Background } from "./Background";
 import { Border } from "./Border";
+import { Entity } from "./Entity";
 import { Font } from "./Font";
-import { JsonSerializable } from "./JsonSerializable";
 import { Size } from "./Size";
 import { TextDecoration } from "./TextDecoration";
 
@@ -29,8 +29,7 @@ import { TextDecoration } from "./TextDecoration";
  * Interface for Style entities.
  */
 export interface Style
-    extends
-        JsonSerializable
+    extends Entity<StyleDTO>
 {
 
     /**

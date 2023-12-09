@@ -1,5 +1,6 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
+import { DTO } from "./DTO";
 import { DTOWithName } from "./DTOWithName";
 import { DTOWithOptionalExtend } from "./DTOWithOptionalExtend";
 
@@ -8,6 +9,7 @@ import { DTOWithOptionalExtend } from "./DTOWithOptionalExtend";
  */
 export interface ExtendableDTO
     extends
+        DTO,
         DTOWithName,
         DTOWithOptionalExtend
 {

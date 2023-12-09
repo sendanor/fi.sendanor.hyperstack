@@ -6,8 +6,7 @@ import { AppDTO } from "../../dto/AppDTO";
 import { RouteDTO } from "../../dto/RouteDTO";
 import { ViewDTO } from "../../dto/ViewDTO";
 import { ComponentEntity } from "../ComponentEntity";
-import { Extendable } from "./Extendable";
-import { JsonSerializable } from "./JsonSerializable";
+import { ExtendableEntity } from "./ExtendableEntity";
 import { RouteEntity } from "../RouteEntity";
 import { ViewEntity } from "../ViewEntity";
 
@@ -15,10 +14,7 @@ import { ViewEntity } from "../ViewEntity";
  * Interface for application definitions.
  */
 export interface App
-    extends
-        Extendable,
-        JsonSerializable
-{
+    extends ExtendableEntity<AppDTO> {
 
     /**
      * @inheritDoc

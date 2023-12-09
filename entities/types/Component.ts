@@ -8,17 +8,14 @@ import { ComponentDTO } from "../../dto/ComponentDTO";
 import { StyleDTO } from "../../dto/StyleDTO";
 import { ComponentEntityContent } from "../ComponentEntity";
 import { StyleEntity } from "../StyleEntity";
-import { Extendable } from "./Extendable";
-import { JsonSerializable } from "./JsonSerializable";
+import { ExtendableEntity } from "./ExtendableEntity";
 import { Style } from "./Style";
 
 /**
  * Interface for Component entities.
  */
 export interface Component
-    extends
-        Extendable,
-        JsonSerializable
+    extends ExtendableEntity<ComponentDTO>
 {
 
     /**

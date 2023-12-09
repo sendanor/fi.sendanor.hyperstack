@@ -13,8 +13,9 @@ import { BackgroundOrigin, explainBackgroundOriginOrUndefined, isBackgroundOrigi
 import { BackgroundPositionOptions, explainBackgroundPositionOptionsOrUndefined, isBackgroundPositionOptionsOrUndefined } from "./types/BackgroundPositionOptions";
 import { BackgroundRepeatDTO, explainBackgroundRepeatDTOOrUndefined, isBackgroundRepeatDTOOrUndefined } from "./BackgroundRepeatDTO";
 import { BackgroundSizeOptions, explainBackgroundSizeOptionsOrUndefined, isBackgroundSizeOptionsOrUndefined } from "./types/BackgroundSizeOptions";
+import { DTO } from "./types/DTO";
 
-export interface BackgroundDTO {
+export interface BackgroundDTO extends DTO {
     readonly attachment ?: BackgroundAttachment;
     readonly blendMode ?: BackgroundBlendMode;
     readonly clip ?: BackgroundClip;

@@ -20,9 +20,10 @@ import {
     TextDecorationDTO,
 } from "./TextDecorationDTO";
 import { BoxSizing, explainBoxSizingOrUndefined, isBoxSizingOrUndefined } from "./types/BoxSizing";
+import { DTO } from "./types/DTO";
 import { explainTextAlignOrUndefined, isTextAlignOrUndefined, TextAlign } from "./types/TextAlign";
 
-export interface StyleDTO {
+export interface StyleDTO extends DTO {
     readonly textAlign       ?: TextAlign;
     readonly textColor       ?: ColorDTO;
     readonly width           ?: SizeDTO;

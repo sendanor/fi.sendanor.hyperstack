@@ -7,6 +7,7 @@ import { explainNoOtherKeysInDevelopment, hasNoOtherKeysInDevelopment } from "..
 import { explainRegularObject, isRegularObject } from "../../../hg/core/types/RegularObject";
 import { isUndefined } from "../../../hg/core/types/undefined";
 import { explainUnitTypeOrUndefined, isUnitTypeOrUndefined, UnitType } from "../entities/types/UnitType";
+import { DTO } from "./types/DTO";
 
 export const AUTO_KEYWORD : AutoSizeType = "auto";
 
@@ -16,7 +17,7 @@ export function isAutoSizeType (value : unknown) : value is AutoSizeType {
     return value === AUTO_KEYWORD;
 }
 
-export interface SizeDTO {
+export interface SizeDTO extends DTO {
 
     readonly value: number | AutoSizeType;
 

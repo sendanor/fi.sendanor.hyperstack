@@ -9,16 +9,16 @@ import { SizeDTO } from "../../dto/SizeDTO";
 import { ColorEntity } from "../ColorEntity";
 import { SizeEntity } from "../SizeEntity";
 import { Color } from "./Color";
+import { Entity } from "./Entity";
 import { Size } from "./Size";
 import { TextDecorationLineType } from "./TextDecorationLineType";
 import { TextDecorationStyle } from "./TextDecorationStyle";
-import { JsonSerializable } from "./JsonSerializable";
 
 /**
  * Presents a font value.
  */
 export interface TextDecoration
-    extends JsonSerializable
+    extends Entity<TextDecorationDTO>
 {
 
     /**

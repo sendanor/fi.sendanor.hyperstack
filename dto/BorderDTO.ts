@@ -8,8 +8,9 @@ import { isUndefined } from "../../../hg/core/types/undefined";
 import { ColorDTO, explainColorDTOOrUndefined, isColorDTOOrUndefined } from "./ColorDTO";
 import { explainSizeDTOOrUndefined, isSizeDTOOrUndefined, SizeDTO } from "./SizeDTO";
 import { BorderStyle, explainBorderStyleOrUndefined, isBorderStyleOrUndefined } from "./types/BorderStyle";
+import { DTO } from "./types/DTO";
 
-export interface BorderDTO {
+export interface BorderDTO extends DTO {
 
     /**
      * Defaults to NONE

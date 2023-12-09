@@ -4,13 +4,14 @@ import { ReadonlyJsonObject } from "../../../../hg/core/Json";
 import { isFunction } from "../../../../hg/core/types/Function";
 import { isObject } from "../../../../hg/core/types/Object";
 import { AutoSizeType, SizeDTO } from "../../dto/SizeDTO";
-import { JsonSerializable } from "./JsonSerializable";
+import { Entity } from "./Entity";
 import { UnitType } from "./UnitType";
 
 /**
  * Presents a color value
  */
-export interface Size extends JsonSerializable {
+export interface Size
+    extends Entity<SizeDTO> {
 
     /**
      * Returns the DTO object.

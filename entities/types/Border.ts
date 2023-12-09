@@ -9,13 +9,13 @@ import { SizeDTO } from "../../dto/SizeDTO";
 import { BorderStyle } from "../../dto/types/BorderStyle";
 import { ColorEntity } from "../ColorEntity";
 import { Color } from "./Color";
-import { JsonSerializable } from "./JsonSerializable";
+import { Entity } from "./Entity";
 import { Size } from "./Size";
 
 /**
  * Presents a border value
  */
-export interface Border extends JsonSerializable {
+export interface Border extends Entity<BorderDTO> {
 
     /**
      * @inheritDoc

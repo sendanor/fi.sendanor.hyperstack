@@ -36,8 +36,9 @@ import {
     isSizeDTOOrUndefined,
     SizeDTO,
 } from "./SizeDTO";
+import { DTO } from "./types/DTO";
 
-export interface TextDecorationDTO {
+export interface TextDecorationDTO extends DTO {
     readonly lineType ?: TextDecorationLineType;
     readonly color ?: ColorDTO;
     readonly style ?: TextDecorationStyle;

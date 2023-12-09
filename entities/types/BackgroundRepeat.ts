@@ -5,12 +5,12 @@ import { isFunction } from "../../../../hg/core/types/Function";
 import { isObject } from "../../../../hg/core/types/Object";
 import { BackgroundRepeatDTO } from "../../dto/BackgroundRepeatDTO";
 import { BackgroundRepeatType } from "../../dto/types/BackgroundRepeatType";
-import { JsonSerializable } from "./JsonSerializable";
+import { Entity } from "./Entity";
 
 /**
  * Presents a color value
  */
-export interface BackgroundRepeat extends JsonSerializable {
+export interface BackgroundRepeat extends Entity<BackgroundRepeatDTO> {
 
     /**
      * Returns the DTO object.

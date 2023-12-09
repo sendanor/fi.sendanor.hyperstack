@@ -17,12 +17,12 @@ import { BackgroundSizeOptions } from "../../dto/types/BackgroundSizeOptions";
 import { BackgroundImage } from "./BackgroundImage";
 import { BackgroundRepeat } from "./BackgroundRepeat";
 import { Color } from "./Color";
-import { JsonSerializable } from "./JsonSerializable";
+import { Entity } from "./Entity";
 
 /**
  * Presents a background image value
  */
-export interface Background extends JsonSerializable {
+export interface Background extends Entity<BackgroundDTO> {
 
     /**
      * Returns the DTO object.

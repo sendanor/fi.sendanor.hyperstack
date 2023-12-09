@@ -6,8 +6,9 @@ import { explainNoOtherKeysInDevelopment, hasNoOtherKeysInDevelopment } from "..
 import { explainRegularObject, isRegularObject } from "../../../hg/core/types/RegularObject";
 import { explainString, isString } from "../../../hg/core/types/String";
 import { isUndefined } from "../../../hg/core/types/undefined";
+import { DTO } from "./types/DTO";
 
-export interface ActionDTO {
+export interface ActionDTO extends DTO {
 
     /**
      * Label of the action

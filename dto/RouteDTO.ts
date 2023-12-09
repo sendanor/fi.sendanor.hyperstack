@@ -5,6 +5,7 @@ import { explainNoOtherKeysInDevelopment, hasNoOtherKeysInDevelopment } from "..
 import { explainRegularObject, isRegularObject } from "../../../hg/core/types/RegularObject";
 import { explainString, explainStringOrUndefined, isString, isStringOrUndefined } from "../../../hg/core/types/String";
 import { isUndefined } from "../../../hg/core/types/undefined";
+import { DTO } from "./types/DTO";
 import { ExtendableDTO } from "./types/ExtendableDTO";
 import { DTOWithOptionalExtend } from "./types/DTOWithOptionalExtend";
 import { DTOWithName } from "./types/DTOWithName";
@@ -13,6 +14,7 @@ import { DTOWithOptionalPublicUrl } from "./types/DTOWithOptionalPublicUrl";
 
 export interface RouteDTO
     extends
+        DTO,
         DTOWithName,
         DTOWithOptionalExtend,
         DTOWithOptionalPublicUrl,

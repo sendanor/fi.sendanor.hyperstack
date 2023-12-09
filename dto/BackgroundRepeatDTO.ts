@@ -5,8 +5,9 @@ import { explainNoOtherKeysInDevelopment, hasNoOtherKeysInDevelopment } from "..
 import { explainRegularObject, isRegularObject } from "../../../hg/core/types/RegularObject";
 import { isUndefined } from "../../../hg/core/types/undefined";
 import { BackgroundRepeatType, explainBackgroundRepeatType, isBackgroundRepeatType } from "./types/BackgroundRepeatType";
+import { DTO } from "./types/DTO";
 
-export interface BackgroundRepeatDTO {
+export interface BackgroundRepeatDTO extends DTO {
     readonly x: BackgroundRepeatType;
     readonly y: BackgroundRepeatType;
 }

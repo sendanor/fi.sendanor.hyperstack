@@ -5,15 +5,16 @@ import { isFunction } from "../../../../hg/core/types/Function";
 import { isObject } from "../../../../hg/core/types/Object";
 import { FontDTO } from "../../dto/FontDTO";
 import { SizeDTO } from "../../dto/SizeDTO";
+import { Entity } from "./Entity";
 import { FontStyle } from "./FontStyle";
 import { FontVariant } from "./FontVariant";
 import { FontWeight } from "./FontWeight";
-import { JsonSerializable } from "./JsonSerializable";
 
 /**
  * Presents a font value.
  */
-export interface Font extends JsonSerializable {
+export interface Font
+    extends Entity<FontDTO> {
 
     /**
      * @inheritDoc
