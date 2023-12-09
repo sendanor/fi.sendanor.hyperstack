@@ -4,6 +4,7 @@ import { ReadonlyJsonObject } from "../../../../hg/core/Json";
 import { isFunction } from "../../../../hg/core/types/Function";
 import { isObject } from "../../../../hg/core/types/Object";
 import { DTO } from "../../dto/types/DTO";
+import { EntityType } from "./EntityType";
 import { JsonSerializable } from "./JsonSerializable";
 
 /**
@@ -27,6 +28,11 @@ export interface Entity<T extends DTO>
      * Returns the DTO.
      */
     getDTO () : T;
+
+    /**
+     * Returns the type of the entity
+     */
+    getEntityType () : EntityType<Entity<T>, T>;
 
 }
 

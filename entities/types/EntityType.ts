@@ -39,7 +39,7 @@ export interface EntityType<
      *
      * @param value
      */
-    is (value: unknown): value is T;
+    isEntity (value: unknown): value is T;
 
     /**
      * Returns `true` if value is type of the entity DTO object.
@@ -59,7 +59,7 @@ export function isEntityType<
         && isFunction(value?.create)
         && isFunction(value?.createFromDTO)
         && isFunction(value?.getProperties)
-        && isFunction(value?.is)
+        && isFunction(value?.isEntity)
         && isFunction(value?.isDTO)
     );
 }

@@ -1,13 +1,12 @@
 // Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
+import { filter } from "../../../../hg/core/functions/filter";
 import { forEach } from "../../../../hg/core/functions/forEach";
-import { upperFirst } from "../../../../hg/core/functions/upperFirst";
 import { has } from "../../../../hg/core/functions/has";
 import { map } from "../../../../hg/core/functions/map";
 import { reduce } from "../../../../hg/core/functions/reduce";
+import { some } from "../../../../hg/core/functions/some";
 import {
-    isReadonlyJsonAny,
-    ReadonlyJsonAny,
     ReadonlyJsonObject,
 } from "../../../../hg/core/Json";
 import { isBoolean } from "../../../../hg/core/types/Boolean";
@@ -21,6 +20,7 @@ import { isRegularObject } from "../../../../hg/core/types/RegularObject";
 import { isString } from "../../../../hg/core/types/String";
 import { isUndefined } from "../../../../hg/core/types/undefined";
 import { DTO } from "../../dto/types/DTO";
+import { BaseEntity } from "./BaseEntity";
 import {
     Entity,
     isEntity,
@@ -31,16 +31,23 @@ import {
 } from "./EntityType";
 import {
     EntityFactory,
+    GetterMethod,
     PropertyTypeCheckFn,
+    SetterMethod,
     TypeCheckFn,
 } from "./EntityFactory";
 import {
     EntityProperty,
     EntityPropertyType,
     EntityPropertyValue,
+    VariableType,
 } from "./EntityProperty";
 import { EntityPropertyImpl } from "./EntityPropertyImpl";
 import { IsDTO } from "./IsDTO";
+
+export interface PropertyGetterOptions {
+    readonly entityAsDTO ?: boolean;
+}
 
 /**
  * @inheritDoc
@@ -50,6 +57,27 @@ export class EntityFactoryImpl<
     D extends DTO,
 >
     implements EntityFactory<T, D> {
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////  #createProperty  //////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+
+
+    /**
+     *
+     * @param name
+     */
+    public static createProperty (
+        name : string
+    ): EntityProperty {
+        return EntityPropertyImpl.create(name);
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////  #create  /////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
 
 
     /**
@@ -62,31 +90,259 @@ export class EntityFactoryImpl<
         return new EntityFactoryImpl<T, D>();
     }
 
+
+    ////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////  #createTypeCheckFn  ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+
+
+    /**
+     *
+     * @param types
+     */
     public static createTypeCheckFn (
         ...types: readonly EntityPropertyType[]
     ) : TypeCheckFn {
         return reduce(
             types,
             (prev: TypeCheckFn, item: EntityPropertyType) : TypeCheckFn => {
-
-                switch (item) {
-                    case "boolean": return (value: unknown) : boolean => prev(value) || isBoolean(value);
-                    case "string": return (value: unknown) : boolean => prev(value) || isString(value);
-                    case "number": return (value: unknown) : boolean => prev(value) || isNumber(value);
-                    case "integer": return (value: unknown) : boolean => prev(value) || isInteger(value);
-                    case "null": return (value: unknown) : boolean => prev(value) || isNull(value);
-                    case "undefined": return (value: unknown) : boolean => prev(value) || isUndefined(value);
-                }
-
                 if (isEntityType(item)) {
-                    return (value: unknown) : boolean => prev(value) || item.is(value);
+                    return (value: unknown) : boolean => prev(value) || item.isEntity(value);
                 }
-
-                throw new TypeError(`createTypeCheckFn: Unknown type: ${item}`);
+                switch (item) {
+                    case VariableType.BOOLEAN: return (value: unknown) : boolean => prev(value) || isBoolean(value);
+                    case VariableType.STRING: return (value: unknown) : boolean => prev(value) || isString(value);
+                    case VariableType.INTEGER: return (value: unknown) : boolean => prev(value) || isInteger(value);
+                    case VariableType.NUMBER: return (value: unknown) : boolean => prev(value) || isNumber(value);
+                    case VariableType.NULL: return (value: unknown) : boolean => prev(value) || isNull(value);
+                    case VariableType.UNDEFINED: return (value: unknown) : boolean => prev(value) || isUndefined(value);
+                    default: throw new TypeError(`createTypeCheckFn: Unknown variable type: ${item}`);
+                }
             },
             () : boolean => false,
         );
     }
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////  #createPropertyGetter /////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+
+
+    /**
+     *
+     * @param propertyName
+     * @param types
+     * @param opts
+     */
+    public static createPropertyGetter<
+        T extends BaseEntity<D>,
+        D extends DTO,
+    > (
+        propertyName : string,
+        types : readonly EntityPropertyType[],
+        opts ?: PropertyGetterOptions | undefined,
+    ) : GetterMethod<T, D, any> {
+        return reduce(
+            types,
+            (
+                prev: GetterMethod<T, D, any> | undefined,
+                type: EntityPropertyType
+            ) : GetterMethod<T, D, any> => {
+                const fn : GetterMethod<T, D, any>= this.createSinglePropertyGetter(
+                    propertyName,
+                    type,
+                    opts,
+                );
+                if (prev === undefined) return fn;
+                return function (
+                    this: T,
+                ) : any {
+                    return prev.call(this) ?? fn.call(this);
+                };
+            },
+            undefined
+        ) ?? function (this: T) : any {};
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    //////////////////////  #createSinglePropertyGetter ////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+
+
+    public static createSinglePropertyGetter<
+        T extends BaseEntity<D>,
+        D extends DTO,
+    > (
+        propertyName : string,
+        type: EntityPropertyType,
+        opts ?: PropertyGetterOptions | undefined,
+    ): GetterMethod<T, D, EntityPropertyValue>;
+
+    public static createSinglePropertyGetter<
+        T extends BaseEntity<D>,
+        D extends DTO,
+    > (
+        propertyName : string,
+        type: EntityType<T, D>,
+        opts ?: PropertyGetterOptions | undefined,
+    ): GetterMethod<T, D, Entity<D>>;
+
+    public static createSinglePropertyGetter<
+        T extends BaseEntity<D>,
+        D extends DTO,
+    > (
+        propertyName : string,
+        type: VariableType,
+        opts ?: PropertyGetterOptions | undefined,
+    ): GetterMethod<T, D, EntityPropertyValue>;
+
+    public static createSinglePropertyGetter<
+        T extends BaseEntity<D>,
+        D extends DTO,
+    > (
+        propertyName : string,
+        type: VariableType.STRING,
+        opts ?: PropertyGetterOptions | undefined,
+    ): GetterMethod<T, D, string>;
+
+    public static createSinglePropertyGetter<
+        T extends BaseEntity<D>,
+        D extends DTO,
+    > (
+        propertyName : string,
+        type: VariableType.NUMBER,
+        opts ?: PropertyGetterOptions | undefined,
+    ): GetterMethod<T, D, number>;
+
+    public static createSinglePropertyGetter<
+        T extends BaseEntity<D>,
+        D extends DTO,
+    > (
+        propertyName : string,
+        type: VariableType.INTEGER,
+        opts ?: PropertyGetterOptions | undefined,
+    ): GetterMethod<T, D, number>;
+
+    public static createSinglePropertyGetter<
+        T extends BaseEntity<D>,
+        D extends DTO,
+    > (
+        propertyName : string,
+        type: VariableType.BOOLEAN,
+        opts ?: PropertyGetterOptions | undefined,
+    ): GetterMethod<T, D, boolean>;
+
+    public static createSinglePropertyGetter<
+        T extends BaseEntity<D>,
+        D extends DTO,
+    > (
+        propertyName : string,
+        type: VariableType.NULL,
+        opts ?: PropertyGetterOptions | undefined,
+    ): GetterMethod<T, D, null>;
+
+    public static createSinglePropertyGetter<
+        T extends BaseEntity<D>,
+        D extends DTO,
+    > (
+        propertyName : string,
+        type: VariableType.UNDEFINED,
+        opts ?: PropertyGetterOptions | undefined,
+    ): GetterMethod<T, D, undefined>;
+
+    /**
+     * Implementation.
+     *
+     * @param propertyName
+     * @param type
+     * @param opts
+     */
+    public static createSinglePropertyGetter<
+        T extends BaseEntity<D>,
+        D extends DTO,
+    > (
+        propertyName : string,
+        type: EntityType<T, D> | VariableType,
+        opts ?: PropertyGetterOptions | undefined,
+    ): GetterMethod<T, D, EntityPropertyValue> {
+
+        if ( isEntityType(type) && !opts?.entityAsDTO ) {
+            return function entityGetterMethod (
+                this: T,
+            ) : Entity<any> | undefined {
+                const dto = this._getPropertyValue(propertyName);
+                return dto ? type.createFromDTO(dto) : undefined;
+            };
+        }
+
+        return function scalarGetterMethod (
+            this: T,
+        ) : any {
+            return this._getPropertyValue(propertyName);
+        };
+
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    /////////////////////////  #createPropertySetter ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+
+
+    public static createPropertySetter<
+        T extends BaseEntity<D>,
+        D extends DTO,
+    > (
+        propertyName : string,
+        types : readonly EntityPropertyType[]
+    ) : SetterMethod<T, D, unknown> {
+
+        const entityTypes : EntityType<Entity<DTO>, DTO>[] = filter(
+            types,
+            (type) => isEntityType(type)
+        ) as EntityType<Entity<DTO>, DTO>[];
+
+        type IsOurEntityCallback = (value: unknown) => value is Entity<DTO>;
+
+        const isOurEntity : IsOurEntityCallback | undefined = entityTypes.length ? reduce(
+            entityTypes,
+            (prev: IsOurEntityCallback | undefined, Type: EntityType<Entity<DTO>, DTO>) : IsOurEntityCallback => {
+                if (prev === undefined) {
+                    return (value: unknown) : value is Entity<DTO> => Type.isEntity(value);
+                }
+                return (value: unknown) : value is Entity<DTO> => prev(value) || Type.isEntity(value);
+            },
+            undefined,
+        ) : undefined;
+
+        if ( isOurEntity) {
+            return function entitySetterMethod (
+                this: T,
+                value: unknown
+            ) : T {
+                if ( isOurEntity(value) ) {
+                    return this._setPropertyValue(propertyName, value.getDTO());
+                } else {
+                    return this._setPropertyValue(propertyName, value);
+                }
+            };
+        }
+
+        return function setterMethod (
+            this: T,
+            value: unknown
+        ) : T {
+            return this._setPropertyValue(propertyName, value);
+        };
+
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////  private properties ////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
 
 
     /**
@@ -96,14 +352,25 @@ export class EntityFactoryImpl<
      */
     private readonly _properties : EntityProperty[];
 
+
+    ////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////  new constructor /////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+
+
     /**
      * Construct an entity factory.
      *
      * @protected
      */
-    protected constructor() {
+    protected constructor () {
         this._properties = [];
     }
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////  public methods //////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
 
 
     /**
@@ -119,12 +386,19 @@ export class EntityFactoryImpl<
     /**
      * @inheritDoc
      */
+    public createProperty (name : string) : EntityProperty {
+        return EntityFactoryImpl.createProperty(name);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public add (
         name  : EntityProperty | string,
         ...types : EntityPropertyType[]
     ) : this {
         if ( isString(name) ) {
-            this._properties.push( EntityPropertyImpl.create(name, ...types) );
+            this._properties.push( this.createProperty(name).types(...types) );
         } else {
             this._properties.push( name );
         }
@@ -194,9 +468,12 @@ export class EntityFactoryImpl<
         const isDTO = this.createIsDTO();
         const defaultDto : D = this.createDefaultDTO();
 
-        class FinalType implements Entity<D> {
-
-            protected _dto : D;
+        /**
+         * @see EntityType as well, which describes the static API.
+         */
+        class FinalType
+            extends BaseEntity<D>
+        {
 
             public static create () : T {
                 return new FinalType() as unknown as T;
@@ -212,7 +489,7 @@ export class EntityFactoryImpl<
                 return map(properties, (item: EntityProperty) : EntityProperty => item);
             }
 
-            public static is (value: unknown) : value is T {
+            public static isEntity (value: unknown) : value is T {
                 return value instanceof FinalType;
             }
 
@@ -220,48 +497,14 @@ export class EntityFactoryImpl<
                 return isDTO(value);
             }
 
-
             protected constructor (
                 dto ?: D | undefined,
             ) {
-                this._dto = dto ?? defaultDto;
+                super( dto ?? defaultDto );
             }
 
-            protected _setPropertyValue (
-                propertyName : string,
-                value : unknown
-            ) : this {
-                if ( isReadonlyJsonAny(value) ) {
-                    this._dto = {
-                        ...this._dto,
-                        [propertyName]: value,
-                    };
-                } else {
-                    throw new TypeError(`The type of value not supported: ${value}`);
-                }
-                return this;
-            }
-
-            protected _getPropertyValue (
-                propertyName : string,
-            ) : ReadonlyJsonAny | undefined {
-                if (has(this._dto, propertyName)) {
-                    return (this._dto as any)[propertyName];
-                } else {
-                    return undefined;
-                }
-            }
-
-            public getDTO () : D {
-                return this._dto;
-            }
-
-            public toJSON () : ReadonlyJsonObject {
-                return this._dto as unknown as ReadonlyJsonObject;
-            }
-
-            public valueOf () : ReadonlyJsonObject {
-                return this.toJSON();
+            public getEntityType () : EntityType<Entity<D>, D> {
+                return FinalType;
             }
 
         }
@@ -270,23 +513,49 @@ export class EntityFactoryImpl<
             properties,
             (item: EntityProperty) : void => {
                 const propertyName : string = item.getPropertyName();
+                const types : readonly EntityPropertyType[] = item.getTypes();
+
+                const hasEntityType : boolean = some(
+                    types,
+                    (type) : boolean => isEntityType(type)
+                );
+
+                const getterMethod = EntityFactoryImpl.createPropertyGetter<FinalType, D>(
+                    propertyName,
+                    types,
+                );
+
+                const dtoGetterMethod = hasEntityType ? EntityFactoryImpl.createPropertyGetter<FinalType, D>(
+                    propertyName,
+                    types,
+                    {
+                        entityAsDTO: true
+                    }
+                ) : undefined;
 
                 forEach(
                     item.getGetterNames(),
                     (methodName : string): void => {
+
                         if (!has(FinalType.prototype, methodName)) {
                             (FinalType.prototype as any)[methodName] = getterMethod;
                         }
+
+                        if (dtoGetterMethod) {
+                            const dtoMethodName = `${methodName}DTO`;
+                            if (!has(FinalType.prototype, dtoMethodName)) {
+                                (FinalType.prototype as any)[dtoMethodName] = dtoGetterMethod;
+                            }
+                        }
+
                     }
                 );
 
-                function getterMethod (
-                    this: FinalType,
-                ) : unknown {
-                    return this._getPropertyValue(propertyName);
-                }
-
                 if (!immutable) {
+                    const setterMethod = EntityFactoryImpl.createPropertySetter<FinalType, D>(
+                        propertyName,
+                        types,
+                    );
                     forEach(
                         item.getSetterNames(),
                         (methodName : string): void => {
@@ -297,18 +566,12 @@ export class EntityFactoryImpl<
                     );
                 }
 
-                function setterMethod (
-                    this: FinalType,
-                    value: unknown
-                ) : FinalType {
-                    return this._setPropertyValue(propertyName, value);
-                }
-
             }
         );
 
         return FinalType;
 
     }
+
 
 }

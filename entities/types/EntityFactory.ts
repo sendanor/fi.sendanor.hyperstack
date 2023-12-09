@@ -2,6 +2,7 @@
 
 import { ReadonlyJsonObject } from "../../../../hg/core/Json";
 import { DTO } from "../../dto/types/DTO";
+import { BaseEntity } from "./BaseEntity";
 import { Entity } from "./Entity";
 import {
     EntityProperty,
@@ -9,6 +10,18 @@ import {
 } from "./EntityProperty";
 import { EntityType } from "./EntityType";
 import { IsDTO } from "./IsDTO";
+
+export type GetterMethod<
+    T extends BaseEntity<D>,
+    D extends DTO,
+    R = any
+> = (this: T) => R;
+
+export type SetterMethod<
+    T extends BaseEntity<D>,
+    D extends DTO,
+    R = any
+> = (this: T, value: R) => T;
 
 export interface TypeCheckFn {
     (value: unknown): boolean;
@@ -27,9 +40,16 @@ export interface EntityFactory<
 > {
 
     /**
-     * Get properties.
+     * Get all defined properties.
      */
     getProperties () : readonly EntityProperty[];
+
+    /**
+     * Create a new property object, to be used with `.add( .createProperty(name) ... )`.
+     *
+     * @param name
+     */
+    createProperty (name : string) : EntityProperty;
 
     /**
      * Add a property with name and type(s).
