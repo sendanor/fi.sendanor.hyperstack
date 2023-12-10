@@ -18,6 +18,16 @@ describe('EntityPropertyImpl', () => {
             expect( item ).toBeInstanceOf(EntityPropertyImpl);
         });
 
+        it('can create a property which may be optional', () => {
+            const item = EntityPropertyImpl.create("test");
+            expect( item.isOptional() ).toBe(true);
+        });
+
+        it('can create a property which is not an array', () => {
+            const item = EntityPropertyImpl.create("test");
+            expect( item.isArray() ).toBe(false);
+        });
+
         it('can create property with a name', () => {
             const item = EntityPropertyImpl.create("test");
             expect( item.getPropertyName() ).toBe("test");
@@ -62,6 +72,71 @@ describe('EntityPropertyImpl', () => {
             const item = EntityPropertyImpl.create(
                 "test").setTypes(CarType);
             expect( item.getTypes() ).toStrictEqual([CarType]);
+        });
+
+    });
+
+    describe('#createArray', () => {
+
+        let item : EntityPropertyImpl;
+
+        beforeEach(() => {
+            item = EntityPropertyImpl.createArray("test");
+        });
+
+        it('can create a property', () => {
+            expect( item ).toBeDefined();
+            expect( item ).toBeInstanceOf(EntityPropertyImpl);
+        });
+
+        it('can create a array property which is an array', () => {
+            expect( item.isArray() ).toBe(true);
+        });
+
+        it('can create a array property which is not optional', () => {
+            expect( item.isOptional() ).toBe(false);
+        });
+
+        it('can create a array property with default value as []', () => {
+            expect( item.getDefaultValue() ).toStrictEqual([]);
+        });
+
+        it('still has a default value after type has been set', () => {
+            item.setTypes(VariableType.STRING);
+            expect( item.getDefaultValue() ).toStrictEqual([]);
+        });
+
+
+    });
+
+    describe('#createOptionalArray', () => {
+
+        let item : EntityPropertyImpl;
+
+        beforeEach(() => {
+            item = EntityPropertyImpl.createOptionalArray("test");
+        });
+
+        it('can create a array property', () => {
+            expect( item ).toBeDefined();
+            expect( item ).toBeInstanceOf(EntityPropertyImpl);
+        });
+
+        it('can create a array property which is an array', () => {
+            expect( item.isArray() ).toBe(true);
+        });
+
+        it('can create a array property which is optional', () => {
+            expect( item.isOptional() ).toBe(true);
+        });
+
+        it('can create a array property with default value as undefined', () => {
+            expect( item.getDefaultValue() ).toStrictEqual(undefined);
+        });
+
+        it('still has undefined default value after type has been set', () => {
+            item.setTypes(VariableType.STRING);
+            expect( item.getDefaultValue() ).toStrictEqual(undefined);
         });
 
     });

@@ -21,7 +21,7 @@ export type EntityPropertyType = EntityType<Entity<DTO>, DTO> | VariableType;
 /**
  *
  */
-export type EntityPropertyValue = Entity<DTO> | string | number | boolean | null | undefined;
+export type EntityPropertyValue = Entity<DTO> | string | number | boolean | null | undefined | EntityPropertyValue[];
 
 /**
  * Presents a property of an entity or entity DTO with a name and type(s).
@@ -83,5 +83,15 @@ export interface EntityProperty {
      * Returns names for setter functions.
      */
     getSetterNames () : readonly string[];
+
+    /**
+     * Returns `true` if this property is an array.
+     */
+    isArray () : boolean;
+
+    /**
+     * Returns `true` if this property may be undefined.
+     */
+    isOptional () : boolean;
 
 }

@@ -257,6 +257,59 @@ describe('EntityFactoryImpl', () => {
             expect( item.createDefaultDTO() ).toStrictEqual({ name : 'Smith', age: 30 });
         });
 
+        it('can create a default DTO object with non-optional array values', () => {
+            const item = (
+                EntityFactoryImpl.create()
+                .add( EntityPropertyImpl.create("age").setTypes(VariableType.INTEGER).setDefaultValue(30) )
+                .add( EntityPropertyImpl.createArray("firstNames").setTypes(VariableType.STRING).setDefaultValue(['John', 'Edward']) )
+            );
+            expect( item.createDefaultDTO() ).toStrictEqual({
+                firstNames : [
+                    'John',
+                    'Edward'
+                ],
+                age: 30
+            });
+        });
+
+        it('can create a default DTO object with non-optional empty array values', () => {
+            const item = (
+                EntityFactoryImpl.create()
+                .add( EntityPropertyImpl.create("age").setTypes(VariableType.INTEGER).setDefaultValue(30) )
+                .add( EntityPropertyImpl.createArray("firstNames").setTypes(VariableType.STRING) )
+            );
+            expect( item.createDefaultDTO() ).toStrictEqual({
+                age: 30,
+                firstNames: []
+            });
+        });
+
+        it('can create a default DTO object with non-defined optional array values', () => {
+            const item = (
+                EntityFactoryImpl.create()
+                .add( EntityPropertyImpl.create("age").setTypes(VariableType.INTEGER).setDefaultValue(30) )
+                .add( EntityPropertyImpl.createOptionalArray("firstNames").setTypes(VariableType.STRING) )
+            );
+            expect( item.createDefaultDTO() ).toStrictEqual({
+                age: 30
+            });
+        });
+
+        it('can create a default DTO object with defined optional array values', () => {
+            const item = (
+                EntityFactoryImpl.create()
+                .add( EntityPropertyImpl.create("age").setTypes(VariableType.INTEGER).setDefaultValue(30) )
+                .add( EntityPropertyImpl.createOptionalArray("firstNames").setTypes(VariableType.STRING).setDefaultValue(['John', 'Edward']) )
+            );
+            expect( item.createDefaultDTO() ).toStrictEqual({
+                firstNames : [
+                    'John',
+                    'Edward'
+                ],
+                age: 30
+            });
+        });
+
     });
 
     describe('.createIsDTO', () => {
@@ -611,6 +664,134 @@ describe('EntityFactoryImpl', () => {
 
     });
 
+    describe('with inner array entities', () => {
+
+        interface CarDTO extends DTO {
+            readonly model: string;
+        }
+
+        interface Car extends Entity<CarDTO> {
+            getModel() : string;
+            setModel(model: string) : this;
+        }
+
+        interface DriverDTO extends DTO {
+            readonly name : string;
+            readonly age : number;
+            readonly cars : readonly CarDTO[];
+            readonly lendCars ?: readonly CarDTO[];
+        }
+
+        interface Driver extends Entity<DriverDTO> {
+
+            getCars() : readonly Car[];
+            getCarsDTO() : readonly CarDTO[];
+            setCars(value: readonly (Car | CarDTO)[]) : this;
+            setCarsDTO(value: readonly CarDTO[]) : this;
+
+            getLendCars() : readonly Car[] | undefined;
+            getLendCarsDTO() : readonly CarDTO[] | undefined;
+            setLendCars(value: readonly (Car | CarDTO)[] | undefined) : this;
+            setLendCarsDTO(value: readonly CarDTO[] | undefined) : this;
+
+        }
+
+        let carFactory : EntityFactoryImpl<Car, CarDTO>;
+        let CarType : EntityType<Car, CarDTO>;
+        let driverFactory : EntityFactoryImpl<Driver, DriverDTO>;
+        let DriverType : EntityType<Driver, DriverDTO>;
+
+        beforeEach(() => {
+
+            carFactory = (
+                EntityFactoryImpl.create<Car, CarDTO>()
+                .add( EntityPropertyImpl.create("model").setDefaultValue("Ford") )
+            );
+            CarType = carFactory.createEntityType();
+
+            driverFactory = (
+                EntityFactoryImpl.create<Driver, DriverDTO>()
+                .add( EntityPropertyImpl.create("age").setDefaultValue(30) )
+                .add( EntityPropertyImpl.create("name").setDefaultValue('Smith') )
+                .add( EntityPropertyImpl.createArray("cars").setTypes(CarType) )
+                .add( EntityPropertyImpl.createOptionalArray("lendCars").setTypes(CarType) )
+            );
+            DriverType = driverFactory.createEntityType();
+
+        });
+
+        describe('.createDefaultDTO', () => {
+
+            it('can create a default DTO object with an inner entity value', () => {
+                expect( driverFactory.createDefaultDTO() ).toStrictEqual({
+                    name : 'Smith',
+                    age: 30,
+                    cars: []
+                });
+            });
+
+        });
+
+        describe('.create', () => {
+
+            let tesla : Car;
+            let teslaDTO : CarDTO;
+
+            beforeEach(() => {
+                tesla = CarType.create().setModel('Tesla');
+                teslaDTO = tesla.getDTO();
+            });
+
+            it('can create a empty entity and has .getCars() as [] by default', () => {
+                const driver : Driver = DriverType.create();
+                expect( driver.getCars()?.length ).toStrictEqual(0);
+                expect( driver.getCars() ).toStrictEqual([]);
+            });
+
+            it('can create a empty entity and has .getCarDTO() as [] by default', () => {
+                const driver : Driver = DriverType.create();
+                expect( driver.getCarsDTO()?.length ).toStrictEqual(0);
+                expect( driver.getCarsDTO() ).toStrictEqual([]);
+            });
+
+            it('can create a empty entity and has .getLendCars() as undefined by default', () => {
+                const driver : Driver = DriverType.create();
+                expect( driver.getLendCars() ).toStrictEqual(undefined);
+            });
+
+            it('can create a empty entity and has .getLendCarsDTO() as undefined by default', () => {
+                const driver : Driver = DriverType.create();
+                expect( driver.getLendCarsDTO() ).toStrictEqual(undefined);
+            });
+
+            it('can create an entity with .setCars( [Entity] ) and has .getCars()', () => {
+                const driver : Driver = DriverType.create();
+                expect( driver.setCars( [tesla] ) ).toBe(driver);
+
+                expect( driver.getCars()?.length ).toStrictEqual(1);
+                expect( driver.getCars()[0].getDTO() ).toStrictEqual({model: "Tesla"});
+            });
+
+            it('can create an entity with .setCars( [Entity] ) and has .getCarsDTO()', () => {
+                const driver : Driver = DriverType.create();
+                expect( driver.setCars( [tesla] ) ).toBe(driver);
+
+                expect( driver.getCarsDTO()?.length ).toStrictEqual(1);
+                expect( driver.getCarsDTO()[0] ).toStrictEqual({model: "Tesla"});
+            });
+
+            it('can create an entity with .setCars( [DTO] ) and has .getCars()', () => {
+                const driver : Driver = DriverType.create();
+                expect( driver.setCars( [teslaDTO] ) ).toBe(driver);
+
+                expect( driver.getCars()?.length ).toStrictEqual(1);
+                expect( driver.getCars()[0].getDTO() ).toStrictEqual({model: "Tesla"});
+            });
+
+        });
+
+    });
+
     describe('Getters and setters', () => {
 
         interface CarDTO extends DTO {
@@ -636,6 +817,7 @@ describe('EntityFactoryImpl', () => {
             readonly secondCar ?: CarDTO;
             readonly thirdCar ?: CarDTO;
             readonly fourthCar ?: CarDTO | null;
+            readonly cars : CarDTO[];
         }
 
         class TestEntity extends BaseEntity<TestDTO> {
@@ -650,6 +832,7 @@ describe('EntityFactoryImpl', () => {
                     car: CarEntity.create().getDTO(),
                     secondCar: CarEntity.create().setModel('Audi').getDTO(),
                     fourthCar: null,
+                    cars: [],
                 });
             }
 
@@ -795,6 +978,18 @@ describe('EntityFactoryImpl', () => {
                 );
                 const entity = TestEntity.create();
                 expect( fn.call(entity) ).toStrictEqual(null);
+            });
+
+            it('can create property getter for arrays', () => {
+                const fn = EntityFactoryImpl.createArrayPropertyGetter<BaseEntity<TestDTO>, TestDTO>(
+                    'cars',
+                    [
+                        CarEntity,
+                        VariableType.UNDEFINED,
+                    ],
+                );
+                const entity = TestEntity.create();
+                expect( fn.call(entity) ).toStrictEqual([]);
             });
 
         });

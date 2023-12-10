@@ -11,6 +11,13 @@ import {
 import { EntityType } from "./EntityType";
 import { IsDTO } from "./IsDTO";
 
+export type ArrayMapMethod<
+    T extends BaseEntity<D>,
+    D extends DTO,
+    I = any,
+    R = any,
+> = (this: T, item: I) => R;
+
 export type GetterMethod<
     T extends BaseEntity<D>,
     D extends DTO,
