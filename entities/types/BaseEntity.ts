@@ -9,12 +9,15 @@ import { DTO } from "../../dto/types/DTO";
 import { Entity } from "./Entity";
 import { EntityType } from "./EntityType";
 
-export abstract class BaseEntity<D extends DTO>
+export abstract class BaseEntity<
+    D extends DTO,
+    T extends Entity<D>,
+>
     implements Entity<D> {
 
     protected _dto : D;
 
-    protected constructor (
+    public constructor (
         dto : D,
     ) {
         this._dto = dto;
@@ -57,6 +60,6 @@ export abstract class BaseEntity<D extends DTO>
         return this.toJSON();
     }
 
-    abstract getEntityType () : EntityType<Entity<D>, D>;
+    abstract getEntityType () : EntityType<D, T>;
 
 }

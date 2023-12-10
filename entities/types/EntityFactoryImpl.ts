@@ -55,10 +55,10 @@ export interface PropertyGetterOptions {
  * @inheritDoc
  */
 export class EntityFactoryImpl<
-    T extends Entity<D>,
     D extends DTO,
+    T extends Entity<D>,
 >
-    implements EntityFactory<T, D> {
+    implements EntityFactory<D, T> {
 
 
     ////////////////////////////////////////////////////////////////////////////
@@ -113,10 +113,10 @@ export class EntityFactoryImpl<
      * Create an entity factory.
      */
     public static create<
-        T extends Entity<D>,
         D extends DTO,
-    > () : EntityFactoryImpl<T, D> {
-        return new EntityFactoryImpl<T, D>();
+        T extends Entity<D>,
+    > () : EntityFactoryImpl<D, T> {
+        return new EntityFactoryImpl<D, T>();
     }
 
 
@@ -165,29 +165,29 @@ export class EntityFactoryImpl<
      * @param opts
      */
     public static createPropertyGetter<
-        T extends BaseEntity<D>,
         D extends DTO,
+        T extends BaseEntity<D, T>,
     > (
         propertyName : string,
         types : readonly EntityPropertyType[],
         opts ?: PropertyGetterOptions | undefined,
-    ) : GetterMethod<T, D, any> {
+    ) : GetterMethod<D, T, any> {
         const entityAsDTO = !!opts?.entityAsDTO;
         return reduce(
             types,
             (
-                prev: GetterMethod<T, D, any> | undefined,
+                prev: GetterMethod<D, T, any> | undefined,
                 type: EntityPropertyType
-            ) : GetterMethod<T, D, any> => {
+            ) : GetterMethod<D, T, any> => {
 
-                let fn : GetterMethod<T, D, any>;
+                let fn : GetterMethod<D, T, any>;
                 if ( isEntityType(type) && !entityAsDTO ) {
-                    fn = this.createEntityPropertyGetter(
+                    fn = this.createEntityPropertyGetter<D, T>(
                         propertyName,
                         type,
                     );
                 } else {
-                    fn = this.createScalarPropertyGetter(
+                    fn = this.createScalarPropertyGetter<D, T>(
                         propertyName,
                         type,
                     );
@@ -218,22 +218,22 @@ export class EntityFactoryImpl<
      * @param opts
      */
     public static createArrayPropertyGetter<
-        T extends BaseEntity<D>,
         D extends DTO,
+        T extends BaseEntity<D, T>,
     > (
         propertyName : string,
         types : readonly EntityPropertyType[],
         opts ?: PropertyGetterOptions | undefined,
-    ) : GetterMethod<T, D, any> {
+    ) : GetterMethod<any, any, any> {
 
         const entityAsDTO = !!opts?.entityAsDTO;
 
-        const iterator: ArrayMapMethod<any, any, EntityPropertyValue, EntityPropertyValue> = reduce(
+        const iterator: ArrayMapMethod<EntityPropertyValue, EntityPropertyValue> = reduce(
             types,
             (
-                prev: ArrayMapMethod<any, any, EntityPropertyValue, EntityPropertyValue> | undefined,
+                prev: ArrayMapMethod<EntityPropertyValue, EntityPropertyValue> | undefined,
                 type: EntityPropertyType,
-            ) : ArrayMapMethod<any, any, EntityPropertyValue, EntityPropertyValue> => {
+            ) : ArrayMapMethod<EntityPropertyValue, EntityPropertyValue> => {
 
                 const fn = this.createArrayItemGetter(
                     type,
@@ -244,16 +244,13 @@ export class EntityFactoryImpl<
                     return fn;
                 }
 
-                return function (
-                    this: T,
-                    item: any,
-                ) : any | undefined {
-                    return prev.call(this, item) ?? fn.call(this, item);
-                };
+                return (
+                    item : any,
+                ) : any | undefined => prev(item) ?? fn(item);
 
             },
             undefined
-        ) ?? function (this: T, item: any) { return item; };
+        ) ?? ((item : any) : any => item);
 
         return function arrayGetterMethod (
             this: T,
@@ -277,12 +274,12 @@ export class EntityFactoryImpl<
      * @param type
      */
     public static createScalarPropertyGetter<
-        T extends BaseEntity<D>,
         D extends DTO,
+        T extends BaseEntity<D, T>,
     > (
         propertyName : string,
         type: EntityType<any, any> | VariableType,
-    ): GetterMethod<T, D, EntityPropertyValue> {
+    ): GetterMethod<D, T, EntityPropertyValue> {
         return function scalarGetterMethod (
             this: T,
         ) : any {
@@ -303,12 +300,12 @@ export class EntityFactoryImpl<
      * @param type
      */
     public static createEntityPropertyGetter<
-        T extends BaseEntity<D>,
         D extends DTO,
+        T extends BaseEntity<D, T>,
     > (
         propertyName : string,
         type: EntityType<any, any>,
-    ): GetterMethod<T, D, EntityPropertyValue> {
+    ): GetterMethod<D, T, EntityPropertyValue> {
         return function entityGetterMethod (
             this: T,
         ) : Entity<any> | undefined {
@@ -329,32 +326,15 @@ export class EntityFactoryImpl<
      * @param Type
      * @param opts
      */
-    public static createArrayItemGetter<
-        T extends BaseEntity<D>,
-        D extends DTO,
-    > (
+    public static createArrayItemGetter (
         Type: EntityType<any, any> | VariableType,
         opts ?: PropertyGetterOptions | undefined,
-    ): ArrayMapMethod<T, D, EntityPropertyValue, EntityPropertyValue> {
-
+    ): ArrayMapMethod<EntityPropertyValue, EntityPropertyValue> {
         const entityAsDTO = !!opts?.entityAsDTO;
-
         if ( isEntityType(Type) && !entityAsDTO ) {
-            return function arrayMapMethod(
-                this : T,
-                item : EntityPropertyValue,
-            ) : EntityPropertyValue {
-                return Type.isDTO(item) ? Type.createFromDTO(item) : undefined;
-            };
+            return (item : EntityPropertyValue) : EntityPropertyValue => Type.isDTO(item) ? Type.createFromDTO(item) : undefined;
         }
-
-        return function arrayMapMethod(
-            this : T,
-            item : EntityPropertyValue,
-        ) : EntityPropertyValue {
-            return item;
-        };
-
+        return (item : EntityPropertyValue) : EntityPropertyValue => item;
     }
 
 
@@ -364,23 +344,20 @@ export class EntityFactoryImpl<
 
 
     public static createPropertySetter<
-        T extends BaseEntity<D>,
         D extends DTO,
+        T extends BaseEntity<D, T>,
     > (
         propertyName : string,
         types : readonly EntityPropertyType[]
-    ) : SetterMethod<T, D, unknown> {
+    ) : SetterMethod<D, T, unknown> {
 
-        const entityTypes : EntityType<Entity<DTO>, DTO>[] = filter(
-            types,
-            (type) => isEntityType(type)
-        ) as EntityType<Entity<DTO>, DTO>[];
+        const entityTypes : EntityType<DTO, Entity<DTO>>[] = filter(types, isEntityType);
 
         type IsOurEntityCallback = (value: unknown) => value is Entity<DTO>;
 
         const isOurEntity : IsOurEntityCallback | undefined = entityTypes.length ? reduce(
             entityTypes,
-            (prev: IsOurEntityCallback | undefined, Type: EntityType<Entity<DTO>, DTO>) : IsOurEntityCallback => {
+            (prev: IsOurEntityCallback | undefined, Type: EntityType<DTO, Entity<DTO>>) : IsOurEntityCallback => {
                 if (prev === undefined) {
                     return (value: unknown) : value is Entity<DTO> => Type.isEntity(value);
                 }
@@ -418,20 +395,17 @@ export class EntityFactoryImpl<
 
 
     public static createArrayPropertySetter<
-        T extends BaseEntity<D>,
         D extends DTO,
+        T extends BaseEntity<D, T>,
     > (
         propertyName : string,
         types : readonly EntityPropertyType[]
-    ) : SetterMethod<T, D, unknown> {
+    ) : SetterMethod<D, T, unknown> {
 
         /**
          * Array of entity types included.
          */
-        const entityTypes : EntityType<Entity<DTO>, DTO>[] = filter(
-            types,
-            (type) => isEntityType(type)
-        ) as EntityType<Entity<DTO>, DTO>[];
+        const entityTypes : EntityType<DTO, Entity<DTO>>[] = filter(types, isEntityType);
 
         /**
          * Type of check function for entity.
@@ -444,7 +418,7 @@ export class EntityFactoryImpl<
          */
         const isOurEntity : IsOurEntityCallback | undefined = entityTypes.length ? reduce(
             entityTypes,
-            (prev: IsOurEntityCallback | undefined, Type: EntityType<Entity<DTO>, DTO>) : IsOurEntityCallback => {
+            (prev: IsOurEntityCallback | undefined, Type: EntityType<DTO, Entity<DTO>>) : IsOurEntityCallback => {
                 if (prev === undefined) {
                     return (value: unknown) : value is Entity<DTO> => Type.isEntity(value);
                 }
@@ -629,7 +603,7 @@ export class EntityFactoryImpl<
      */
     public createEntityType (
         opts : { immutable ?: boolean } = {}
-    ) : EntityType<T, D> {
+    ) : EntityType<D, T> {
 
         const { immutable } = opts;
 
@@ -641,24 +615,25 @@ export class EntityFactoryImpl<
          * @see EntityType as well, which describes the static API.
          */
         class FinalType
-            extends BaseEntity<D>
+            extends BaseEntity<D, T>
+            implements Entity<D>
         {
 
-            public static create () : T {
-                return new FinalType() as unknown as T;
+            public static create () : FinalType {
+                return new FinalType();
             }
 
             public static createFromDTO (
                 dto : D,
-            ) : T {
-                return new FinalType(dto) as unknown as T;
+            ) : Entity<D> {
+                return new FinalType(dto);
             }
 
             public static getProperties () : EntityProperty[] {
                 return map(properties, (item: EntityProperty) : EntityProperty => item);
             }
 
-            public static isEntity (value: unknown) : value is T {
+            public static isEntity (value: unknown) : value is FinalType {
                 return value instanceof FinalType;
             }
 
@@ -666,14 +641,14 @@ export class EntityFactoryImpl<
                 return isDTO(value);
             }
 
-            protected constructor (
+            public constructor (
                 dto ?: D | undefined,
             ) {
                 super( dto ?? defaultDto );
             }
 
-            public getEntityType () : EntityType<Entity<D>, D> {
-                return FinalType;
+            public getEntityType () : EntityType<D, T> {
+                return FinalType as unknown as EntityType<D, T>;
             }
 
         }
@@ -685,18 +660,15 @@ export class EntityFactoryImpl<
                 const isArray : boolean = item.isArray();
                 const types : readonly EntityPropertyType[] = item.getTypes();
 
-                const hasEntityType : boolean = some(
-                    types,
-                    (type) : boolean => isEntityType(type)
-                );
+                const hasEntityType : boolean = some(types, isEntityType);
 
                 const getterMethod = (
                     isArray
-                        ? EntityFactoryImpl.createArrayPropertyGetter<FinalType, D>(
+                        ? EntityFactoryImpl.createArrayPropertyGetter<D, any>(
                             propertyName,
                             types,
                         )
-                        : EntityFactoryImpl.createPropertyGetter<FinalType, D>(
+                        : EntityFactoryImpl.createPropertyGetter<D, any>(
                             propertyName,
                             types,
                         )
@@ -706,14 +678,14 @@ export class EntityFactoryImpl<
                     hasEntityType
                         ? (
                             isArray
-                                ? EntityFactoryImpl.createArrayPropertyGetter<FinalType, D>(
+                                ? EntityFactoryImpl.createArrayPropertyGetter<D, any>(
                                     propertyName,
                                     types,
                                     {
                                         entityAsDTO: true
                                     }
                                 )
-                                : EntityFactoryImpl.createPropertyGetter<FinalType, D>(
+                                : EntityFactoryImpl.createPropertyGetter<D, any>(
                                     propertyName,
                                     types,
                                     {
@@ -746,11 +718,11 @@ export class EntityFactoryImpl<
 
                     const setterMethod = (
                         isArray
-                            ? EntityFactoryImpl.createArrayPropertySetter<FinalType, D>(
+                            ? EntityFactoryImpl.createArrayPropertySetter<D, any>(
                                 propertyName,
                                 types,
                             )
-                            : EntityFactoryImpl.createPropertySetter<FinalType, D>(
+                            : EntityFactoryImpl.createPropertySetter<D, any>(
                                 propertyName,
                                 types,
                             )
@@ -770,7 +742,7 @@ export class EntityFactoryImpl<
             }
         );
 
-        return FinalType;
+        return FinalType as unknown as EntityType<D, T>;
 
     }
 

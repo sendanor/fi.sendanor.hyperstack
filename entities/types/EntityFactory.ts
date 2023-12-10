@@ -12,21 +12,19 @@ import { EntityType } from "./EntityType";
 import { IsDTO } from "./IsDTO";
 
 export type ArrayMapMethod<
-    T extends BaseEntity<D>,
-    D extends DTO,
     I = any,
     R = any,
-> = (this: T, item: I) => R;
+> = (item: I) => R;
 
 export type GetterMethod<
-    T extends BaseEntity<D>,
     D extends DTO,
+    T extends BaseEntity<D, T>,
     R = any
 > = (this: T) => R;
 
 export type SetterMethod<
-    T extends BaseEntity<D>,
     D extends DTO,
+    T extends BaseEntity<D, T>,
     R = any
 > = (this: T, value: R) => T;
 
@@ -42,8 +40,8 @@ export interface PropertyTypeCheckFn {
  * Factory for entity classes.
  */
 export interface EntityFactory<
+    D extends DTO,
     T extends Entity<D>,
-    D extends DTO
 > {
 
     /**
@@ -88,6 +86,6 @@ export interface EntityFactory<
      */
     createEntityType (
         opts : { immutable ?: boolean }
-    ) : EntityType<T, D>;
+    ) : EntityType<D, T>;
 
 }

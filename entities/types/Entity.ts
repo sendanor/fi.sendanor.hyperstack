@@ -10,7 +10,9 @@ import { JsonSerializable } from "./JsonSerializable";
 /**
  * Entity interface.
  */
-export interface Entity<T extends DTO>
+export interface Entity<
+    D extends DTO
+>
     extends JsonSerializable
 {
 
@@ -27,16 +29,16 @@ export interface Entity<T extends DTO>
     /**
      * Returns the DTO.
      */
-    getDTO () : T;
+    getDTO () : D;
 
     /**
      * Returns the type of the entity
      */
-    getEntityType () : EntityType<Entity<T>, T>;
+    getEntityType () : EntityType<D, Entity<D>>;
 
 }
 
-export function isEntity<T extends DTO> (value : unknown) : value is Entity<T> {
+export function isEntity (value : unknown) : value is Entity<DTO> {
     return (
         isObject(value)
         && isFunction(value?.valueOf)

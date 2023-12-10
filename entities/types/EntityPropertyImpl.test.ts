@@ -1,4 +1,4 @@
-// Copyright (c) 2023. Heusala Group Oy <info@hg.fi>. All rights reserved.
+// Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import { beforeEach } from "@jest/globals";
 import { DTO } from "../../dto/types/DTO";
@@ -222,12 +222,12 @@ describe('EntityPropertyImpl', () => {
                 getModel() : string;
             }
 
-            let carFactory : EntityFactoryImpl<Car, CarDTO>;
-            let CarEntity : EntityType<Car, CarDTO>;
+            let carFactory : EntityFactoryImpl<CarDTO, Car>;
+            let CarEntity : EntityType<CarDTO, Car>;
 
             beforeEach(() => {
                 carFactory = (
-                    EntityFactoryImpl.create<Car, CarDTO>()
+                    EntityFactoryImpl.create<CarDTO, Car>()
                     .add( EntityPropertyImpl.create("model").setDefaultValue("Ford") )
                 );
                 CarEntity = carFactory.createEntityType();

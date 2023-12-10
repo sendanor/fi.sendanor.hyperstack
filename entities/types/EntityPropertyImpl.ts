@@ -1,4 +1,4 @@
-// Copyright (c) 2023. Heusala Group Oy <info@heusalagroup.fi>. All rights reserved.
+// Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import { find } from "../../../../hg/core/functions/find";
 import { map } from "../../../../hg/core/functions/map";
@@ -19,7 +19,6 @@ import { isString } from "../../../../hg/core/types/String";
 import { isUndefined } from "../../../../hg/core/types/undefined";
 import { DTO } from "../../dto/types/DTO";
 import {
-    Entity,
     isEntity,
 } from "./Entity";
 import {
@@ -121,7 +120,7 @@ export class EntityPropertyImpl
         const Type : EntityPropertyType | undefined = find(
             types,
             (item : EntityPropertyType) => isEntityType(item)
-        ) as EntityType<Entity<DTO>, DTO>;
+        ) as EntityType<DTO, any>;
 
         if ( Type !== undefined ) {
             return Type.create();

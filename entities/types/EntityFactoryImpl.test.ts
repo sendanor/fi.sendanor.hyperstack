@@ -1,4 +1,4 @@
-// Copyright (c) 2023. Heusala Group Oy <info@hg.fi>. All rights reserved.
+// Copyright (c) 2023. Sendanor <info@sendanor.fi>. All rights reserved.
 
 import {
     beforeEach,
@@ -364,11 +364,11 @@ describe('EntityFactoryImpl', () => {
             getName () : string;
         }
 
-        let factory : EntityFactoryImpl<MyEntity, MyDTO>;
+        let factory : EntityFactoryImpl<MyDTO, MyEntity>;
 
         beforeEach ( () => {
             factory = (
-                EntityFactoryImpl.create<MyEntity, MyDTO>()
+                EntityFactoryImpl.create<MyDTO, MyEntity>()
                     .add( EntityPropertyImpl.create("age").setTypes(VariableType.INTEGER).setDefaultValue(30) )
                     .add( EntityPropertyImpl.create("name").setTypes(VariableType.STRING).setDefaultValue('Smith') )
             );
@@ -601,21 +601,21 @@ describe('EntityFactoryImpl', () => {
             setCarDTO(value: CarDTO) : this;
         }
 
-        let carFactory : EntityFactoryImpl<Car, CarDTO>;
-        let CarType : EntityType<Car, CarDTO>;
-        let driverFactory : EntityFactoryImpl<Driver, DriverDTO>;
-        let DriverType : EntityType<Driver, DriverDTO>;
+        let carFactory : EntityFactoryImpl<CarDTO, Car>;
+        let CarType : EntityType<CarDTO, Car>;
+        let driverFactory : EntityFactoryImpl<DriverDTO, Driver>;
+        let DriverType : EntityType<DriverDTO, Driver>;
 
         beforeEach(() => {
 
             carFactory = (
-                EntityFactoryImpl.create<Car, CarDTO>()
+                EntityFactoryImpl.create<CarDTO, Car>()
                 .add( EntityPropertyImpl.create("model").setDefaultValue("Ford") )
             );
             CarType = carFactory.createEntityType();
 
             driverFactory = (
-                EntityFactoryImpl.create<Driver, DriverDTO>()
+                EntityFactoryImpl.create<DriverDTO, Driver>()
                 .add( EntityPropertyImpl.create("age").setDefaultValue(30) )
                 .add( EntityPropertyImpl.create("name").setDefaultValue('Smith') )
                 .add( EntityPropertyImpl.create("car").setTypes(CarType) )
@@ -660,6 +660,27 @@ describe('EntityFactoryImpl', () => {
                 expect( driver.getCarDTO() ).toStrictEqual({model: "Tesla"});
             });
 
+            it('can create an type which can be used as a base class', () => {
+
+                class MyDriver extends DriverType {
+
+                    public static create () : MyDriver {
+                        return new MyDriver();
+                    }
+
+                    getFoo () : string {
+                        return 'hello world'
+                    }
+
+                }
+
+                const driver : MyDriver = MyDriver.create();
+
+                expect( driver.getFoo() ).toBe('hello world');
+                expect( driver.setCar( CarType.create().setModel('Tesla') ) ).toBe(driver);
+                expect( driver.getCarDTO() ).toStrictEqual({model: "Tesla"});
+            });
+
         });
 
     });
@@ -696,21 +717,21 @@ describe('EntityFactoryImpl', () => {
 
         }
 
-        let carFactory : EntityFactoryImpl<Car, CarDTO>;
-        let CarType : EntityType<Car, CarDTO>;
-        let driverFactory : EntityFactoryImpl<Driver, DriverDTO>;
-        let DriverType : EntityType<Driver, DriverDTO>;
+        let carFactory : EntityFactoryImpl<CarDTO, Car>;
+        let CarType : EntityType<CarDTO, Car>;
+        let driverFactory : EntityFactoryImpl<DriverDTO, Driver>;
+        let DriverType : EntityType<DriverDTO, Driver>;
 
         beforeEach(() => {
 
             carFactory = (
-                EntityFactoryImpl.create<Car, CarDTO>()
+                EntityFactoryImpl.create<CarDTO, Car>()
                 .add( EntityPropertyImpl.create("model").setDefaultValue("Ford") )
             );
             CarType = carFactory.createEntityType();
 
             driverFactory = (
-                EntityFactoryImpl.create<Driver, DriverDTO>()
+                EntityFactoryImpl.create<DriverDTO, Driver>()
                 .add( EntityPropertyImpl.create("age").setDefaultValue(30) )
                 .add( EntityPropertyImpl.create("name").setDefaultValue('Smith') )
                 .add( EntityPropertyImpl.createArray("cars").setTypes(CarType) )
@@ -803,8 +824,8 @@ describe('EntityFactoryImpl', () => {
             setModel(model: string) : this;
         }
 
-        let carFactory : EntityFactoryImpl<Car, CarDTO>;
-        let CarEntity : EntityType<Car, CarDTO>;
+        let carFactory : EntityFactoryImpl<CarDTO, Car>;
+        let CarEntity : EntityType<CarDTO, Car>;
 
         interface TestDTO {
             readonly name : string;
@@ -820,7 +841,7 @@ describe('EntityFactoryImpl', () => {
             readonly cars : CarDTO[];
         }
 
-        class TestEntity extends BaseEntity<TestDTO> {
+        class TestEntity extends BaseEntity<TestDTO, TestEntity> {
 
             public static create () : TestEntity {
                 return new TestEntity({
@@ -844,7 +865,7 @@ describe('EntityFactoryImpl', () => {
                 return [];
             }
 
-            public static isEntity (value: unknown) : value is BaseEntity<TestDTO> {
+            public static isEntity (value: unknown) : value is Entity<TestDTO> {
                 return value instanceof TestEntity;
             }
 
@@ -852,15 +873,15 @@ describe('EntityFactoryImpl', () => {
                 return false;
             }
 
-            public getEntityType () : EntityType<Entity<TestDTO>, TestDTO> {
-                return TestEntity;
+            public getEntityType () : EntityType<TestDTO, TestEntity> {
+                return TestEntity as unknown as EntityType<TestDTO, TestEntity>;
             }
 
         }
 
         beforeEach(() => {
             carFactory = (
-                EntityFactoryImpl.create<Car, CarDTO>()
+                EntityFactoryImpl.create<CarDTO, Car>()
                 .add( EntityPropertyImpl.create("model").setDefaultValue("Ford") )
             );
             CarEntity = carFactory.createEntityType();
@@ -869,7 +890,7 @@ describe('EntityFactoryImpl', () => {
         describe('#createPropertyGetter', () => {
 
             it('can create string getter', () => {
-                const fn = EntityFactoryImpl.createPropertyGetter<BaseEntity<TestDTO>, TestDTO>(
+                const fn = EntityFactoryImpl.createPropertyGetter<TestDTO, TestEntity>(
                     'name',
                     [VariableType.STRING]
                 );
@@ -878,7 +899,7 @@ describe('EntityFactoryImpl', () => {
             });
 
             it('can create number getter', () => {
-                const fn = EntityFactoryImpl.createPropertyGetter<BaseEntity<TestDTO>, TestDTO>(
+                const fn = EntityFactoryImpl.createPropertyGetter<TestDTO, TestEntity>(
                     'age',
                     [VariableType.NUMBER]
                 );
@@ -887,7 +908,7 @@ describe('EntityFactoryImpl', () => {
             });
 
             it('can create integer getter', () => {
-                const fn = EntityFactoryImpl.createPropertyGetter<BaseEntity<TestDTO>, TestDTO>(
+                const fn = EntityFactoryImpl.createPropertyGetter<TestDTO, TestEntity>(
                     'age',
                     [VariableType.INTEGER]
                 );
@@ -896,7 +917,7 @@ describe('EntityFactoryImpl', () => {
             });
 
             it('can create boolean getter', () => {
-                const fn = EntityFactoryImpl.createPropertyGetter<BaseEntity<TestDTO>, TestDTO>(
+                const fn = EntityFactoryImpl.createPropertyGetter<TestDTO, TestEntity>(
                     'alive',
                     [VariableType.BOOLEAN]
                 );
@@ -905,7 +926,7 @@ describe('EntityFactoryImpl', () => {
             });
 
             it('can create undefined getter with non-defined property', () => {
-                const fn = EntityFactoryImpl.createPropertyGetter<BaseEntity<TestDTO>, TestDTO>(
+                const fn = EntityFactoryImpl.createPropertyGetter<TestDTO, TestEntity>(
                     'notDefined',
                     [VariableType.UNDEFINED]
                 );
@@ -914,7 +935,7 @@ describe('EntityFactoryImpl', () => {
             });
 
             it('can create undefined getter with undefined value', () => {
-                const fn = EntityFactoryImpl.createPropertyGetter<BaseEntity<TestDTO>, TestDTO>(
+                const fn = EntityFactoryImpl.createPropertyGetter<TestDTO, TestEntity>(
                     'undefinedValue',
                     [VariableType.UNDEFINED]
                 );
@@ -923,7 +944,7 @@ describe('EntityFactoryImpl', () => {
             });
 
             it('can create null getter', () => {
-                const fn = EntityFactoryImpl.createPropertyGetter<BaseEntity<TestDTO>, TestDTO>(
+                const fn = EntityFactoryImpl.createPropertyGetter<TestDTO, TestEntity>(
                     'nullValue',
                     [VariableType.NULL]
                 );
@@ -932,7 +953,7 @@ describe('EntityFactoryImpl', () => {
             });
 
             it('can create a car getter', () => {
-                const fn = EntityFactoryImpl.createPropertyGetter<BaseEntity<TestDTO>, TestDTO>(
+                const fn = EntityFactoryImpl.createPropertyGetter<TestDTO, TestEntity>(
                     'car',
                     [CarEntity]
                 );
@@ -943,7 +964,7 @@ describe('EntityFactoryImpl', () => {
             });
 
             it('can create a car or undefined getter with a value', () => {
-                const fn = EntityFactoryImpl.createPropertyGetter<BaseEntity<TestDTO>, TestDTO>(
+                const fn = EntityFactoryImpl.createPropertyGetter<TestDTO, TestEntity>(
                     'secondCar',
                     [
                         CarEntity,
@@ -957,7 +978,7 @@ describe('EntityFactoryImpl', () => {
             });
 
             it('can create a car or undefined getter with an non-defined value', () => {
-                const fn = EntityFactoryImpl.createPropertyGetter<BaseEntity<TestDTO>, TestDTO>(
+                const fn = EntityFactoryImpl.createPropertyGetter<TestDTO, TestEntity>(
                     'thirdCar',
                     [
                         CarEntity,
@@ -969,7 +990,7 @@ describe('EntityFactoryImpl', () => {
             });
 
             it('can create a car or undefined getter with an null value', () => {
-                const fn = EntityFactoryImpl.createPropertyGetter<BaseEntity<TestDTO>, TestDTO>(
+                const fn = EntityFactoryImpl.createPropertyGetter<TestDTO, TestEntity>(
                     'fourthCar',
                     [
                         CarEntity,
@@ -981,7 +1002,7 @@ describe('EntityFactoryImpl', () => {
             });
 
             it('can create property getter for arrays', () => {
-                const fn = EntityFactoryImpl.createArrayPropertyGetter<BaseEntity<TestDTO>, TestDTO>(
+                const fn = EntityFactoryImpl.createArrayPropertyGetter<TestDTO, TestEntity>(
                     'cars',
                     [
                         CarEntity,
@@ -997,7 +1018,7 @@ describe('EntityFactoryImpl', () => {
         describe('#createPropertySetter', () => {
 
             it('can create string setter', () => {
-                const fn = EntityFactoryImpl.createPropertySetter<BaseEntity<TestDTO>, TestDTO>(
+                const fn = EntityFactoryImpl.createPropertySetter<TestDTO, TestEntity>(
                     'name',
                     [VariableType.STRING]
                 );
@@ -1007,7 +1028,7 @@ describe('EntityFactoryImpl', () => {
             });
 
             it('can create number setter', () => {
-                const fn = EntityFactoryImpl.createPropertySetter<BaseEntity<TestDTO>, TestDTO>(
+                const fn = EntityFactoryImpl.createPropertySetter<TestDTO, TestEntity>(
                     'age',
                     [VariableType.NUMBER]
                 );
@@ -1017,7 +1038,7 @@ describe('EntityFactoryImpl', () => {
             });
 
             it('can create integer setter', () => {
-                const fn = EntityFactoryImpl.createPropertySetter<BaseEntity<TestDTO>, TestDTO>(
+                const fn = EntityFactoryImpl.createPropertySetter<TestDTO, TestEntity>(
                     'age',
                     [VariableType.INTEGER]
                 );
@@ -1027,7 +1048,7 @@ describe('EntityFactoryImpl', () => {
             });
 
             it('can create boolean setter', () => {
-                const fn = EntityFactoryImpl.createPropertySetter<BaseEntity<TestDTO>, TestDTO>(
+                const fn = EntityFactoryImpl.createPropertySetter<TestDTO, TestEntity>(
                     'alive',
                     [VariableType.BOOLEAN]
                 );
@@ -1039,7 +1060,7 @@ describe('EntityFactoryImpl', () => {
             });
 
             it('can create undefined setter with non-defined property', () => {
-                const fn = EntityFactoryImpl.createPropertySetter<BaseEntity<TestDTO>, TestDTO>(
+                const fn = EntityFactoryImpl.createPropertySetter<TestDTO, TestEntity>(
                     'notDefined',
                     [VariableType.UNDEFINED]
                 );
@@ -1049,7 +1070,7 @@ describe('EntityFactoryImpl', () => {
             });
 
             it('can create undefined setter with undefined value', () => {
-                const fn = EntityFactoryImpl.createPropertySetter<BaseEntity<TestDTO>, TestDTO>(
+                const fn = EntityFactoryImpl.createPropertySetter<TestDTO, TestEntity>(
                     'undefinedValue',
                     [VariableType.UNDEFINED]
                 );
@@ -1059,7 +1080,7 @@ describe('EntityFactoryImpl', () => {
             });
 
             it('can create null setter', () => {
-                const fn = EntityFactoryImpl.createPropertySetter<BaseEntity<TestDTO>, TestDTO>(
+                const fn = EntityFactoryImpl.createPropertySetter<TestDTO, TestEntity>(
                     'nullValue',
                     [VariableType.NULL]
                 );
@@ -1069,7 +1090,7 @@ describe('EntityFactoryImpl', () => {
             });
 
             it('can create a car setter', () => {
-                const fn = EntityFactoryImpl.createPropertySetter<BaseEntity<TestDTO>, TestDTO>(
+                const fn = EntityFactoryImpl.createPropertySetter<TestDTO, TestEntity>(
                     'car',
                     [CarEntity]
                 );
@@ -1082,7 +1103,7 @@ describe('EntityFactoryImpl', () => {
             });
 
             it('can create a car or undefined setter with a value', () => {
-                const fn = EntityFactoryImpl.createPropertySetter<BaseEntity<TestDTO>, TestDTO>(
+                const fn = EntityFactoryImpl.createPropertySetter<TestDTO, TestEntity>(
                     'secondCar',
                     [
                         CarEntity,
@@ -1100,7 +1121,7 @@ describe('EntityFactoryImpl', () => {
             });
 
             it('can create a car or undefined setter with an non-defined value', () => {
-                const fn = EntityFactoryImpl.createPropertySetter<BaseEntity<TestDTO>, TestDTO>(
+                const fn = EntityFactoryImpl.createPropertySetter<TestDTO, TestEntity>(
                     'thirdCar',
                     [
                         CarEntity,
@@ -1115,7 +1136,7 @@ describe('EntityFactoryImpl', () => {
             });
 
             it('can create a car or undefined setter with an null value', () => {
-                const fn = EntityFactoryImpl.createPropertySetter<BaseEntity<TestDTO>, TestDTO>(
+                const fn = EntityFactoryImpl.createPropertySetter<TestDTO, TestEntity>(
                     'fourthCar',
                     [
                         CarEntity,

@@ -11,9 +11,14 @@ import { EntityProperty } from "./EntityProperty";
  * entity class.
  */
 export interface EntityType<
-    T extends Entity<D>,
     D extends DTO,
+    T extends Entity<D>,
 > {
+
+    /**
+     * The constructor
+     */
+    new (dto ?: D | undefined) : T;
 
     /**
      * Creates an entity with default values.
@@ -50,10 +55,7 @@ export interface EntityType<
 
 }
 
-export function isEntityType<
-    T extends Entity<D>,
-    D extends DTO,
-> (value : unknown) : value is EntityType<T, D> {
+export function isEntityType (value : unknown) : value is EntityType<DTO, any> {
     return (
         isObject(value)
         && isFunction(value?.create)

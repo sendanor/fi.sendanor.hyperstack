@@ -16,12 +16,12 @@ export enum VariableType {
 /**
  *
  */
-export type EntityPropertyType = EntityType<Entity<DTO>, DTO> | VariableType;
+export type EntityPropertyType = EntityType<any, Entity<any>> | VariableType;
 
 /**
  *
  */
-export type EntityPropertyValue = Entity<DTO> | string | number | boolean | null | undefined | EntityPropertyValue[];
+export type EntityPropertyValue = Entity<any> | string | number | boolean | null | undefined | EntityPropertyValue[];
 
 /**
  * Presents a property of an entity or entity DTO with a name and type(s).
