@@ -1,3 +1,7 @@
+# Obsolete
+
+This project is deprecated. The development continues under the [HyperifyIO Project](https://github.com/hyperifyio).
+
 # @sendanor/fi.sendanor.hyperstack
 
 Common code for HyperStack protocol for TypeScript (as a Git Submodule).
